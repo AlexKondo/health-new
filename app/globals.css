@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+/* ---- Tokens da marca Escola Saúde (ajustáveis) ---- */
+:root {
+  --background: #ffffff;
+  --foreground: #1f2933;
+  --brand: #1f6fb2;        /* azul institucional */
+  --brand-dark: #155186;
+  --brand-soft: #e8f1f9;
+  --accent: #f4a72c;       /* amarelo acolhedor (CTAs) */
+  --whatsapp: #25d366;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-whatsapp: var(--whatsapp);
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------------- Animações / dinamismo ---------------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ken-burns {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+@keyframes blob {
+  0%, 100% { border-radius: 42% 58% 60% 40% / 50% 45% 55% 50%; }
+  50%      { border-radius: 60% 40% 45% 55% / 55% 60% 40% 45%; }
+}
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+/* Scroll reveal (ativado por IntersectionObserver via .is-visible) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.animate-kenburns { animation: ken-burns 14s ease-out alternate infinite; }
+.animate-float    { animation: float 6s ease-in-out infinite; }
+.animate-bounce-soft { animation: bounce-soft 1.8s ease-in-out infinite; }
+.animate-blob     { animation: blob 12s ease-in-out infinite; }
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--brand), #38bdf8, var(--accent));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 6s ease infinite;
+}
+
+.shimmer { position: relative; overflow: hidden; }
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  animation: shimmer 2.5s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .animate-kenburns, .animate-float, .animate-bounce-soft,
+  .animate-blob, .text-gradient, .shimmer::after {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

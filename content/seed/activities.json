@@ -1,0 +1,164 @@
+[
+  {
+    "slug": "ballet",
+    "title": "Ballet",
+    "category": "extracurricular",
+    "hero_image": "/images/Ballet-Banner.png",
+    "body": "O Ballet é uma expressão artística que favorece o bem-estar físico e emocional das crianças, além de aperfeiçoar sua criatividade e musicalidade. Por meio desta atividade elas podem expressar seus sentimentos, desenvolver suas potencialidades, autoconfiança, sensibilidade e disciplina. As aulas são ministradas pela professora e bailarina Ana Lúcia Missaka Mendes.",
+    "sort_order": 0,
+    "tile_image": "/images/sq/ballet.jpg"
+  },
+  {
+    "slug": "judo",
+    "title": "Judô",
+    "category": "extracurricular",
+    "hero_image": "/images/Judo-Banner.png",
+    "body": "Objetivo: Proporcionar aos alunos condições para o desenvolvimento e aprimoramento físico e técnico; torná-los conhecedores da filosofia e das regras do judô; torná-los capazes de praticar a arte marcial em qualquer instituição de ensino do esporte, em caráter competitivo ou não; além de torná-los conhecedores da potencialidade dos golpes para saberem usá-los apenas para a prática do esporte.\n\nJudô formativo, educacional e transformador, que não prioriza somente o saber fazer.",
+    "sort_order": 1,
+    "tile_image": null
+  },
+  {
+    "slug": "natacao",
+    "title": "Natação",
+    "category": "extracurricular",
+    "hero_image": "/images/Natacao-Banner.png",
+    "body": "A natação é um esporte que promove a ambientação, adaptação e autoconfiança no meio líquido a partir da iniciação e aprimoramento de técnicas de sobrevivência, saltos e mergulhos. Nas aulas são realizadas atividades lúdicas que estimulam o desenvolvimento de habilidades motoras básicas, aprendizado cognitivo, afetivo e socialização com outras crianças.\n\nAs aulas acontecem em um espaço parceiro, a academia Toshio, com profissionais técnicos com ampla experiência no esporte. As turmas são divididas em diferentes níveis de aprendizagem, com um número reduzido de alunos por professor, possibilitando ações de incentivo para melhoria contínua do desempenho dos alunos.",
+    "sort_order": 2,
+    "tile_image": "/images/sq/natacao.jpg"
+  },
+  {
+    "slug": "futebol",
+    "title": "Futebol",
+    "category": "extracurricular",
+    "hero_image": "/images/Futebol-Banner.png",
+    "body": "As aulas de futebol melhoram a noção espaço-temporal, o equilíbrio, ritmo e até mesmo o raciocínio, uma vez que os jogadores precisam tomar decisões rápidas em alguns momentos. A prática do esporte também desenvolve a capacidade motora global, pois os movimentos realizados são considerados técnicos-táticos e, por isso, as crianças são estimuladas a pensar em estratégias com rapidez e fazer movimentos com velocidade simultaneamente.",
+    "sort_order": 3,
+    "tile_image": "/images/sq/futebol.jpg"
+  },
+  {
+    "slug": "tenis-de-mesa",
+    "title": "Tênis de Mesa",
+    "category": "extracurricular",
+    "hero_image": "/images/Tenis-de-Mesa-Banner.png",
+    "body": "O tênis de mesa utiliza muitas áreas diferentes do cérebro simultaneamente, enquanto você acompanha a bola, planeja arremessos e estratégias. Um jogo intenso de tênis de mesa oferece excelentes benefícios à saúde, pois estimula a atenção e a concentração, aprimora os movimentos musculares grossos e finos, melhora os reflexos e o senso de equilíbrio.\n\nAs aulas acontecem em um espaço parceiro, o Centro de Treinamento Ctar, com profissionais técnicos com ampla experiência no esporte.",
+    "sort_order": 4,
+    "tile_image": "/images/sq/tenis-de-mesa.jpg"
+  },
+  {
+    "slug": "violao",
+    "title": "Violão",
+    "category": "extracurricular",
+    "hero_image": "/images/Violao-Banner.png",
+    "body": "Em parceria com a Oroboro Cia de Teatro, oferecemos aulas de violão que procura fazer com que a criança entenda o instrumento. O curso é oferecido de forma individual ou em grupo. O estudo da música amplia relações e capacidade de criação e comunicação. Melhora a concentração, a memória e aumenta a autoestima.",
+    "sort_order": 5,
+    "tile_image": "/images/sq/violao.jpg"
+  },
+  {
+    "slug": "piano-classico",
+    "title": "Piano Clássico",
+    "category": "extracurricular",
+    "hero_image": "/images/Piano-Banner.png",
+    "body": "As aulas de piano clássico tem como objetivo criar um primeiro contato com o instrumento. A partir de exercícios rítmicos são introduzidos ensinamentos como a leitura de partituras e o reconhecimento das notas musicais.",
+    "sort_order": 6,
+    "tile_image": null
+  },
+  {
+    "slug": "teatro",
+    "title": "Teatro",
+    "category": "extracurricular",
+    "hero_image": "/images/Teatro-Banner.png",
+    "body": "O teatro oferece uma série de benefícios para a formação de crianças e adolescentes: promove a sociabilidade, ajuda as crianças a vencerem a timidez, melhora a comunicação verbal e corporal. As aulas de Teatro também incentivam o interesse pela leitura, estimulam a criatividade e aumentam o repertório cultural.\n\nA parceria com a Companhia de Teatro Oroboro tem trazido muitos resultados gratificantes! Você e seu filho podem desenvolver um relacionamento mais forte, fazendo aulas de teatro! Conheça esta atividade diferenciada para a família inteira!",
+    "sort_order": 7,
+    "tile_image": null
+  },
+  {
+    "slug": "musicalizacao",
+    "title": "Musicalização",
+    "category": "extracurricular",
+    "hero_image": "/images/Musicalizacao-Banner.png",
+    "body": "Objetivos: Identificar e apreciar criticamente diversas formas e gêneros de expressão musical, reconhecendo e analisando os usos e as funções da música em diversos contextos de circulação, em especial, aqueles da vida cotidiana.\n\nPerceber e explorar os elementos constitutivos da música (altura, intensidade, timbre, melodia, ritmo etc.), por meio de jogos, brincadeiras, canções e práticas diversas de composição/criação, execução e apreciação musical.",
+    "sort_order": 8,
+    "tile_image": "/images/sq/musicalizacao.jpg"
+  },
+  {
+    "slug": "robotica",
+    "title": "Robótica",
+    "category": "extracurricular",
+    "hero_image": "/images/Robotica-Banner.png",
+    "body": "O ensino de robótica para crianças é uma forma de estimular o interesse pela ciência, a criatividade, o raciocínio lógico, as ferramentas de pensamento, o trabalho em equipe e diversas habilidades socioemocionais. Por meio da construção e programação de robôs, as crianças aprendem conceitos de matemática, física, engenharia e informática de maneira divertida e prática. Além disso, a robótica educacional prepara as crianças para os desafios do futuro, em que a tecnologia será cada vez mais presente e necessária. As aulas acontecem para as turmas do Integral do Ensino Fundamental.",
+    "sort_order": 9,
+    "tile_image": null
+  },
+  {
+    "slug": "japones-ec",
+    "title": "Japonês (Extracurricular)",
+    "category": "extracurricular",
+    "hero_image": "/images/Japones-Banner-2.png",
+    "body": "Ministradas por uma professora nativa, as aulas de japonês extracurricular aprofundam o conhecimento sobre a cultura e a língua japonesa por meio de atividades planejadas de acordo com a faixa etária. Muitas brincadeiras, histórias, músicas e, a partir do 1°Ano inicia-se o trabalho com a escrita do Hiragana, depois Katakana e, por fim, o Kanji.",
+    "sort_order": 10,
+    "tile_image": null
+  },
+  {
+    "slug": "english-club",
+    "title": "English Club",
+    "category": "extracurricular",
+    "hero_image": "/images/English-Club-Banner.png",
+    "body": "O English Club tem como objetivo tornar o aprendizado da Língua Inglesa mais significativo. Por meio da criatividade, interação social, artes, brincadeiras e habilidades de comunicação, as crianças têm a oportunidade de aplicar de maneira contextualizada e lúdica o que estão aprendendo. Além disso, as metodologias pedagógicas proporcionam o desenvolvimento intelectual, cognitivo, corporal e socioemocional dos alunos.\n\nO English Club acontece para as turmas do Integral, do Grupo 4 até o 5°Ano.",
+    "sort_order": 11,
+    "tile_image": null
+  },
+  {
+    "slug": "artes",
+    "title": "Artes",
+    "category": "curricular",
+    "hero_image": "/images/Artes-Banner.png",
+    "body": "As aulas de Artes possibilitam que as crianças explorem diversos materiais e suportes gráficos, ampliando seu repertório artístico e cultural. Também conhecem a importância dos espaços de exposições, incentivando o gosto de visita pelas crianças e familiares.\n\nOs alunos são estimulados a serem conhecedores, leitores e apreciadores de arte, desenvolvendo a crítica e autocrítica. A empatia também é estimulada a medida em que os estudantes são apresentados a uma leitura de mundo baseada na visão de outra pessoa em um contexto e/ou época diferente ou atual.",
+    "sort_order": 12,
+    "tile_image": "/images/sq/artes.jpg"
+  },
+  {
+    "slug": "educacao-fisica",
+    "title": "Educação Física",
+    "category": "curricular",
+    "hero_image": "/images/Ed-Fisica-Banner.png",
+    "body": "As aulas de Educação Física têm como objetivo experimentar e analisar as diferentes formas de expressão. Ao brincar, dançar, jogar, praticar esportes e ginásticas, para além da ludicidade, os estudantes se apropriam de regras, códigos, rituais, sistemáticas de funcionamento e táticas que se vinculam com a organização da vida coletiva e individual.\n\nInterligada com os demais componentes curriculares, os alunos entram em contato com as práticas corporais como um elemento essencial vinculado ao lazer, entretenimento e o cuidado com o corpo e saúde.",
+    "sort_order": 13,
+    "tile_image": null
+  },
+  {
+    "slug": "ingles",
+    "title": "Inglês",
+    "category": "curricular",
+    "hero_image": "/images/Ingles-Banner.png",
+    "body": "De acordo com os princípios da BNCC e o foco no ensino da Língua Inglesa como língua franca, o material da Cellep proporciona aprendizado comunicativo e completo. Conta com uma plataforma online onde as quatro habilidades da língua são trabalhadas: Listening, Speaking, Reading and Writing, de acordo com a fase de desenvolvimento de cada série e respeitando a individualidade dos educandos.",
+    "sort_order": 14,
+    "tile_image": null
+  },
+  {
+    "slug": "japones",
+    "title": "Japonês",
+    "category": "curricular",
+    "hero_image": "/images/Japones-Banner-1.png",
+    "body": "As aulas de japonês tem como foco o conhecimento da Cultura Japonesa. Elas são ministradas por uma professora nativa, que de uma maneira lúdica e contextualizada faz com que as crianças se familiarizem com a cultura por meio de canções, jogos, contos japoneses e brincadeiras. Também conhecendo e aprendendo sobre o respeito e convívio com diferentes culturas.\n\nNa Educação Infantil, as aulas de Japonês fazem parte da formação curricular, a partir do Berçário, ouvem histórias, cantam e fazem os gestinhos das músicas tradicionais japonesas, desenvolvendo uma atitude positiva ao ser exposto a uma segunda Língua de forma lúdica e prazerosa.\n\nNo Ensino Fundamental, as aulas de Japonês fazem parte da grade curricular dos alunos do integral, também com o foco na Cultura Japonesa, despertando o interesse e a curiosidade de cada criança por meio de projetos com culinária, danças, músicas, brinquedos e brincadeiras, comunicação entre outros temas que as crianças sugerem para a professora.",
+    "sort_order": 15,
+    "tile_image": null
+  },
+  {
+    "slug": "gef",
+    "title": "Grupo de Educação Física",
+    "category": "curricular",
+    "hero_image": "/images/Fono-Banner-1.png",
+    "body": "A Escola Saúde enxerga a alfabetização como um processo que acontece respeitando o desenvolvimento da criança e que deve ser incentivado de maneira lúdica, prazeirosa e contextualizada. Aqui as crianças participam das aulas de fono a partir do Grupo 4 até o 2o Ano, com o intuito de desenvolver habilidade de consciência fonológica e adquirir o conhecimento alfabético tão importantes para que aconteça a associação fonema-grafema e, consequentemente, o desenvolvimento da leitura e da escrita.",
+    "sort_order": 16,
+    "tile_image": null
+  },
+  {
+    "slug": "tecnologia-e-projetos",
+    "title": "Tecnologia e Projetos",
+    "category": "curricular",
+    "hero_image": "/images/Tec-e-Projeto-Banner.png",
+    "body": "Em um mundo cada vez mais tecnológico e conectado, é fundamental que as crianças aprendam a utilizar os recursos à disposição a favor da aprendizagem e do desenvolvimento pessoal e coletivo.\n\nDesde cedo, por meio da metodologia STEAM, é possível integrar ciências, tecnologia, engenharia, artes e matemática de forma interdisciplinar e prática, desenvolvendo assim, habilidades e competências importantes para a vida dos estudantes: resolver problemas de forma mais eficiente, levantar hipóteses, analisar, planejar, desenvolver a resiliência, flexibilidade de pensamento, trabalhar em equipe, aguçar a criatividade, a curiosidade, o raciocínio lógico, etc.\n\nAlém disso, as crianças também aprendem noções básicas de programação até a criação de aplicativos e jogos. Além de desenvolver diferentes habilidades com total engajamento dos alunos, o aprendizado da linguagem de computação e o pensamento computacional contribuem para a formação integral e tão necessária para o futuro.",
+    "sort_order": 17,
+    "tile_image": null
+  }
+]

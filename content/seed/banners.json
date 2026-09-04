@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Matrículas Abertas",
+    "image_url": "/images/Matriculas-Abertas-1.png",
+    "link_url": "/#agendar",
+    "alt": "Matrículas abertas na Escola Saúde",
+    "sort_order": 0,
+    "starts_at": null,
+    "ends_at": null,
+    "active": true
+  },
+  {
+    "title": "Escola Saúde",
+    "image_url": "/images/Escola-Saude-Banners-.png",
+    "link_url": "/nossa-historia",
+    "alt": "Bem-vindo à Escola Saúde",
+    "sort_order": 1,
+    "starts_at": null,
+    "ends_at": null,
+    "active": true
+  }
+]

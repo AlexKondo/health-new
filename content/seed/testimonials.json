@@ -1,0 +1,542 @@
+[
+  {
+    "author_name": "Daniel Lutz",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Daniel-Lutz.png",
+    "rating": 5,
+    "text": "\"A Escola Saúde é uma escola incrível. Os profissionais são muito zelosos e é nítido o carinho que eles têm pelas crianças. A infraestrutura é muito acolhedora com ambiente familiar, e ao mesmo tempo muito estimulante e profissional, com aulas diversificadas inclusas no curso regular e também com muitas opções de aulas extracurriculares e parcerias. Já tínhamos ouvido falar sobre a alimentação, que é toda natural e preparada pela própria tia Ruth, com cardápio variado. A introdução alimentar para os bebês e crianças é acompanhado de perto. Meu filho gosta muito da escola e ele tem se desenvolvido de forma incrível lá. A comunicação com a escola é constante, de forma simples, fácil e natural, com feedbacks informais rotineiros, tanto da parte de desenvolvimento, alimentação e também saúde e o relatório de desenvolvimento feito de forma detalhada. Sobre a parte de saúde, somos constantemente informados sobre o estado geral e casos específicos, com orientações e cuidados a serem tomados. Como pais, temos a sensação de que nosso filho não é somente um número lá, com a certeza de que ele está aprendendo não somente a base curricular, mas valores de amor, afeto e amizade. Nós super recomendamos a Escola Saúde. <3\"",
+    "published": true,
+    "sort_order": 0
+  },
+  {
+    "author_name": "Evelyn Murasaki",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Evelyn-Murasaki.png",
+    "rating": 5,
+    "text": "\"Conheci a Escola Saúde em 2016 e dentre as escolas que eu havia procurado era a que mais havia me surpreendido nos quesitos acolhimento e alimentação, que são tão importantes principalmente para as crianças menores. Infelizmente, não consegui colocar minha filha, na época. Agora, com meu segundo filho, visitei a escola em seu novo endereço e foram estes mesmos quesitos que me fizeram matriculá-lo e confirmar não somente estes, mas outros quesitos como capacitação de toda a equipe, acompanhamento tão detalhado e próximo, não somente das professoras que tem contato direto com meu filho, mas de todos os funcionários! O ambiente é super familiar, em que todos se conhecem, mas sem deixar o profissionalismo de lado. Estamos amando a escola, que tem protocolos, principalmente os de saúde, tão bem definidos. Meu filho é super bom de garfo e tenho certeza que q comida da tia Ruth contribuiu e muito para a diversidade no paladar dele, com cardápio super diversificado, saudável e que até temos a oportunidade de provar das mesmas refeições que as crianças, adquirindo as marmitinhas para que a família tenha mais tempo de qualidade e de forma saudável! Quanto a parte educacional, o relatório é bem individualizado e super detalhado, o que nos surpreendeu bastante! Meu filho tem evoluído muito bem na socialização, ainda mais que nasceu em época da pandemia e ficamos muito tempo em isolamento social. Estamos muito satisfeitos com a Escola Saúde e recomendamos fortemente! Façam uma visita e tenho certeza que irão gostar!\"",
+    "published": true,
+    "sort_order": 1
+  },
+  {
+    "author_name": "Renata Yamada",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Renata-Yamada.png",
+    "rating": 5,
+    "text": "\"A Escola Saúde é muito acolhedora e com um ambiente familiar, sendo nossa parceira na criação dos nossos filhos. Equipe pedagógica competente, experiente e qualificada. Todos são muito carinhosos e cuidadosos com todas as crianças. Diretoras muito atenciosas e sempre abertas a diálogos. Local que preza muito pela limpeza e higiene dos ambientes. As refeições são deliciosas! São feitas pela Tia Ruth e equipe com muito amor. Refeições caseiras nutritivas e balanceadas. A Escola está sempre se atualizando de forma a acompanhar o cenário atual (e futuro), buscando a formação da criança como um todo, não focando apenas no lado acadêmico. Englobando dessa forma também o lado espiritual, socioemocional e físico também. Meus filhos amam ir para a escola! Se sentem muito acolhidos e felizes aqui!\"",
+    "published": true,
+    "sort_order": 2
+  },
+  {
+    "author_name": "Júlia Maemura",
+    "role": "ex_aluno",
+    "photo_url": "/images/Julia-Maemura.png",
+    "rating": 5,
+    "text": "\"Com um ambiente familiar e acolhedor, a Escola Saúde me proporcionou uma educação infantil repleta de boas memórias e trouxe amizades que carrego comigo até os dias de hoje! Posso dizer que um diferencial dessa escola é o seu caráter afetivo e sensível com as individualidades dos alunos, tratando-os como parte de uma família e buscando sempre atender da melhor forma as necessidades de cada um. Não posso deixar de citar também a comida incrível, que desde a época em que estudei (há mais de 15 anos atrás) até os dias de hoje se mantém incomparável e deliciosa!!! Sou muito grata por todo o cuidado e carinho que tive da equipe escolar em todos esses anos! Recomendo demais a Escola Saúde!!!\"",
+    "published": true,
+    "sort_order": 3
+  },
+  {
+    "author_name": "Luan Curti",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Luan-Curti.png",
+    "rating": 5,
+    "text": "\"É uma escola com ambiente acolhedor para toda a família. Lá você encontra todo o suporte e atenção necessária. Tudo é muito bem pensado, avisado com antecedência e explicado. Os professores são muito amorosos, cuidadosos e atenciosos com nossas crianças, além da integração com a família com reuniões de pais iterativas, festividades e encontros. Em resumo é um ambiente inclusivo onde todos tem seu espaço e respeito garantido, além de toda a tradição e reconhecimento com o cuidado com nossas crianças. Minha filha gosta tanto que pede para ir para a escola, então, eu recomendo sem sombra de dúvidas!\"",
+    "published": true,
+    "sort_order": 4
+  },
+  {
+    "author_name": "Glynton Nakashima",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Glynton-Nakashima.png",
+    "rating": 5,
+    "text": "\"Equipe qualificada e competente é uma obrigação para qualquer escola, porém carinho, amor, cuidado, atenção torna tudo perfeito! E a sensação de deixar meus filhos diariamente na Escola Saúde é de ter a segurança e a tranquilidade que estão com profissionais excelentes que amam o que fazem! São muitos diferenciais que tornam essa escola e melhor escolha para a educação dos meus filhos! Obrigado a todos profissionais que com paciência, carinho e dedicação cuidam de meus filhos desde os 6 meses de idade! P.S. a Diretora e toda equipe sabem o nome de todas as crianças da escola, inclusive de todos os pais e de todos irmãos que estudaram no passado! P.S. 2 A comida é \"MARAVILHOSA\"!! Meus filhos nunca comem um prato só!\"",
+    "published": true,
+    "sort_order": 5
+  },
+  {
+    "author_name": "Flávio Hayashi",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Flavio-Hayashi.png",
+    "rating": 5,
+    "text": "\"A Escola Saúde está presente em nossas vidas desde o nascimento de nosso filhos Mateus e André Hiro. Acreditamos que a escola contribui com valores que são a base para a formação de nossas crianças e as preparam para a vida adulta. Buscamos em uma Escola os mesmos principios que ensinamos como Pais aos nosso filhos como: ética, resiliência, respeito e acima de tudo a formação Cristã. Escola Saúde (Débora, Tia Ruth, Tio David, Suzana, Mari e agregados), muito obrigado por fazerem parte de nossas vidas !!\"",
+    "published": true,
+    "sort_order": 6
+  },
+  {
+    "author_name": "Júlia Kei",
+    "role": "ex_aluno",
+    "photo_url": "/images/Julia-Kei.png",
+    "rating": 5,
+    "text": "\"Estudei na Escola Saúde até o final do Ensino Fundamental I e sou muito grata aos meus pais por terem feito essa escolha! Os profissionais de lá são muito carinhosos e dão todo suporte que os alunos precisam, tanto acadêmico quanto emocional. A Escola Saúde também oferece atividades bem diversificadas e únicas, criei memórias e laços que levarei para vida toda! Recomendo demais!\"",
+    "published": true,
+    "sort_order": 7
+  },
+  {
+    "author_name": "Lina Y.",
+    "role": "ex_aluno",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Definitivamente um lugar muito importante para meu crescimento e desenvolvimento pessoal. Desenvolveu meu lado social para comunicação, o respeito e educação! Sempre falar “obrigada”, “bom dia” e etc kkk A escola saúde sempre buscou dar atenção à todos e lá a não éramos “só mais um aluno”. Sem contar a comida que era a minha parte favorita do dia kkkk A tia cida e a tua ruth cozinhavam um cardápio completo e cheio de nutrientes!! Consegui fazer amizades muito boas e os passeios eram os melhores! As vezes era aquário, o sítio do carroção e etc. O integral tambem era muito divertido. A gnt brincava, tirava soneca e estudava. Recomendo muito a Escola Saúde, principalmente para quem busca um lugar confiável para deixar os filhos.\"",
+    "published": true,
+    "sort_order": 8
+  },
+  {
+    "author_name": "Tércio Iamamoto",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Tercio-Iamamoto.png",
+    "rating": 5,
+    "text": "\"Espaço agradável com ótimos profissionais. Muito atenciosos e cuidadosos com as crianças. Nosso bebê com um ano já teve aula de japonês e aprendeu palavras e músicas! As atividades são bem variadas e criativas. É notório o desenvolvimento do nosso filho em todos os sentidos: coordenação motora, musicalidade, fala, habilidade pessoal e social. Há psicólogas que acompanham o desenvolvimento das crianças e podemos marcar reuniões para tirarmos dúvidas e pedir um auxílio com nossos pequenos. Outro ponto muito positivo é a parte da alimentação. Muito gostosa e bem variada ao longo da semana (é possível encomendar marmitas para os papais) Nosso filho ama a escola saúde. (Nas férias perguntou quando iria pra escola) Confiamos e recomendamos a todos.\"",
+    "published": true,
+    "sort_order": 9
+  },
+  {
+    "author_name": "Priscila Hara",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"A Escola Saúde é um local em que respeito, confiança, comprometimento e seriedade com o que fazem estão presentes em cada funcionário. Quando vejo meu filho feliz em ir pra escola, vejo que fizemos a escolha certa, pois além da educação passada a ele, isso tb é um reflexo do carinho, acolhimento e respeito que ele recebe diariamente desde a porta de entrada, na sala de aula até na alimentação preparada com tanto carinho que ele ama e sempre repete! Recomendo 100%!\"",
+    "published": true,
+    "sort_order": 10
+  },
+  {
+    "author_name": "Andreia Ferraz",
+    "role": "ex_aluno",
+    "photo_url": "/images/Andreia-Ferraz.png",
+    "rating": 5,
+    "text": "\"Escola Saúde inesquecível. Sistema de ensino forte, onde as crianças tem prazer em aprender. Mais do que isso, numa fase em que nossos filhos estão desenvolvendo seus valores, a escola foi fundamental. O aconchego, a turma a integração com a família com seriedade, empatia, alegria também foram chaves. Hoje minha filha ja em outro colégio, pois se formou, está segura, é responsável e sabendo fazer boas escolhas. Além da alta qualidade no ensino, os valores, o amor, o olhar individualizado são os grsndes diferenciais. Obrigada por tudo! Muita saudade!\"",
+    "published": true,
+    "sort_order": 11
+  },
+  {
+    "author_name": "Daniel Kishimoto",
+    "role": "ex_aluno",
+    "photo_url": "/images/Daniel-Kishimoto.png",
+    "rating": 5,
+    "text": "\"Fui aluno da Escola Saúde quando eu era bem novinho, e até hoje levo muito do que aprendi lá. Foi uma ótima experiência, sou muito grato por ter tido a oportunidade de estudar lá!\"",
+    "published": true,
+    "sort_order": 12
+  },
+  {
+    "author_name": "Valmir Alves",
+    "role": "colaborador",
+    "photo_url": "/images/Valmir-Alves.png",
+    "rating": 5,
+    "text": "\"Lugar de constante aprendizado, apoio, carinho e crescimento!!!\"",
+    "published": true,
+    "sort_order": 13
+  },
+  {
+    "author_name": "Mity Yamada",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Mity-Yamada.png",
+    "rating": 5,
+    "text": "\"Melhor escola! Equipe Super redonda e comprometida. ❤️\"",
+    "published": true,
+    "sort_order": 14
+  },
+  {
+    "author_name": "Pri Akemi",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Pri-Akemi.png",
+    "rating": 5,
+    "text": "\"Minha filha ama a Escola Saúde! Eles proporcionam um cuidado bem individual, olhando para as necessidades da criança. É a extensão de um lar. Ela frequentou desde bebê e a escola foi fundamental para um desenvolvimento avançado. Sem falar na comida da tia Ruth que as crianças amam. Além disso sempre me senti muito acolhida por todo o time da escola.\"",
+    "published": true,
+    "sort_order": 15
+  },
+  {
+    "author_name": "Erica Nogueira",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Escolhemos por conhecer muito bem a escola, já que sou professora de artes há muito tempo lá! Meus sobrinhos estudaram na Escola Saúde e queríamos colocar nosso filho lá antes mesmo dele nascer! A escola tem um olhar atendo à criança, profissionais qualificados e um carinho de família que quase não se vê mais hoje! As aulas são com propostas significativas, as refeições preparadas com carinho e as amizades para a vida toda!\"",
+    "published": true,
+    "sort_order": 16
+  },
+  {
+    "author_name": "Cris Inoue",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Cris-Inoue.png",
+    "rating": 5,
+    "text": "\"Muito agradecida por ter conhecido a escola Saúde através da indicação de uma amiga muito querida. Minha filha entrou com 1 ano e não tive dúvidas na escolha. Quando marquei a visita logo fui muito bem recebida. A escola tem estrutura e profissionais muito qualificados para o desenvolvimento das crianças! É formada por uma equipe acessível e atenciosa. A cada dia vejo o quanto minha filha se desenvolve e o quanto é cercada de pessoas do bem e que a tratam com tanto carinho. Recomendo 😊👍\"",
+    "published": true,
+    "sort_order": 17
+  },
+  {
+    "author_name": "Alexandre Nakanishi",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Alexandre-Nakanishi.png",
+    "rating": 5,
+    "text": "\"Super recomendo. Não apenas pela didática acadêmica, mas principalmente pela postura profissional e índole de seus dirigentes, professores, equipe administrativa, colaboradores em geral , etc. Se não conhece , aconselho a fazerem uma visita. Tenho certeza que irão concordar com cada palavra aqui descrita.\"",
+    "published": true,
+    "sort_order": 18
+  },
+  {
+    "author_name": "Viviani Chen",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Viviani-Chen.png",
+    "rating": 5,
+    "text": "\"Sem dúvida a Escola Saúde é como se fosse nossa família! Melhor lugar que nossas filhas poderiam estar! Profissionais realmente comprometidos e muito qualificados! Somos muito felizes pela Escola Saúde fazer parte de nossa vida! Recomendo sem dúvida!\"",
+    "published": true,
+    "sort_order": 19
+  },
+  {
+    "author_name": "Fábio Nogi",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Escola em que toda a diretoria, professores e equipe de apoio estão empenhados e comprometidos em contribuir com a formação integral de nossas crianças, para que estas façam diferença na sociedade. O cuidado com nossas crianças pode ser evidenciado em cada interação e detalhe. Recomendo sem reservas. Muito obrigado, Escola Saúde!!!\"",
+    "published": true,
+    "sort_order": 20
+  },
+  {
+    "author_name": "Solange Machado",
+    "role": "colaborador",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Adoro trabalhar na Escola Saúde! Aqui me realizo desenvolvendo meu potencial que uso para fazer diferença na vida de nossos alunos.\"",
+    "published": true,
+    "sort_order": 21
+  },
+  {
+    "author_name": "Jacqueline Garcia",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Jacqueline-Garcia.png",
+    "rating": 5,
+    "text": "\"Muito importante, me ajudou a enfrentar as barreiras de ser uma mãe e profissional, pois cuidou e cuida bem das crianças.\"",
+    "published": true,
+    "sort_order": 22
+  },
+  {
+    "author_name": "Alessandro Silveira",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Alessandro-Silveira.png",
+    "rating": 5,
+    "text": "\"Um cuidado incrível com os pequenos, uma família, fora a qualidade do ensino. Recomendo conhecer.\"",
+    "published": true,
+    "sort_order": 23
+  },
+  {
+    "author_name": "Juliana Aoki",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"A Escola Saúde é muito atenta nos detalhes. Vemos seu cuidado com nossos filhos pois estão sempre felizes em ir a escola. Além da comida ser uma delícia!\"",
+    "published": true,
+    "sort_order": 24
+  },
+  {
+    "author_name": "Cassio Hagui",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Cassio-Hagui.png",
+    "rating": 5,
+    "text": "\"Meu filho frequenta a escola desde os 4 meses de idade (hoje já no 4o ano do fundamental).... uma escola onde ele sempre se sentiu acolhido! .... ah e a comida da Tia Ruth é deliciosa!\"",
+    "published": true,
+    "sort_order": 25
+  },
+  {
+    "author_name": "Rui Rocha",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Rui-Rocha.png",
+    "rating": 5,
+    "text": "\"Ótima escola. Ambiente familiar e acolhedor. Um lugar realmente diferenciado para receber as crianças desde o berçário.\"",
+    "published": true,
+    "sort_order": 26
+  },
+  {
+    "author_name": "Eduardo Tsuchiya",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Eduardo-Tsuchiya.png",
+    "rating": 5,
+    "text": "\"A minha escolha por esta escola foi pela confiança que tenho nos professores e toda a equipe. Sei que a minha família estará em boas mãos e minha filha tem aprendido muito desde o berçário.\"",
+    "published": true,
+    "sort_order": 27
+  },
+  {
+    "author_name": "Mariana Yumi",
+    "role": "ex_aluno",
+    "photo_url": "/images/Mariana-Yumi.png",
+    "rating": 5,
+    "text": "\"Os professores e profissionais são sempre muito acolhedores, as atividades são bem diversificadas e a comida é surreal de boa! Sou ex-aluna da Escola Saúde e até hoje tenho ótimas lembranças disso tudo :)\"",
+    "published": true,
+    "sort_order": 28
+  },
+  {
+    "author_name": "Edson Hanashiro",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Edson-Hanashiro.png",
+    "rating": 5,
+    "text": "\"Excelente escola! Agregadora, educadora, dinâmica, alegre, ética, responsável, fundamentada em princípios cristãos, porém aberta a todas as pessoas e à boa e deliciosa alimentação.\"",
+    "published": true,
+    "sort_order": 29
+  },
+  {
+    "author_name": "Susi Wang",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Melhor escola para pais que procuram uma equipe que cuida das crianças com muito amor, pautada do aprendizado integral e constantemente preocupamos na formação de cidadãos completos. Não tenho palavras para agradecer! Visite eles!!!\"",
+    "published": true,
+    "sort_order": 30
+  },
+  {
+    "author_name": "Simone Mata",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"A escola saúde é a extensão da nossa casa. É nítido ver todo o cuidado, respeito e amor com que todos os profissionais tratam os nossos pequenos. Atividades escolares, comida, reuniões escolares, transparência... recomendo sem dúvida.\"",
+    "published": true,
+    "sort_order": 31
+  },
+  {
+    "author_name": "Alexandre Ushima",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Escola com profissionais extremamente cuidadosos que buscam dar atenção as necessidades de cada aluno(a) de forma única. Meus 2 filhos estudam lá, se sentem muito acolhidos, tem grandes aprendizados e adoram a comida! Recomendo 100%!!!\"",
+    "published": true,
+    "sort_order": 32
+  },
+  {
+    "author_name": "Paulo Oyama",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Escola onde a criança é, de verdade, a prioridade! Educação que valoriza as relações, a formação integral, a qualidade e o acolhimento desde a entrada, na comida e em cada aula. Meu filho vai e volta muito feliz!\"",
+    "published": true,
+    "sort_order": 33
+  },
+  {
+    "author_name": "Noemi Kuroda",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Noemi-Kuroda.png",
+    "rating": 5,
+    "text": "\"Ambiente familiar, acolhedor e de muita confiança. Profissionais capacitados e diferenciados que nos ajudam na formação de nossos filhos! Nós adoramos esta Escola e temos um carinho muito especial!\"",
+    "published": true,
+    "sort_order": 34
+  },
+  {
+    "author_name": "Tatiany Miastkuosky",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"A escola é ótima! Possui profissionais capacitados e preocupados com o desenvolvimento das crianças. Minha filha estuda na escola desde o berçário, agora está no primeiro ano. Ela adora a escola!\"",
+    "published": true,
+    "sort_order": 35
+  },
+  {
+    "author_name": "Hugo Hanashiro",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Hugo-Hanashiro.png",
+    "rating": 5,
+    "text": "\"Numa época onde as crianças recém-nascidas são educadas visando o \"vestibular\", a Escola Saúde prioriza as relações, as \"soft skills\", mas sem deixar o conteúdo de lado. Todo cuidado é proporcionado, desde o porteiro até a diretora. Sem falar na deliciosa comida da tia Ruth, carregada de amor!\"",
+    "published": true,
+    "sort_order": 36
+  },
+  {
+    "author_name": "Flávia Nagata",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Flavia-Nagata.png",
+    "rating": 5,
+    "text": "\"A escola é muito atenciosa, muito familiar, além de ensinar e promover a educação através de livros, a escola saúde consegue promover um ambiente onde ensinam valores, como respeito, convivência em grupo, amizade e amor através do cuidado. Confio meu filho, meu maior tesouro à eles. Obrigada Escola Saúde!\"",
+    "published": true,
+    "sort_order": 37
+  },
+  {
+    "author_name": "Mariana Nakanishi",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Mariana-Nakanishi.png",
+    "rating": 5,
+    "text": "\"A Escola Saúde é maravilhosa! No momento mais difícil da minha vida, tivemos o apoio de excelentes profissionais e seres humanos exemplares! Estão sempre em contato com pesquisas e com um olhar atento na didática, formação emocional e social das crianças 💓! Gratidão, gratidão, gratidão 🙏\"",
+    "published": true,
+    "sort_order": 38
+  },
+  {
+    "author_name": "Mariana Aya",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Mariana-Aya.png",
+    "rating": 5,
+    "text": "\"Comida diferenciada (missoshiro todas às quartas-feiras), ensino qualificado com ótimos profissionais (utiliza o livro Compartilha no fundamental), aula de japonês, robótica, English Club incluso no Integral. Meus filhos gostam muito da escola e de toda a sua equipe. Como pais, sempre fomos muito bem recebidos também e sempre nos orientam e ajudam da melhor forma possível.\"",
+    "published": true,
+    "sort_order": 39
+  },
+  {
+    "author_name": "Tiago Shimizu",
+    "role": "ex_aluno",
+    "photo_url": "/images/Tiago-Shimizu.png",
+    "rating": 5,
+    "text": "\"Sou muito grato à Escola da Saúde que, em minha infância, fez aprender valores, me relacionar com os colegas e que inclusive até hoje tenho amizade depois de quase 30 anos! Lá aprendi a montar quebra-cabeças, construir legos, fazer ginástica, respeitar o espaço dos amiguinhos e lembro de me divertir bastante num ambiente seguro e descontraído. Obrigado, tia Ruth, tio Davi e às suas filhas que sempre cuidavam de mim com muito carinho e que até hoje tenho um carinho enorme!\"",
+    "published": true,
+    "sort_order": 40
+  },
+  {
+    "author_name": "Rosa Nakanishi",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Rosa-Nakanishi.png",
+    "rating": 5,
+    "text": "\"Meus netos começaram estudar na Escola Saúde no ano de 2021. Visitamos várias escolas, e sentimos que os dirigentes da Escola Saúde priorizam o lado emocional da criança, sem se descuidar da parte do ensino. Meus netos vão felizes para a escola e voltam felizes, e quando os vejo voltarem alegres, tenho certeza que foi uma escolha certa Obrigada pela dedicação e carinho.\"",
+    "published": true,
+    "sort_order": 41
+  },
+  {
+    "author_name": "Katia Pereira",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Totalmente família!! Muito acolhedor e profissional\"",
+    "published": true,
+    "sort_order": 42
+  },
+  {
+    "author_name": "Roberto Carlos",
+    "role": "colaborador",
+    "photo_url": "/images/Roberto-Carlos.png",
+    "rating": 5,
+    "text": "\"Bom ensino, boa educação com ótimos professores e direção!\"",
+    "published": true,
+    "sort_order": 43
+  },
+  {
+    "author_name": "Andreia Sakamoto",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Andreia-Sakamoto.png",
+    "rating": 5,
+    "text": "\"Excelente!! Ambiente acolhedor e familiar, minhas filhas adoram❤️Recomendo!!!\"",
+    "published": true,
+    "sort_order": 44
+  },
+  {
+    "author_name": "Andrea Fujimoto",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Andrea-Fujimoto.png",
+    "rating": 5,
+    "text": "\"Sempre foi um lugar de aprender, mas muito mais do que isso. Escola bem familiar, onde todos te conhecem e te chamam pelo nome. As crianças aprendem valores que levam para a vida toda, e são tratadas individualmente. E saem com uma formação completa, e morrendo de saudades da maravilhosa comida da tia Ruth!! 💓\"",
+    "published": true,
+    "sort_order": 45
+  },
+  {
+    "author_name": "Rebeca Aoki",
+    "role": "ex_aluno",
+    "photo_url": "/images/Rebeca-Aoki.png",
+    "rating": 5,
+    "text": "\"Minhas filhas estudaram na escola saúde do berçário até o quinto ano! Só tenho a agradecer, uma escola acolhedora, o aluno não é somente mais um número mas tem um cuidado individual, com ótimos profissionais, comida deliciosa da tia Ruth e além de passar valores para a vida! Super recomendo\"",
+    "published": true,
+    "sort_order": 46
+  },
+  {
+    "author_name": "Jura Jr.",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Jura-Jr..png",
+    "rating": 5,
+    "text": "\"A Escola Saúde é o local perfeito para a nossa filha dar os primeiros passos em diversas áreas a serem desenvolvidas. Os métodos utilizados, as dinâmicas e a alegria dos educadores são um grande diferencial. Porém, o que mais nos agrada, é saber que é um lugar sério e seguro. Obrigado a todos os profissionais.\"",
+    "published": true,
+    "sort_order": 47
+  },
+  {
+    "author_name": "Simone Pereira",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Simone-Pereira.png",
+    "rating": 5,
+    "text": "\"Eu adoro a escola, as atividades são muito enriquecedoras, estimulam o desenvolvimento motor e cognitivo. A escola é super segura, a alimentação saudável e a língua japonesa é introduzida desde o berçário. Os professores são atenciosos e dão todo o suporte necessário para a família, são feitas exposições e festividades que facilitam ainda mais a interação. Recomendo muito a escolinha.\"",
+    "published": true,
+    "sort_order": 48
+  },
+  {
+    "author_name": "Evelin Matushita Rosa",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Por meio de amigos próximos, já tínhamos a indicação da Escola Saúde e, logo na primeira visita, não tivemos dúvidas de que queríamos nosso filho estudando ali. Todos os profissionais, todos mesmo, são gentis e cuidadosos, mostram alegria no que fazem. Acima disso, as crianças estão sempre com uma energia gostosa, são puro amor com a escola. Uma escolha que deixa os pais bastante tranquilos.\"",
+    "published": true,
+    "sort_order": 49
+  },
+  {
+    "author_name": "Fernanda Sato",
+    "role": "ex_aluno",
+    "photo_url": "/images/Fernanda-Sato.png",
+    "rating": 5,
+    "text": "\"Ensino de qualidade, formação do indivíduo como um todo! Acolhimento desde os primeiros meses de vida, com um aprendizado completo, acadêmico e social. Escolhi a escola por indicação de amigos e depois de 11 anos juntos, continuo afirmando que foi minha melhor escolha. Meu filho ama a escola!!!! Uma grande família, mas ao mesmo tempo excelentes profissionais!!!!\"",
+    "published": true,
+    "sort_order": 50
+  },
+  {
+    "author_name": "Eduardo Shiroma",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"A Escola Saúde tem um conteúdo pedagógico que faz a criança se interessar pelas matérias e ao mesmo tempo um cuidado com o bem-estar delas. Seus professores e profissionais são competentes e atualizados. As crianças também gostam das novas instalações e das comidas servidas.\"",
+    "published": true,
+    "sort_order": 51
+  },
+  {
+    "author_name": "Evelyn Hashimoto",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Evelyn-Hashimoto.png",
+    "rating": 5,
+    "text": "\"Amo! Melhor escola que eu poderia ter escolhido... Minha filha se formou no Fundamental 1 lá e meu filho, que começou no berçário, vai se formar lá tb. Se eles pudessem escolher, tenho certeza que não escolheriam outra escola\"",
+    "published": true,
+    "sort_order": 52
+  },
+  {
+    "author_name": "Felipe Azeka",
+    "role": "ex_aluno",
+    "photo_url": "/images/Felipe-Azeka.png",
+    "rating": 5,
+    "text": "\"Frequentei por poucos anos a Escolinha Saúde. Mesmo assim, tenho memórias boas do período! Sou grato pelas experiências e cuidado que recebi durante esses anos na escola saúde, principalmente com na apresentação de forma saudável sobre Jesus desde cedo para as crianças\"",
+    "published": true,
+    "sort_order": 53
+  },
+  {
+    "author_name": "Juliana K.",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Maravilhosa! A criança vai feliz para escolinha, é uma extensão do lar... Funcionários prestativos e atenciosos. Preço justo. Enfim, excelente.\"",
+    "published": true,
+    "sort_order": 54
+  },
+  {
+    "author_name": "Gabriel Tateyama",
+    "role": "ex_aluno",
+    "photo_url": "/images/Gabriel-Tateyama.png",
+    "rating": 5,
+    "text": "\"Escola que frequentei na infância, cheia de excelentes profissionais que cuidam e ensinam os alunos com um cuidado diferenciado! Saudades dessa época!\"",
+    "published": true,
+    "sort_order": 55
+  },
+  {
+    "author_name": "Lucy Hidaka",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"Minha filha entrou na escola com 4 meses e hoje está com 9 anos!! Simplesmente Ama a Escola Saúde!\"",
+    "published": true,
+    "sort_order": 56
+  },
+  {
+    "author_name": "Hiroki Noguchi",
+    "role": "ex_aluno",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"A Escola Saúde foi uma das melhores experiências que tive. Bons professores, que são muito atenciosos e cuidadosos. Criei grandes amigos que estão comigo até hoje e ainda nos lembramos de como a comida lá era gostosa.\"",
+    "published": true,
+    "sort_order": 57
+  },
+  {
+    "author_name": "Clayton Okuno",
+    "role": "pai_responsavel",
+    "photo_url": null,
+    "rating": 5,
+    "text": "\"A Escola Saúde, para a nossa família, é um local de cuidado e segurança, onde nossos filhos também podem desenvolver competencias sócio-emocionais e com ensino de qualidade.\"",
+    "published": true,
+    "sort_order": 58
+  },
+  {
+    "author_name": "Tami Ikeizumi",
+    "role": "pai_responsavel",
+    "photo_url": "/images/Tami-Ikeizumi.png",
+    "rating": 5,
+    "text": "\"É a segunda casa do meu filho...Temos muito amor por essa escola porque sabemos que o carinho é mútuo!!\"",
+    "published": true,
+    "sort_order": 59
+  }
+]
