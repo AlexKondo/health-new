@@ -30,7 +30,9 @@ export default async function BannersPage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-bold truncate">{b.title}</p>
-              <p className="text-xs text-foreground/60">{windowLabel(b.starts_at, b.ends_at)}</p>
+              <p className="text-xs text-foreground/60">
+                {windowLabel(b.starts_at, b.ends_at)} · {b.duration_seconds ?? 6}s na tela
+              </p>
             </div>
             <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${b.active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
               {b.active ? "Ativo" : "Inativo"}

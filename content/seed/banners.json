@@ -5,6 +5,7 @@
     "link_url": "/#agendar",
     "alt": "Matrículas abertas na Escola Saúde",
     "sort_order": 0,
+    "duration_seconds": 6,
     "starts_at": null,
     "ends_at": null,
     "active": true
@@ -15,6 +16,7 @@
     "link_url": "/nossa-historia",
     "alt": "Bem-vindo à Escola Saúde",
     "sort_order": 1,
+    "duration_seconds": 6,
     "starts_at": null,
     "ends_at": null,
     "active": true

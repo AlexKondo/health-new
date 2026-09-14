@@ -27,6 +27,7 @@ export async function saveBanner(formData: FormData) {
     link_url: nullable(formData.get("link_url")),
     alt: nullable(formData.get("alt")),
     sort_order: Number(formData.get("sort_order") || 0),
+    duration_seconds: Math.min(60, Math.max(1, Number(formData.get("duration_seconds") || 6))),
     starts_at: nullable(formData.get("starts_at")),
     ends_at: nullable(formData.get("ends_at")),
     active: formData.get("active") === "on",

@@ -11,6 +11,7 @@ type Banner = {
   link_url?: string | null;
   alt?: string | null;
   sort_order?: number;
+  duration_seconds?: number;
   starts_at?: string | null;
   ends_at?: string | null;
   active?: boolean;
@@ -58,8 +59,16 @@ export default function BannerForm({ banner }: { banner?: Banner }) {
         Datas vazias = sempre visível. Use o intervalo para datas comemorativas.
       </p>
 
-      <div className="grid grid-cols-2 gap-4 items-end">
+      <div className="grid grid-cols-3 gap-4 items-end">
         <Input name="sort_order" label="Ordem" type="number" defaultValue={String(banner?.sort_order ?? 0)} />
+        <Input
+          name="duration_seconds"
+          label="Tempo na tela (segundos)"
+          type="number"
+          min={1}
+          max={60}
+          defaultValue={String(banner?.duration_seconds ?? 6)}
+        />
         <label className="flex items-center gap-2 text-sm font-semibold pb-2">
           <input type="checkbox" name="active" defaultChecked={banner?.active ?? true} className="h-4 w-4" />
           Ativo
@@ -74,10 +83,11 @@ export default function BannerForm({ banner }: { banner?: Banner }) {
 }
 
 function Input({
-  name, label, type = "text", defaultValue, required, placeholder,
+  name, label, type = "text", defaultValue, required, placeholder, min, max,
 }: {
   name: string; label: string; type?: string;
   defaultValue?: string; required?: boolean; placeholder?: string;
+  min?: number; max?: number;
 }) {
   return (
     <label className="block text-sm font-semibold">
@@ -88,6 +98,8 @@ function Input({
         defaultValue={defaultValue}
         required={required}
         placeholder={placeholder}
+        min={min}
+        max={max}
         className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
       />
     </label>

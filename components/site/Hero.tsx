@@ -9,17 +9,21 @@ type Banner = {
   image_url: string;
   link_url?: string | null;
   alt?: string | null;
+  duration_seconds?: number | null;
 };
 
 export default function Hero({ banners }: { banners: Banner[] }) {
   const [i, setI] = useState(0);
   const n = banners.length;
+  // Tempo de exibição do slide atual, configurável por banner no admin
+  // (cada slide pode ficar mais ou menos tempo na tela).
+  const durationMs = Math.max(1, banners[i]?.duration_seconds || 6) * 1000;
 
   useEffect(() => {
     if (n <= 1) return;
-    const t = setInterval(() => setI((v) => (v + 1) % n), 6000);
-    return () => clearInterval(t);
-  }, [n]);
+    const t = setTimeout(() => setI((v) => (v + 1) % n), durationMs);
+    return () => clearTimeout(t);
+  }, [i, n, durationMs]);
 
   if (n === 0) return null;
   const b = banners[i];

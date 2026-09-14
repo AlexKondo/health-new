@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/admin/depoimentos", label: "Depoimentos" },
   { href: "/admin/leads", label: "Agendamentos" },
   { href: "/admin/whatsapp", label: "WhatsApp" },
+  { href: "/admin/conta", label: "Minha conta" },
 ];
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +37,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
           </Link>
         </div>
       </aside>
-      <main className="p-6 md:p-10">{children}</main>
+      <main className="min-w-0 p-6 md:p-10">{children}</main>
     </div>
   );
 }
