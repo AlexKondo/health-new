@@ -63,18 +63,16 @@ export default function ImageCropInput({
             className="h-16 w-16 rounded-full object-cover ring-1 ring-black/10"
           />
         )}
-        <div>
-          <label
-            htmlFor={pickId}
-            className="cursor-pointer rounded-full border-2 border-brand px-4 py-2 text-sm font-bold text-brand transition-colors hover:bg-brand hover:text-white"
-          >
-            Selecionar imagem
-          </label>
-          <p className="mt-1 text-xs text-foreground/50">
-            Foto quadrada (1:1) — você ajusta o enquadramento a seguir.
-          </p>
-        </div>
+        <label
+          htmlFor={pickId}
+          className="cursor-pointer rounded-full border-2 border-brand px-4 py-2 text-sm font-bold text-brand transition-colors hover:bg-brand hover:text-white"
+        >
+          Selecionar imagem
+        </label>
       </div>
+      <p className="mt-2 text-xs text-foreground/50">
+        Foto quadrada (1:1) — você ajusta o enquadramento a seguir.
+      </p>
       <input id={pickId} type="file" accept="image/*" className="sr-only" onChange={onPick} />
       <input ref={submitInputRef} type="file" name={name} className="sr-only" />
 
