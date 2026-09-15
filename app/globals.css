@@ -30,8 +30,10 @@ body {
   font-family: var(--font-sans);
 }
 
-a {
-  color: inherit;
+@layer base {
+  a {
+    color: inherit;
+  }
 }
 
 /* ---------------- Animações / dinamismo ---------------- */

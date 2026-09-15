@@ -20,7 +20,7 @@ export default function Header() {
           {NAV.map((item) =>
             item.children ? (
               <div key={item.label} className="relative group">
-                <button className="px-3 py-2 text-sm font-semibold text-foreground hover:text-brand transition-colors">
+                <button className="px-3 py-2 text-base font-semibold text-foreground hover:text-brand transition-colors">
                   {item.label}
                   <span className="ml-1 text-xs">▾</span>
                 </button>
@@ -43,7 +43,7 @@ export default function Header() {
               <Link
                 key={item.label}
                 href={item.href!}
-                className="px-3 py-2 text-sm font-semibold text-foreground hover:text-brand transition-colors"
+                className="px-3 py-2 text-base font-semibold text-foreground hover:text-brand transition-colors"
               >
                 {item.label}
               </Link>
@@ -51,7 +51,7 @@ export default function Header() {
           )}
           <Link
             href="/#agendar"
-            className="ml-2 rounded-full bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:brightness-95"
+            className="ml-2 rounded-full bg-brand-dark px-4 py-2 text-base font-bold text-white hover:brightness-95"
           >
             Agende uma visita
           </Link>
