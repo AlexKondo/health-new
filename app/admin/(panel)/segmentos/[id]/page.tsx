@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import SegmentForm from "@/components/admin/SegmentForm";
+import BackLink from "@/components/admin/BackLink";
 import { requireUser } from "@/lib/admin";
 
 export default async function EditSegmentPage({
@@ -14,6 +15,7 @@ export default async function EditSegmentPage({
 
   return (
     <div>
+      <BackLink href="/admin/segmentos" />
       <h1 className="text-2xl font-extrabold text-brand-dark mb-6">Editar segmento</h1>
       <SegmentForm segment={segment} />
     </div>

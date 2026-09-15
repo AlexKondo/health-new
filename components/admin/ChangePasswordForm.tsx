@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import SuccessPopup from "@/components/admin/SuccessPopup";
 
 export default function ChangePasswordForm({ email }: { email: string }) {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -29,6 +30,10 @@ export default function ChangePasswordForm({ email }: { email: string }) {
     const sb = createClient();
 
     // Confirma a senha atual antes de trocar (evita troca por sessão esquecida aberta).
+    // Não passa pelo bloqueio progressivo do login público: essa tela já exige uma
+    // sessão de admin válida, e compartilhar o mesmo contador deixaria um admin
+    // logado se autobloquear (até permanentemente) só de digitar a senha atual
+    // errada algumas vezes.
     const { error: reauthError } = await sb.auth.signInWithPassword({
       email,
       password: currentPassword,
@@ -91,7 +96,6 @@ export default function ChangePasswordForm({ email }: { email: string }) {
       </label>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
-      {success && <p className="text-sm text-green-700">Senha alterada com sucesso!</p>}
 
       <button
         type="submit"
@@ -100,6 +104,10 @@ export default function ChangePasswordForm({ email }: { email: string }) {
       >
         {loading ? "Salvando…" : "Alterar senha"}
       </button>
+
+      {success && (
+        <SuccessPopup message="Senha alterada com sucesso!" onClose={() => setSuccess(false)} />
+      )}
     </form>
   );
 }

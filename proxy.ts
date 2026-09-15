@@ -12,8 +12,10 @@ export async function proxy(request: NextRequest) {
   const configured = !!url && !url.includes("YOUR_PROJECT");
 
   // Sem Supabase configurado: site público funciona; /admin fica indisponível.
+  const PUBLIC_ADMIN_PATHS = ["/admin/login", "/admin/redefinir-senha"];
+
   if (!configured) {
-    if (request.nextUrl.pathname.startsWith("/admin") && request.nextUrl.pathname !== "/admin/login") {
+    if (request.nextUrl.pathname.startsWith("/admin") && !PUBLIC_ADMIN_PATHS.includes(request.nextUrl.pathname)) {
       const u = request.nextUrl.clone();
       u.pathname = "/admin/login";
       return NextResponse.redirect(u);
@@ -46,9 +48,10 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const isAdmin = pathname.startsWith("/admin");
+  const isPublicAdminPath = PUBLIC_ADMIN_PATHS.includes(pathname);
   const isLogin = pathname === "/admin/login";
 
-  if (isAdmin && !isLogin && !user) {
+  if (isAdmin && !isPublicAdminPath && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
     return NextResponse.redirect(url);
