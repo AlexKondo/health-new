@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import PageHero, { Prose, VisitCTA } from "@/components/site/PageHero";
+import PageHero, { Prose, RichBody, VisitCTA } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import {
   getSegment, getActivity, getPage, getActivities, getSegments, getPages,
@@ -33,9 +33,6 @@ export async function generateMetadata({
   return { title: title ?? "Página" };
 }
 
-const paras = (body?: string | null) =>
-  (body ?? "").split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
-
 export default async function DynamicPage({
   params,
 }: {
@@ -56,14 +53,14 @@ export default async function DynamicPage({
             <div className="mb-10 grid gap-4 sm:grid-cols-2">
               {(segment.schedule as { label: string; from: string; to: string }[]).map((h, i) => (
                 <div key={i} className="rounded-2xl border border-brand-soft p-5">
-                  <p className="text-sm font-bold uppercase text-accent">{h.label}</p>
+                  <p className="text-sm font-bold uppercase text-accent-ink">{h.label}</p>
                   <p className="text-xl font-extrabold text-brand-dark">{h.from} – {h.to}</p>
                 </div>
               ))}
             </div>
           )}
 
-          <Prose paragraphs={paras(segment.body)} />
+          <RichBody content={segment.body} />
           <VisitCTA />
         </Section>
       </>
@@ -77,7 +74,7 @@ export default async function DynamicPage({
       <>
         <PageHero title={activity.title} image={activity.hero_image} />
         <Section className="max-w-4xl">
-          <Prose paragraphs={paras(activity.body)} />
+          <RichBody content={activity.body} />
           <p className="mt-8">
             <Link href={`/${activity.category}`} className="font-bold text-brand hover:underline">
               ← Ver todas as atividades {activity.category === "curricular" ? "curriculares" : "extracurriculares"}

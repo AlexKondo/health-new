@@ -2,12 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const STATS = [
-  { value: 30, suffix: "+", label: "anos de história" },
-  { value: 150, suffix: "+", label: "alunos" },
-  { value: 18, suffix: "", label: "atividades" },
-  { value: 5, suffix: "★", label: "avaliação das famílias" },
-];
+type StatItem = { value: number; suffix: string; label: string };
 
 function useCountUp(target: number, run: boolean) {
   const [n, setN] = useState(0);
@@ -27,7 +22,7 @@ function useCountUp(target: number, run: boolean) {
   return n;
 }
 
-function Stat({ value, suffix, label, run }: (typeof STATS)[number] & { run: boolean }) {
+function StatTile({ value, suffix, label, run }: StatItem & { run: boolean }) {
   const n = useCountUp(value, run);
   return (
     <div className="text-center">
@@ -40,7 +35,7 @@ function Stat({ value, suffix, label, run }: (typeof STATS)[number] & { run: boo
   );
 }
 
-export default function StatsStrip() {
+export default function StatsStrip({ stats }: { stats: StatItem[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const [run, setRun] = useState(false);
   useEffect(() => {
@@ -53,11 +48,13 @@ export default function StatsStrip() {
     return () => io.disconnect();
   }, []);
 
+  if (stats.length === 0) return null;
+
   return (
     <div ref={ref} className="bg-gradient-to-r from-brand-dark via-brand to-brand-dark bg-[length:200%_auto] animate-[gradient-pan_8s_ease_infinite]">
       <div className="mx-auto max-w-6xl grid grid-cols-2 gap-8 px-4 py-12 md:grid-cols-4">
-        {STATS.map((s) => (
-          <Stat key={s.label} {...s} run={run} />
+        {stats.map((s) => (
+          <StatTile key={s.label} {...s} run={run} />
         ))}
       </div>
     </div>

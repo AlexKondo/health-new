@@ -16,15 +16,20 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const sb = createClient();
-    const { error } = await sb.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) {
-      setError("E-mail ou senha inválidos.");
-      return;
+    try {
+      const sb = createClient();
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) {
+        setError("E-mail ou senha inválidos.");
+        return;
+      }
+      router.replace("/admin");
+      router.refresh();
+    } catch {
+      setError("Não foi possível conectar ao servidor de login. Tente novamente em instantes.");
+    } finally {
+      setLoading(false);
     }
-    router.replace("/admin");
-    router.refresh();
   }
 
   return (

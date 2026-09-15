@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/admin";
+import DeleteForm from "@/components/admin/DeleteForm";
 import { deleteTestimonial } from "./actions";
 
 const ROLE: Record<string, string> = {
@@ -35,10 +36,9 @@ export default async function DepoimentosAdmin() {
             <Link href={`/admin/depoimentos/${t.id}`} className="text-sm font-semibold text-brand hover:underline">
               Editar
             </Link>
-            <form action={deleteTestimonial}>
-              <input type="hidden" name="id" value={t.id} />
+            <DeleteForm action={deleteTestimonial} id={t.id} confirmText={`Excluir o depoimento de "${t.author_name}"? Essa ação não pode ser desfeita.`}>
               <button className="text-sm text-red-600 hover:underline">Excluir</button>
-            </form>
+            </DeleteForm>
           </div>
         ))}
         {(!data || data.length === 0) && <p className="text-foreground/60">Nenhum depoimento ainda.</p>}

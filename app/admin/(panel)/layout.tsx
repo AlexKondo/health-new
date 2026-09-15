@@ -5,6 +5,9 @@ import UserMenu from "@/components/admin/UserMenu";
 const LINKS = [
   { href: "/admin", label: "Visão geral" },
   { href: "/admin/banners", label: "Banners" },
+  { href: "/admin/estatisticas", label: "Números da home" },
+  { href: "/admin/segmentos", label: "Segmentos" },
+  { href: "/admin/atividades", label: "Atividades" },
   { href: "/admin/depoimentos", label: "Depoimentos" },
   { href: "/admin/leads", label: "Agendamentos" },
   { href: "/admin/whatsapp", label: "WhatsApp" },

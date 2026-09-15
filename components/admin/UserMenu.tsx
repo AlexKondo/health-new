@@ -44,7 +44,7 @@ export default function UserMenu({ email }: { email: string }) {
           <button
             role="menuitem"
             onClick={signOut}
-            className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-accent hover:bg-brand-soft/50"
+            className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-accent-ink hover:bg-brand-soft/50"
           >
             Sair do painel admin
           </button>

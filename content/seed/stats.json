@@ -1,0 +1,6 @@
+[
+  { "value": 30, "suffix": "+", "label": "anos de história", "sort_order": 0 },
+  { "value": 150, "suffix": "+", "label": "alunos", "sort_order": 1 },
+  { "value": 18, "suffix": "", "label": "atividades", "sort_order": 2 },
+  { "value": 5, "suffix": "★", "label": "avaliação das famílias", "sort_order": 3 }
+]

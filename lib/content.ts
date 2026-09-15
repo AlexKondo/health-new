@@ -12,12 +12,14 @@ import activitiesSeed from "@/content/seed/activities.json";
 import bannersSeed from "@/content/seed/banners.json";
 import partnersSeed from "@/content/seed/partners.json";
 import pagesSeed from "@/content/seed/pages.json";
+import statsSeed from "@/content/seed/stats.json";
 
 export type Testimonial = (typeof testimonialsSeed)[number];
 export type Faq = (typeof faqSeed)[number];
 export type Segment = (typeof segmentsSeed)[number];
 export type Activity = (typeof activitiesSeed)[number];
 export type Banner = (typeof bannersSeed)[number];
+export type Stat = (typeof statsSeed)[number];
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 export const supabaseEnabled = !!url && !url.includes("YOUR_PROJECT");
@@ -57,6 +59,9 @@ export const getActivities = () =>
 
 export const getActiveBanners = () =>
   fromSupabase<Banner>((sb) => sb.from("active_banners").select("*"), bannersSeed);
+
+export const getStats = () =>
+  fromSupabase<Stat>((sb) => sb.from("stats").select("*").order("sort_order"), statsSeed);
 
 export const getPartners = () =>
   fromSupabase((sb) => sb.from("partners").select("*").order("sort_order"), partnersSeed as never[]);

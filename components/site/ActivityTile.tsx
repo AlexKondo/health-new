@@ -10,7 +10,7 @@ export default function ActivityTile({ slug, title, tile_image }: Props) {
   return (
     <Link
       href={`/${slug}`}
-      className="group relative aspect-square overflow-hidden rounded-3xl shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+      className="group relative block aspect-square overflow-hidden rounded-3xl shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
     >
       {tile_image ? (
         <>

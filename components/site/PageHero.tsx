@@ -32,6 +32,26 @@ export function Prose({ paragraphs }: { paragraphs: string[] }) {
   );
 }
 
+/**
+ * Renderiza texto salvo pelo editor rico do admin (HTML). Conteúdo antigo,
+ * ainda em texto simples (parágrafos separados por linha em branco), continua
+ * funcionando via o fallback de `Prose`.
+ */
+export function RichBody({ content }: { content?: string | null }) {
+  if (!content) return null;
+  const isHtml = /<[a-z][\s\S]*>/i.test(content);
+  if (isHtml) {
+    return (
+      <div
+        className="prose-body text-foreground/80 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
+  }
+  const paragraphs = content.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+  return <Prose paragraphs={paragraphs} />;
+}
+
 export function VisitCTA() {
   return (
     <div className="mt-12 rounded-3xl bg-brand-soft p-8 text-center">

@@ -9,7 +9,7 @@ import ActivityTile from "@/components/site/ActivityTile";
 import Reveal from "@/components/site/Reveal";
 import { Section, SectionTitle } from "@/components/site/Section";
 import {
-  getActiveBanners, getTestimonials, getFaq, getSegments, getActivities,
+  getActiveBanners, getTestimonials, getFaq, getSegments, getActivities, getStats,
 } from "@/lib/content";
 
 const SEGMENT_BLURB: Record<string, string> = {
@@ -19,8 +19,8 @@ const SEGMENT_BLURB: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [banners, testimonials, faq, segments, activities] = await Promise.all([
-    getActiveBanners(), getTestimonials(), getFaq(), getSegments(), getActivities(),
+  const [banners, testimonials, faq, segments, activities, stats] = await Promise.all([
+    getActiveBanners(), getTestimonials(), getFaq(), getSegments(), getActivities(), getStats(),
   ]);
 
   const mainSegments = segments.filter((s) => s.slug !== "curricular");
@@ -29,13 +29,13 @@ export default async function HomePage() {
   return (
     <>
       <Hero banners={banners} />
-      <StatsStrip />
+      <StatsStrip stats={stats} />
 
       {/* Sobre nós */}
       <Section className="relative grid items-center gap-12 md:grid-cols-2 overflow-hidden">
-        <span className="pointer-events-none absolute -left-24 -top-10 h-72 w-72 rounded-full bg-brand-soft blur-3xl opacity-70 animate-blob" />
+        <span className="pointer-events-none absolute -left-24 -top-10 -z-10 h-72 w-72 rounded-full bg-brand-soft blur-3xl opacity-70 animate-blob" />
         <Reveal>
-          <p className="text-sm font-bold uppercase tracking-wide text-accent">Desde 1993</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-accent-ink">Desde 1993</p>
           <h2 className="mt-1 text-3xl md:text-4xl font-extrabold">
             Um lugar de <span className="text-gradient">afeto e aprendizado</span>
           </h2>
@@ -155,7 +155,7 @@ export default async function HomePage() {
         <span className="pointer-events-none absolute -right-16 top-10 h-64 w-64 rounded-full bg-white/10 blur-2xl animate-float" />
         <Section className="grid gap-10 md:grid-cols-2">
           <Reveal>
-            <p className="text-sm font-bold uppercase tracking-wide text-accent">Venha conhecer</p>
+            <p className="text-sm font-bold uppercase tracking-wide text-accent-ink">Venha conhecer</p>
             <h2 className="mt-1 text-3xl md:text-4xl font-extrabold">Agende uma visita</h2>
             <p className="mt-4 text-white/85 leading-relaxed">
               Nada como conhecer a escola de perto. Preencha o formulário e nossa equipe entrará em

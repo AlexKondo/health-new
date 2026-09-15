@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { requireUser } from "@/lib/admin";
+import DeleteForm from "@/components/admin/DeleteForm";
 import { deleteBanner, toggleBanner } from "./actions";
 
 function windowLabel(s: string | null, e: string | null) {
@@ -48,10 +49,9 @@ export default async function BannersPage() {
                   {b.active ? "Desativar" : "Ativar"}
                 </button>
               </form>
-              <form action={deleteBanner}>
-                <input type="hidden" name="id" value={b.id} />
+              <DeleteForm action={deleteBanner} id={b.id} confirmText={`Excluir o banner "${b.title}"? Essa ação não pode ser desfeita.`}>
                 <button className="text-sm text-red-600 hover:underline">Excluir</button>
-              </form>
+              </DeleteForm>
             </div>
           </div>
         ))}

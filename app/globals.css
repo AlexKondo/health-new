@@ -8,6 +8,7 @@
   --brand-dark: #155186;
   --brand-soft: #e8f1f9;
   --accent: #f4a72c;       /* amarelo acolhedor (CTAs) */
+  --accent-ink: #92400e;   /* variante escura do accent p/ texto (contraste em fundo claro) */
   --whatsapp: #25d366;
 }
 
@@ -18,6 +19,7 @@
   --color-brand-dark: var(--brand-dark);
   --color-brand-soft: var(--brand-soft);
   --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
   --color-whatsapp: var(--whatsapp);
   --font-sans: var(--font-nunito), system-ui, sans-serif;
 }
@@ -64,8 +66,8 @@ a {
 /* Scroll reveal (ativado por IntersectionObserver via .is-visible) */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal.is-visible {
@@ -86,6 +88,17 @@ a {
   color: transparent;
   animation: gradient-pan 6s ease infinite;
 }
+
+/* Conteúdo rico (editor do admin + renderização pública dos textos editados) */
+.prose-body h2 { font-size: 1.5rem; font-weight: 800; margin: 1.25em 0 0.5em; color: var(--brand-dark); }
+.prose-body h3 { font-size: 1.25rem; font-weight: 800; margin: 1em 0 0.5em; color: var(--brand-dark); }
+.prose-body p { margin: 0.75em 0; }
+.prose-body ul { list-style: disc; padding-left: 1.5em; margin: 0.75em 0; }
+.prose-body ol { list-style: decimal; padding-left: 1.5em; margin: 0.75em 0; }
+.prose-body a { color: var(--brand); text-decoration: underline; }
+.prose-body strong { font-weight: 800; }
+.prose-body > *:first-child { margin-top: 0; }
+.prose-body > *:last-child { margin-bottom: 0; }
 
 .shimmer { position: relative; overflow: hidden; }
 .shimmer::after {
