@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/admin";
-import SignOutButton from "@/components/admin/SignOutButton";
+import UserMenu from "@/components/admin/UserMenu";
 
 const LINKS = [
   { href: "/admin", label: "Visão geral" },
@@ -30,14 +30,17 @@ export default async function PanelLayout({ children }: { children: React.ReactN
           ))}
         </nav>
         <div className="mt-8 border-t border-white/15 pt-4">
-          <p className="text-xs text-white/60 break-all">{user.email}</p>
-          <SignOutButton />
-          <Link href="/" className="mt-2 block text-xs text-white/60 hover:underline">
+          <Link href="/" className="block text-xs text-white/60 hover:underline">
             ← Ver o site
           </Link>
         </div>
       </aside>
-      <main className="min-w-0 p-6 md:p-10">{children}</main>
+      <div className="flex min-w-0 flex-col">
+        <header className="flex items-center justify-end border-b border-black/5 bg-white px-6 py-3 md:px-10">
+          <UserMenu email={user.email ?? ""} />
+        </header>
+        <main className="min-w-0 flex-1 p-6 md:p-10">{children}</main>
+      </div>
     </div>
   );
 }
