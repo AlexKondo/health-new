@@ -21,7 +21,7 @@ const SEGMENT_BLURB: Record<string, string> = {
 export default async function HomePage() {
   const [banners, testimonials, faq, segments, activities, stats, testimonialsIntervalRaw] = await Promise.all([
     getActiveBanners(), getTestimonials(), getFaq(), getSegments(), getActivities(), getStats(),
-    getSetting("testimonials_interval_seconds", "6"),
+    getSetting("testimonials_interval_seconds", "3"),
   ]);
   const testimonialsInterval = Number(testimonialsIntervalRaw) || 0;
 

@@ -15,7 +15,7 @@ export default async function DepoimentosAdmin() {
     sb.from("testimonials").select("*").order("sort_order"),
     sb.from("site_settings").select("value").eq("key", "testimonials_interval_seconds").maybeSingle(),
   ]);
-  const intervalSeconds = Number(setting?.value ?? 6);
+  const intervalSeconds = Number(setting?.value ?? 3);
 
   return (
     <div>

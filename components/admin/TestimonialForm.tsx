@@ -1,6 +1,7 @@
 "use client";
 
 import { saveTestimonial } from "@/app/admin/(panel)/depoimentos/actions";
+import ImageCropInput from "@/components/admin/ImageCropInput";
 
 type T = {
   id?: string;
@@ -52,10 +53,7 @@ export default function TestimonialForm({ t }: { t?: T }) {
           className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand" />
       </label>
 
-      <label className="text-sm font-semibold">
-        Foto (opcional){t?.photo_url && " — já existe; envie para substituir"}
-        <input name="photo" type="file" accept="image/*" className="mt-1 block text-sm" />
-      </label>
+      <ImageCropInput name="photo" label="Foto (opcional)" currentUrl={t?.photo_url} />
 
       <div className="grid grid-cols-2 gap-4 items-end">
         <label className="text-sm font-semibold">
