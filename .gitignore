@@ -43,3 +43,6 @@ next-env.d.ts
 # claude code / tooling
 .claude/
 supabase/.temp/
+
+# raw content/media reference material (not app assets)
+/pics/
