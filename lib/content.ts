@@ -63,6 +63,17 @@ export const getActiveBanners = () =>
 export const getStats = () =>
   fromSupabase<Stat>((sb) => sb.from("stats").select("*").order("sort_order"), statsSeed);
 
+export async function getSetting(key: string, fallback: string): Promise<string> {
+  if (!supabaseEnabled) return fallback;
+  try {
+    const sb = await createClient();
+    const { data } = await sb.from("site_settings").select("value").eq("key", key).maybeSingle();
+    return data?.value ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export const getPartners = () =>
   fromSupabase((sb) => sb.from("partners").select("*").order("sort_order"), partnersSeed as never[]);
 

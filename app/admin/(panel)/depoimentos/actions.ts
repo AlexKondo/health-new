@@ -45,3 +45,14 @@ export async function deleteTestimonial(formData: FormData) {
   revalidatePath("/admin/depoimentos");
   revalidatePath("/");
 }
+
+export async function saveTestimonialsInterval(formData: FormData) {
+  const { sb } = await requireUser();
+  const seconds = Math.max(0, Math.min(60, Number(formData.get("interval_seconds") || 0)));
+  const res = await sb
+    .from("site_settings")
+    .upsert({ key: "testimonials_interval_seconds", value: String(seconds) });
+  if (res.error) throw new Error(res.error.message);
+  revalidatePath("/admin/depoimentos");
+  revalidatePath("/");
+}

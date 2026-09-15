@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/admin";
 import DeleteForm from "@/components/admin/DeleteForm";
-import { deleteTestimonial } from "./actions";
+import { deleteTestimonial, saveTestimonialsInterval } from "./actions";
 
 const ROLE: Record<string, string> = {
   pai_responsavel: "Pai/Responsável",
@@ -11,7 +11,11 @@ const ROLE: Record<string, string> = {
 
 export default async function DepoimentosAdmin() {
   const { sb } = await requireUser();
-  const { data } = await sb.from("testimonials").select("*").order("sort_order");
+  const [{ data }, { data: setting }] = await Promise.all([
+    sb.from("testimonials").select("*").order("sort_order"),
+    sb.from("site_settings").select("value").eq("key", "testimonials_interval_seconds").maybeSingle(),
+  ]);
+  const intervalSeconds = Number(setting?.value ?? 6);
 
   return (
     <div>
@@ -21,6 +25,23 @@ export default async function DepoimentosAdmin() {
           + Novo depoimento
         </Link>
       </div>
+
+      <form action={saveTestimonialsInterval} className="mt-4 flex flex-wrap items-end gap-3 rounded-2xl bg-white p-4 shadow-sm">
+        <label className="block text-sm font-semibold">
+          Troca automática dos cards a cada (segundos, 0 = desativado)
+          <input
+            name="interval_seconds"
+            type="number"
+            min={0}
+            max={60}
+            defaultValue={intervalSeconds}
+            className="mt-1 w-40 rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+          />
+        </label>
+        <button className="rounded-full bg-brand px-5 py-2 font-bold text-white hover:bg-brand-dark">
+          Salvar
+        </button>
+      </form>
 
       <div className="mt-6 space-y-2">
         {(data ?? []).map((t) => (

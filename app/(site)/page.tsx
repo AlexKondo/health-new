@@ -9,7 +9,7 @@ import ActivityTile from "@/components/site/ActivityTile";
 import Reveal from "@/components/site/Reveal";
 import { Section, SectionTitle } from "@/components/site/Section";
 import {
-  getActiveBanners, getTestimonials, getFaq, getSegments, getActivities, getStats,
+  getActiveBanners, getTestimonials, getFaq, getSegments, getActivities, getStats, getSetting,
 } from "@/lib/content";
 
 const SEGMENT_BLURB: Record<string, string> = {
@@ -19,9 +19,11 @@ const SEGMENT_BLURB: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [banners, testimonials, faq, segments, activities, stats] = await Promise.all([
+  const [banners, testimonials, faq, segments, activities, stats, testimonialsIntervalRaw] = await Promise.all([
     getActiveBanners(), getTestimonials(), getFaq(), getSegments(), getActivities(), getStats(),
+    getSetting("testimonials_interval_seconds", "6"),
   ]);
+  const testimonialsInterval = Number(testimonialsIntervalRaw) || 0;
 
   const mainSegments = segments.filter((s) => s.slug !== "curricular");
   const extracurriculares = activities.filter((a) => a.category === "extracurricular").slice(0, 8);
@@ -140,7 +142,7 @@ export default async function HomePage() {
       <div className="bg-brand-soft/50">
         <Section>
           <Reveal><SectionTitle eyebrow="Depoimentos" title="O que as famílias dizem" center /></Reveal>
-          <Reveal delay={120}><TestimonialsCarousel items={testimonials} /></Reveal>
+          <Reveal delay={120}><TestimonialsCarousel items={testimonials} intervalSeconds={testimonialsInterval} /></Reveal>
         </Section>
       </div>
 
