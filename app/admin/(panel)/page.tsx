@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/admin";
 import EditableVisits from "@/components/admin/EditableVisits";
 import EditableDuration from "@/components/admin/EditableDuration";
+import EmailQuotaBanner from "@/components/admin/EmailQuotaBanner";
 
 async function count(sb: Awaited<ReturnType<typeof requireUser>>["sb"], table: string, filter?: [string, unknown]) {
   let q = sb.from(table).select("*", { count: "exact", head: true });
@@ -38,7 +39,10 @@ export default async function Dashboard() {
   return (
     <div>
       <h1 className="text-2xl font-extrabold text-brand-dark">Visão geral</h1>
-      <div className="mt-6 grid gap-5 sm:grid-cols-3">
+      <div className="mt-6">
+        <EmailQuotaBanner />
+      </div>
+      <div className="grid gap-5 sm:grid-cols-3">
         <EditableVisits value={visits} overridden={visitsOverride !== ""} rawOverride={visitsOverride} />
         <EditableDuration
           minutes={Math.floor(avgSeconds / 60)}

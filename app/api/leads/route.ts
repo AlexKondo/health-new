@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/service";
+import { notifyNewLead } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -43,6 +44,20 @@ export async function POST(req: NextRequest) {
   }
   if (data?.error) {
     return NextResponse.json({ error: data.error }, { status: 409 });
+  }
+
+  try {
+    await notifyNewLead({
+      name,
+      email: str(body.email),
+      phone: str(body.phone),
+      child_grade: str(body.child_grade),
+      period: str(body.period),
+      message: str(body.message),
+      scheduled_at,
+    });
+  } catch (e) {
+    console.error("Falha ao notificar novo lead por e-mail:", e);
   }
 
   return NextResponse.json({ ok: true });
