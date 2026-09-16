@@ -5,9 +5,10 @@ import { addColumn, deleteColumn, reorderColumns, setScheduledAt, updateColumnSt
 
 export default async function LeadsPage() {
   const { sb, user } = await requireUser();
-  const [{ data: leads }, { data: statuses }] = await Promise.all([
+  const [{ data: leads }, { data: statuses }, { data: history }] = await Promise.all([
     sb.from("leads").select("*").order("created_at", { ascending: false }),
     sb.from("lead_statuses").select("*").order("sort_order"),
+    sb.from("lead_status_history").select("*").order("changed_at"),
   ]);
 
   return (
@@ -25,6 +26,7 @@ export default async function LeadsPage() {
           <KanbanBoard
             leads={leads ?? []}
             columns={statuses ?? []}
+            history={history ?? []}
             me={user.email ?? ""}
             updateStatus={updateStatus}
             setScheduledAt={setScheduledAt}

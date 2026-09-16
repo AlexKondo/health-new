@@ -27,6 +27,15 @@ type Lead = {
   created_at: string;
 };
 
+type HistoryEntry = {
+  id: string;
+  lead_id: string;
+  from_status: string | null;
+  to_status: string;
+  changed_by: string | null;
+  changed_at: string;
+};
+
 function toLocalInputValue(iso: string) {
   const d = new Date(iso);
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -51,13 +60,16 @@ function dayLabel(iso: string) {
  * chegar fora de ordem (o que faria o estado final não bater com o que
  * foi realmente a última ação). */
 function useMutationQueue() {
-  const queues = useRef<Record<string, Promise<void>>>({});
-  return function enqueue(key: string, fn: () => Promise<void>, onError: () => void) {
+  const queues = useRef<Record<string, Promise<unknown>>>({});
+  return function enqueue<T>(key: string, fn: () => Promise<T>, onError: () => void, onSuccess?: (result: T) => void) {
     const prev = queues.current[key] ?? Promise.resolve();
-    const next = prev.then(fn).catch((e) => {
-      console.error(e);
-      onError();
-    });
+    const next = prev
+      .then(fn)
+      .then((result) => onSuccess?.(result))
+      .catch((e) => {
+        console.error(e);
+        onError();
+      });
     queues.current[key] = next;
     return next;
   };
@@ -118,6 +130,39 @@ function VisitDate({ lead, onSave }: { lead: Lead; onSave: (iso: string | null) 
         <span className="text-foreground/40">+ definir data da visita</span>
       )}
     </button>
+  );
+}
+
+function HistoryList({ entries, labelFor }: { entries: HistoryEntry[]; labelFor: (key: string) => string }) {
+  const [open, setOpen] = useState(false);
+  if (entries.length === 0) return null;
+  const sorted = [...entries].sort((a, b) => b.changed_at.localeCompare(a.changed_at));
+  const last = sorted[0];
+
+  return (
+    <div className="mt-2 border-t border-black/5 pt-1">
+      <button
+        type="button"
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={() => setOpen((o) => !o)}
+        className="text-left text-[10px] text-foreground/40 hover:text-brand"
+      >
+        {open ? "▾" : "▸"} {last.changed_by ?? "?"} moveu para {labelFor(last.to_status)} ·{" "}
+        {new Date(last.changed_at).toLocaleDateString("pt-BR")}
+        {entries.length > 1 && ` (${entries.length} mudanças)`}
+      </button>
+      {open && (
+        <ul className="mt-1 space-y-1">
+          {sorted.map((h) => (
+            <li key={h.id} className="text-[10px] text-foreground/40">
+              {h.from_status ? `${labelFor(h.from_status)} → ${labelFor(h.to_status)}` : `Criado em ${labelFor(h.to_status)}`}
+              {" · "}
+              {h.changed_by ?? "?"} · {new Date(h.changed_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
@@ -186,6 +231,7 @@ function AddColumnForm({ onCreate }: { onCreate: (label: string) => Promise<bool
 export default function KanbanBoard({
   leads,
   columns: initialColumns,
+  history,
   me,
   updateStatus,
   setScheduledAt,
@@ -196,8 +242,9 @@ export default function KanbanBoard({
 }: {
   leads: Lead[];
   columns: Column[];
+  history: HistoryEntry[];
   me: string;
-  updateStatus: (id: string, status: string) => Promise<void>;
+  updateStatus: (id: string, status: string) => Promise<HistoryEntry>;
   setScheduledAt: (id: string, iso: string | null) => Promise<void>;
   addColumn: (label: string) => Promise<Column>;
   deleteColumn: (id: string) => Promise<void>;
@@ -206,10 +253,19 @@ export default function KanbanBoard({
 }) {
   const [items, setItems] = useState(leads);
   const [columns, setColumns] = useState(initialColumns);
+  const [historyByLead, setHistoryByLead] = useState<Record<string, HistoryEntry[]>>(() => {
+    const map: Record<string, HistoryEntry[]> = {};
+    for (const h of history) (map[h.lead_id] ??= []).push(h);
+    return map;
+  });
   const [dragCardId, setDragCardId] = useState<string | null>(null);
   const [dragColId, setDragColId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const enqueue = useMutationQueue();
+
+  function labelFor(key: string) {
+    return columns.find((c) => c.key === key)?.label ?? key;
+  }
 
   function showError(msg: string) {
     setError(msg);
@@ -241,9 +297,21 @@ export default function KanbanBoard({
     if (dragCardId) {
       const id = dragCardId;
       const now = new Date().toISOString();
+      const fromStatus = items.find((l) => l.id === id)?.status ?? null;
+      if (fromStatus === col.key) {
+        setDragCardId(null);
+        return;
+      }
       setItems((prev) =>
         prev.map((l) => (l.id === id ? { ...l, status: col.key, status_changed_by: me, status_changed_at: now } : l)),
       );
+      setHistoryByLead((prev) => ({
+        ...prev,
+        [id]: [
+          ...(prev[id] ?? []),
+          { id: `optimistic-${now}`, lead_id: id, from_status: fromStatus, to_status: col.key, changed_by: me, changed_at: now },
+        ],
+      }));
       setDragCardId(null);
       enqueue(`status:${id}`, () => updateStatus(id, col.key), () =>
         showError(`Não foi possível salvar a mudança de status de "${items.find((l) => l.id === id)?.name}". Recarregue a página e tente de novo.`),
@@ -377,13 +445,7 @@ export default function KanbanBoard({
                     {l.message && (
                       <p className="mt-1 line-clamp-2 text-xs text-foreground/50">{l.message}</p>
                     )}
-                    {l.status_changed_by && (
-                      <p className="mt-2 border-t border-black/5 pt-1 text-[10px] text-foreground/40">
-                        Movido por {l.status_changed_by}
-                        {l.status_changed_at &&
-                          ` · ${new Date(l.status_changed_at).toLocaleDateString("pt-BR")}`}
-                      </p>
-                    )}
+                    <HistoryList entries={historyByLead[l.id] ?? []} labelFor={labelFor} />
                   </div>
                 ))}
               {items.filter((l) => l.status === col.key).length === 0 && (

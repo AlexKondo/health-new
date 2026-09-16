@@ -17,11 +17,24 @@ export async function updateStatus(id: string, status: string) {
   const { sb, user } = await requireUser();
   const { data: known } = await sb.from("lead_statuses").select("key").eq("key", status).maybeSingle();
   if (!known) throw new Error("Status inválido.");
+
+  const { data: current } = await sb.from("leads").select("status").eq("id", id).single();
+  const changed_at = new Date().toISOString();
+
   await sb
     .from("leads")
-    .update({ status, status_changed_by: user.email, status_changed_at: new Date().toISOString() })
+    .update({ status, status_changed_by: user.email, status_changed_at: changed_at })
     .eq("id", id);
+
+  const { data: entry, error } = await sb
+    .from("lead_status_history")
+    .insert({ lead_id: id, from_status: current?.status ?? null, to_status: status, changed_by: user.email, changed_at })
+    .select()
+    .single();
+  if (error) throw new Error(error.message);
+
   revalidatePath("/admin/leads");
+  return entry;
 }
 
 export async function setScheduledAt(id: string, iso: string | null) {
