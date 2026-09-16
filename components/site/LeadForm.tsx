@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const GRADES = [
   "Berçário", "Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Grupo 5",
@@ -8,12 +8,39 @@ const GRADES = [
 ];
 const PERIODS = ["Manhã", "Tarde", "Integral"];
 
+function todayISO() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function maxISO() {
+  const d = new Date();
+  d.setDate(d.getDate() + 60);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 export default function LeadForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [date, setDate] = useState("");
+  const [slots, setSlots] = useState<{ at: string; label: string }[]>([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [scheduledAt, setScheduledAt] = useState("");
+
+  useEffect(() => {
+    if (!date) { setSlots([]); return; }
+    setSlotsLoading(true);
+    setScheduledAt("");
+    fetch(`/api/visit-slots?date=${date}`)
+      .then((r) => r.json())
+      .then((d) => setSlots(d.slots ?? []))
+      .catch(() => setSlots([]))
+      .finally(() => setSlotsLoading(false));
+  }, [date]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
+    setErrorMsg("");
     const fd = new FormData(e.currentTarget);
     const payload = Object.fromEntries(fd.entries());
     try {
@@ -22,9 +49,16 @@ export default function LeadForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        setErrorMsg(d.error || "");
+        throw new Error();
+      }
       setStatus("ok");
       e.currentTarget.reset();
+      setDate("");
+      setSlots([]);
+      setScheduledAt("");
     } catch {
       setStatus("error");
     }
@@ -47,6 +81,46 @@ export default function LeadForm() {
       <Field name="phone" label="Telefone / WhatsApp" />
       <Select name="child_grade" label="Série de interesse" options={GRADES} />
       <Select name="period" label="Período" options={PERIODS} />
+
+      <label className="text-sm font-semibold">
+        Data desejada para a visita
+        <input
+          type="date"
+          min={todayISO()}
+          max={maxISO()}
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+        />
+      </label>
+      <div className="text-sm font-semibold">
+        Horário
+        {!date && <p className="mt-1 text-xs font-normal text-foreground/50">Escolha uma data primeiro.</p>}
+        {date && slotsLoading && <p className="mt-1 text-xs font-normal text-foreground/50">Carregando horários…</p>}
+        {date && !slotsLoading && slots.length === 0 && (
+          <p className="mt-1 text-xs font-normal text-foreground/50">Sem horários livres nesse dia — escolha outra data ou envie sem horário que entramos em contato.</p>
+        )}
+        {date && !slotsLoading && slots.length > 0 && (
+          <div className="mt-1 flex flex-wrap gap-2">
+            {slots.map((s) => (
+              <button
+                key={s.at}
+                type="button"
+                onClick={() => setScheduledAt(s.at)}
+                className={`rounded-lg border px-3 py-1.5 text-sm font-semibold ${
+                  scheduledAt === s.at
+                    ? "border-brand bg-brand text-white"
+                    : "border-brand-soft bg-white text-brand-dark hover:border-brand"
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <input type="hidden" name="scheduled_at" value={scheduledAt} />
+
       <label className="sm:col-span-2 text-sm font-semibold">
         Mensagem
         <textarea
@@ -64,7 +138,7 @@ export default function LeadForm() {
           {status === "sending" ? "Enviando…" : "Quero agendar uma visita"}
         </button>
         {status === "error" && (
-          <span className="text-sm text-red-600">Não foi possível enviar. Tente novamente.</span>
+          <span className="text-sm text-red-600">{errorMsg || "Não foi possível enviar. Tente novamente."}</span>
         )}
       </div>
     </form>
