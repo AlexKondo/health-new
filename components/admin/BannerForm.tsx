@@ -17,7 +17,13 @@ type Banner = {
   active?: boolean;
 };
 
-export default function BannerForm({ banner }: { banner?: Banner }) {
+export default function BannerForm({
+  banner,
+  pageOptions = [],
+}: {
+  banner?: Banner;
+  pageOptions?: { href: string; label: string }[];
+}) {
   const [preview, setPreview] = useState<string | null>(banner?.image_url ?? null);
 
   return (
@@ -49,7 +55,26 @@ export default function BannerForm({ banner }: { banner?: Banner }) {
 
       <Input name="title" label="Título" defaultValue={banner?.title} required />
       <Input name="alt" label="Texto alternativo (acessibilidade)" defaultValue={banner?.alt ?? ""} />
-      <Input name="link_url" label="Link ao clicar (opcional)" defaultValue={banner?.link_url ?? ""} placeholder="/nossa-historia" />
+      <label className="block text-sm font-semibold">
+        Link ao clicar (opcional)
+        <input
+          name="link_url"
+          list="banner-link-options"
+          defaultValue={banner?.link_url ?? ""}
+          placeholder="Escolha uma página ou digite um link"
+          className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+        />
+        <datalist id="banner-link-options">
+          {pageOptions.map((p) => (
+            <option key={p.href} value={p.href}>
+              {p.label}
+            </option>
+          ))}
+        </datalist>
+        <p className="mt-1 text-xs text-foreground/50">
+          Escolha uma das páginas do site na lista, ou digite um link (ex: WhatsApp, PDF, site externo).
+        </p>
+      </label>
 
       <div className="grid grid-cols-2 gap-4">
         <Input name="starts_at" label="Exibir a partir de" type="date" defaultValue={banner?.starts_at ?? ""} />

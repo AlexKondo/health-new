@@ -92,3 +92,27 @@ export type ContentPage = (typeof pagesSeed)[number];
 export const getPages = (): ContentPage[] => pagesSeed;
 export const getPage = (slug: string): ContentPage | null =>
   pagesSeed.find((p) => p.slug === slug) ?? null;
+
+/** Todas as páginas do site público, para preencher combos de link (ex: banners). */
+export async function getSiteLinkOptions(): Promise<{ href: string; label: string }[]> {
+  const [segs, acts] = await Promise.all([getSegments(), getActivities()]);
+  const staticPages = [
+    { href: "/", label: "Início" },
+    { href: "/curricular", label: "Atividades Curriculares" },
+    { href: "/extracurricular", label: "Atividades Extracurriculares" },
+    { href: "/depoimentos", label: "Depoimentos" },
+    { href: "/faq", label: "Perguntas Frequentes" },
+  ];
+  const contentPages = getPages()
+    .filter((p) => p.slug !== "extracurricular" && p.slug !== "curricular")
+    .map((p) => ({ href: `/${p.slug}`, label: p.title }));
+  const segmentPages = segs.map((s) => ({ href: `/${s.slug}`, label: s.title }));
+  const activityPages = acts.map((a) => ({ href: `/${a.slug}`, label: a.title }));
+
+  // Dedupe por href, mantendo a primeira ocorrência (a ordem acima prioriza
+  // as páginas estáticas) — evita duplicidade se algum segmento/atividade
+  // antigo no banco tiver o mesmo slug de uma rota já fixa do site.
+  const seen = new Set<string>();
+  const all = [...staticPages, ...contentPages, ...segmentPages, ...activityPages];
+  return all.filter((p) => (seen.has(p.href) ? false : (seen.add(p.href), true)));
+}
