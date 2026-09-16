@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState } from "react";
 import DeleteForm from "@/components/admin/DeleteForm";
 
 type Column = {
@@ -43,6 +43,25 @@ function dayLabel(iso: string) {
   if (diffDays === 0) return "HOJE";
   if (diffDays === 1) return "AMANHÃ";
   return null;
+}
+
+/** Fila de mutações por chave — garante que, se o usuário mexer rápido
+ * várias vezes seguidas na mesma coisa (ex.: arrastar o card por várias
+ * colunas em sequência), as chamadas ao servidor cheguem na mesma ordem
+ * em que o usuário fez, em vez de correrem em paralelo e possivelmente
+ * chegar fora de ordem (o que faria o estado final não bater com o que
+ * foi realmente a última ação). */
+function useMutationQueue() {
+  const queues = useRef<Record<string, Promise<void>>>({});
+  return function enqueue(key: string, fn: () => Promise<void>, onError: () => void) {
+    const prev = queues.current[key] ?? Promise.resolve();
+    const next = prev.then(fn).catch((e) => {
+      console.error(e);
+      onError();
+    });
+    queues.current[key] = next;
+    return next;
+  };
 }
 
 function VisitDate({ lead, onSave }: { lead: Lead; onSave: (iso: string | null) => void }) {
@@ -103,8 +122,23 @@ function VisitDate({ lead, onSave }: { lead: Lead; onSave: (iso: string | null) 
   );
 }
 
-function AddColumnForm({ addColumn }: { addColumn: (formData: FormData) => void | Promise<void> }) {
+function AddColumnForm({ onCreate }: { onCreate: (label: string) => Promise<boolean> }) {
   const [open, setOpen] = useState(false);
+  const [label, setLabel] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function submit() {
+    const trimmed = label.trim();
+    if (!trimmed || submitting) return;
+    setSubmitting(true);
+    const ok = await onCreate(trimmed);
+    setSubmitting(false);
+    if (ok) {
+      setLabel("");
+      setOpen(false);
+    }
+  }
+
   if (!open) {
     return (
       <button
@@ -117,23 +151,26 @@ function AddColumnForm({ addColumn }: { addColumn: (formData: FormData) => void 
     );
   }
   return (
-    <form
-      action={(fd) => {
-        addColumn(fd);
-        setOpen(false);
-      }}
-      className="min-h-[220px] w-56 shrink-0 rounded-2xl bg-brand-soft/50 p-3"
-    >
+    <div className="min-h-[220px] w-56 shrink-0 rounded-2xl bg-brand-soft/50 p-3">
       <p className="mb-3 text-sm font-extrabold text-brand-dark">Nova coluna</p>
       <input
-        name="label"
+        value={label}
+        onChange={(e) => setLabel(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") submit();
+        }}
         autoFocus
         placeholder="Nome da coluna"
         className="w-full rounded-lg border border-brand-soft px-2 py-1.5 text-sm"
       />
       <div className="mt-2 flex gap-2">
-        <button type="submit" className="rounded-full bg-accent px-3 py-1.5 text-xs font-bold text-white">
-          Criar
+        <button
+          type="button"
+          onClick={submit}
+          disabled={submitting}
+          className="rounded-full bg-accent px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60"
+        >
+          {submitting ? "Criando…" : "Criar"}
         </button>
         <button
           type="button"
@@ -143,7 +180,7 @@ function AddColumnForm({ addColumn }: { addColumn: (formData: FormData) => void 
           Cancelar
         </button>
       </div>
-    </form>
+    </div>
   );
 }
 
@@ -163,7 +200,7 @@ export default function KanbanBoard({
   me: string;
   updateStatus: (id: string, status: string) => Promise<void>;
   setScheduledAt: (id: string, iso: string | null) => Promise<void>;
-  addColumn: (formData: FormData) => void | Promise<void>;
+  addColumn: (label: string) => Promise<Column>;
   deleteColumn: (formData: FormData) => void | Promise<void>;
   reorderColumns: (orderedIds: string[]) => Promise<void>;
   updateColumnStyle: (id: string, patch: { color?: string; width_px?: number }) => Promise<void>;
@@ -172,7 +209,24 @@ export default function KanbanBoard({
   const [columns, setColumns] = useState(initialColumns);
   const [dragCardId, setDragCardId] = useState<string | null>(null);
   const [dragColId, setDragColId] = useState<string | null>(null);
-  const [, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const enqueue = useMutationQueue();
+
+  function showError(msg: string) {
+    setError(msg);
+    setTimeout(() => setError(null), 5000);
+  }
+
+  async function onCreateColumn(label: string) {
+    try {
+      const created = await addColumn(label);
+      setColumns((prev) => [...prev, created]);
+      return true;
+    } catch (e) {
+      showError(e instanceof Error ? e.message : "Não foi possível criar a coluna.");
+      return false;
+    }
+  }
 
   function onDropOnColumn(col: Column) {
     if (dragCardId) {
@@ -181,10 +235,10 @@ export default function KanbanBoard({
       setItems((prev) =>
         prev.map((l) => (l.id === id ? { ...l, status: col.key, status_changed_by: me, status_changed_at: now } : l)),
       );
-      startTransition(() => {
-        updateStatus(id, col.key);
-      });
       setDragCardId(null);
+      enqueue(`status:${id}`, () => updateStatus(id, col.key), () =>
+        showError(`Não foi possível salvar a mudança de status de "${items.find((l) => l.id === id)?.name}". Recarregue a página e tente de novo.`),
+      );
       return;
     }
     if (dragColId && dragColId !== col.id) {
@@ -195,25 +249,25 @@ export default function KanbanBoard({
       const [moved] = next.splice(from, 1);
       next.splice(to, 0, moved);
       setColumns(next);
-      startTransition(() => {
-        reorderColumns(next.map((c) => c.id));
-      });
       setDragColId(null);
+      enqueue("reorder-columns", () => reorderColumns(next.map((c) => c.id)), () =>
+        showError("Não foi possível salvar a nova ordem das colunas. Recarregue a página e tente de novo."),
+      );
     }
   }
 
   function onDateSave(id: string, iso: string | null) {
     setItems((prev) => prev.map((l) => (l.id === id ? { ...l, scheduled_at: iso } : l)));
-    startTransition(() => {
-      setScheduledAt(id, iso);
-    });
+    enqueue(`date:${id}`, () => setScheduledAt(id, iso), () =>
+      showError("Não foi possível salvar a data da visita. Recarregue a página e tente de novo."),
+    );
   }
 
   function onColorChange(id: string, color: string) {
     setColumns((prev) => prev.map((c) => (c.id === id ? { ...c, color } : c)));
-    startTransition(() => {
-      updateColumnStyle(id, { color });
-    });
+    enqueue(`color:${id}`, () => updateColumnStyle(id, { color }), () =>
+      showError("Não foi possível salvar a cor da coluna."),
+    );
   }
 
   function startResize(col: Column, e: React.PointerEvent) {
@@ -229,7 +283,11 @@ export default function KanbanBoard({
       window.removeEventListener("pointerup", onUp);
       setColumns((prev) => {
         const updated = prev.find((c) => c.id === col.id);
-        if (updated) startTransition(() => updateColumnStyle(col.id, { width_px: updated.width_px }));
+        if (updated) {
+          enqueue(`width:${col.id}`, () => updateColumnStyle(col.id, { width_px: updated.width_px }), () =>
+            showError("Não foi possível salvar a largura da coluna."),
+          );
+        }
         return prev;
       });
     }
@@ -238,88 +296,95 @@ export default function KanbanBoard({
   }
 
   return (
-    <div className="mt-6 flex items-start gap-4">
-      {columns.map((col) => (
-        <div
-          key={col.id}
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={() => onDropOnColumn(col)}
-          style={{ width: col.width_px, backgroundColor: col.color }}
-          className="relative shrink-0 min-h-[220px] rounded-2xl p-3"
-        >
+    <div>
+      {error && (
+        <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm font-semibold text-red-700 ring-1 ring-red-200">
+          {error}
+        </div>
+      )}
+      <div className="flex items-start gap-4">
+        {columns.map((col) => (
           <div
-            draggable
-            onDragStart={() => setDragColId(col.id)}
-            onDragEnd={() => setDragColId(null)}
-            className="mb-3 flex cursor-grab items-center justify-between active:cursor-grabbing"
+            key={col.id}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => onDropOnColumn(col)}
+            style={{ width: col.width_px, backgroundColor: col.color }}
+            className="relative shrink-0 min-h-[220px] rounded-2xl p-3"
           >
-            <p className="text-sm font-extrabold text-brand-dark">
-              {col.label}{" "}
-              <span className="font-normal text-foreground/40">
-                ({items.filter((l) => l.status === col.key).length})
-              </span>
-            </p>
-            <div className="flex items-center gap-2">
-              <input
-                type="color"
-                value={col.color}
-                onPointerDown={(e) => e.stopPropagation()}
-                onChange={(e) => onColorChange(col.id, e.target.value)}
-                title="Cor da coluna"
-                className="h-5 w-5 cursor-pointer rounded border-0 bg-transparent p-0"
-              />
-              {!col.is_default && (
-                <DeleteForm action={deleteColumn} id={col.id} confirmText={`Excluir a coluna "${col.label}"?`}>
-                  <button className="text-xs text-red-500 hover:underline">×</button>
-                </DeleteForm>
+            <div
+              draggable
+              onDragStart={() => setDragColId(col.id)}
+              onDragEnd={() => setDragColId(null)}
+              className="mb-3 flex cursor-grab items-center justify-between active:cursor-grabbing"
+            >
+              <p className="text-sm font-extrabold text-brand-dark">
+                {col.label}{" "}
+                <span className="font-normal text-foreground/40">
+                  ({items.filter((l) => l.status === col.key).length})
+                </span>
+              </p>
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={col.color}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onChange={(e) => onColorChange(col.id, e.target.value)}
+                  title="Cor da coluna"
+                  className="h-5 w-5 cursor-pointer rounded border-0 bg-transparent p-0"
+                />
+                {!col.is_default && (
+                  <DeleteForm action={deleteColumn} id={col.id} confirmText={`Excluir a coluna "${col.label}"?`}>
+                    <button className="text-xs text-red-500 hover:underline">×</button>
+                  </DeleteForm>
+                )}
+              </div>
+            </div>
+            <div className="space-y-2">
+              {items
+                .filter((l) => l.status === col.key)
+                .map((l) => (
+                  <div
+                    key={l.id}
+                    draggable
+                    onDragStart={() => setDragCardId(l.id)}
+                    onDragEnd={() => setDragCardId(null)}
+                    className="cursor-grab rounded-xl bg-white p-3 shadow-sm active:cursor-grabbing"
+                  >
+                    <p className="text-sm font-bold">{l.name}</p>
+                    <VisitDate lead={l} onSave={(iso) => onDateSave(l.id, iso)} />
+                    {(l.phone || l.email) && (
+                      <p className="mt-1 text-xs text-foreground/60">{l.phone || l.email}</p>
+                    )}
+                    {(l.child_grade || l.period) && (
+                      <p className="text-xs text-foreground/50">
+                        {[l.child_grade, l.period].filter(Boolean).join(" · ")}
+                      </p>
+                    )}
+                    {l.message && (
+                      <p className="mt-1 line-clamp-2 text-xs text-foreground/50">{l.message}</p>
+                    )}
+                    {l.status_changed_by && (
+                      <p className="mt-2 border-t border-black/5 pt-1 text-[10px] text-foreground/40">
+                        Movido por {l.status_changed_by}
+                        {l.status_changed_at &&
+                          ` · ${new Date(l.status_changed_at).toLocaleDateString("pt-BR")}`}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              {items.filter((l) => l.status === col.key).length === 0 && (
+                <p className="text-xs text-foreground/40">Arraste um card aqui</p>
               )}
             </div>
+            <div
+              onPointerDown={(e) => startResize(col, e)}
+              title="Arraste para redimensionar"
+              className="absolute right-0 top-0 h-full w-2 cursor-col-resize rounded-r-2xl hover:bg-black/10"
+            />
           </div>
-          <div className="space-y-2">
-            {items
-              .filter((l) => l.status === col.key)
-              .map((l) => (
-                <div
-                  key={l.id}
-                  draggable
-                  onDragStart={() => setDragCardId(l.id)}
-                  onDragEnd={() => setDragCardId(null)}
-                  className="cursor-grab rounded-xl bg-white p-3 shadow-sm active:cursor-grabbing"
-                >
-                  <p className="text-sm font-bold">{l.name}</p>
-                  <VisitDate lead={l} onSave={(iso) => onDateSave(l.id, iso)} />
-                  {(l.phone || l.email) && (
-                    <p className="mt-1 text-xs text-foreground/60">{l.phone || l.email}</p>
-                  )}
-                  {(l.child_grade || l.period) && (
-                    <p className="text-xs text-foreground/50">
-                      {[l.child_grade, l.period].filter(Boolean).join(" · ")}
-                    </p>
-                  )}
-                  {l.message && (
-                    <p className="mt-1 line-clamp-2 text-xs text-foreground/50">{l.message}</p>
-                  )}
-                  {l.status_changed_by && (
-                    <p className="mt-2 border-t border-black/5 pt-1 text-[10px] text-foreground/40">
-                      Movido por {l.status_changed_by}
-                      {l.status_changed_at &&
-                        ` · ${new Date(l.status_changed_at).toLocaleDateString("pt-BR")}`}
-                    </p>
-                  )}
-                </div>
-              ))}
-            {items.filter((l) => l.status === col.key).length === 0 && (
-              <p className="text-xs text-foreground/40">Arraste um card aqui</p>
-            )}
-          </div>
-          <div
-            onPointerDown={(e) => startResize(col, e)}
-            title="Arraste para redimensionar"
-            className="absolute right-0 top-0 h-full w-2 cursor-col-resize rounded-r-2xl hover:bg-black/10"
-          />
-        </div>
-      ))}
-      <AddColumnForm addColumn={addColumn} />
+        ))}
+        <AddColumnForm onCreate={onCreateColumn} />
+      </div>
     </div>
   );
 }

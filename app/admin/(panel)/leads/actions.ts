@@ -31,9 +31,9 @@ export async function setScheduledAt(id: string, iso: string | null) {
   revalidatePath("/admin/leads");
 }
 
-export async function addColumn(formData: FormData) {
+export async function addColumn(rawLabel: string) {
   const { sb } = await requireUser();
-  const label = String(formData.get("label") || "").trim();
+  const label = rawLabel.trim();
   if (!label) throw new Error("Nome da coluna é obrigatório.");
 
   const key = slugify(label);
@@ -42,10 +42,11 @@ export async function addColumn(formData: FormData) {
   const { data: existing } = await sb.from("lead_statuses").select("sort_order").order("sort_order", { ascending: false }).limit(1).maybeSingle();
   const sort_order = (existing?.sort_order ?? -1) + 1;
 
-  const { error } = await sb.from("lead_statuses").insert({ key, label, sort_order });
+  const { data, error } = await sb.from("lead_statuses").insert({ key, label, sort_order }).select().single();
   if (error) throw new Error(error.code === "23505" ? "Já existe uma coluna com esse nome." : error.message);
 
   revalidatePath("/admin/leads");
+  return data;
 }
 
 export async function reorderColumns(orderedIds: string[]) {
