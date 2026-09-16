@@ -134,35 +134,55 @@ function VisitDate({ lead, onSave }: { lead: Lead; onSave: (iso: string | null) 
 }
 
 function HistoryList({ entries, labelFor }: { entries: HistoryEntry[]; labelFor: (key: string) => string }) {
-  const [open, setOpen] = useState(false);
   if (entries.length === 0) return null;
   const sorted = [...entries].sort((a, b) => b.changed_at.localeCompare(a.changed_at));
-  const last = sorted[0];
 
   return (
     <div className="mt-2 border-t border-black/5 pt-1">
-      <button
-        type="button"
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={() => setOpen((o) => !o)}
-        className="text-left text-[10px] text-foreground/40 hover:text-brand"
-      >
-        {open ? "▾" : "▸"} {last.changed_by ?? "?"} moveu para {labelFor(last.to_status)} ·{" "}
-        {new Date(last.changed_at).toLocaleDateString("pt-BR")}
-        {entries.length > 1 && ` (${entries.length} mudanças)`}
-      </button>
-      {open && (
-        <ul className="mt-1 space-y-1">
-          {sorted.map((h) => (
-            <li key={h.id} className="text-[10px] text-foreground/40">
-              {h.from_status ? `${labelFor(h.from_status)} → ${labelFor(h.to_status)}` : `Criado em ${labelFor(h.to_status)}`}
-              {" · "}
-              {h.changed_by ?? "?"} · {new Date(h.changed_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className="space-y-0.5">
+        {sorted.map((h) => (
+          <li key={h.id} className="text-[10px] text-foreground/40">
+            {h.from_status ? `${labelFor(h.from_status)} → ${labelFor(h.to_status)}` : `Criado em ${labelFor(h.to_status)}`}
+            {" · "}
+            {h.changed_by ?? "?"} · {new Date(h.changed_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
+          </li>
+        ))}
+      </ul>
     </div>
+  );
+}
+
+function TrashIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className={className} aria-hidden="true">
+      <path
+        d="M4 6h12M8 6V4.5A1.5 1.5 0 0 1 9.5 3h1A1.5 1.5 0 0 1 12 4.5V6m-6.5 0 .6 9.4A1.5 1.5 0 0 0 7.6 17h4.8a1.5 1.5 0 0 0 1.5-1.6L14.5 6M8.5 9v5M11.5 9v5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ColorSwatchPicker({ value, onChange }: { value: string; onChange: (color: string) => void }) {
+  return (
+    <label
+      title="Mudar cor da coluna"
+      onPointerDown={(e) => e.stopPropagation()}
+      className="relative h-6 w-6 shrink-0 cursor-pointer rounded-full ring-1 ring-black/10"
+      style={{
+        background: "conic-gradient(red, yellow, lime, cyan, blue, magenta, red)",
+      }}
+    >
+      <input
+        type="color"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+      />
+    </label>
   );
 }
 
@@ -237,8 +257,10 @@ export default function KanbanBoard({
   setScheduledAt,
   addColumn,
   deleteColumn,
+  deleteLead,
   reorderColumns,
-  updateColumnStyle,
+  updateColumnColor,
+  setColumnWidth,
 }: {
   leads: Lead[];
   columns: Column[];
@@ -248,8 +270,10 @@ export default function KanbanBoard({
   setScheduledAt: (id: string, iso: string | null) => Promise<void>;
   addColumn: (label: string) => Promise<Column>;
   deleteColumn: (id: string) => Promise<void>;
+  deleteLead: (id: string) => Promise<void>;
   reorderColumns: (orderedIds: string[]) => Promise<void>;
-  updateColumnStyle: (id: string, patch: { color?: string; width_px?: number }) => Promise<void>;
+  updateColumnColor: (id: string, color: string) => Promise<void>;
+  setColumnWidth: (id: string, widthPx: number) => Promise<void>;
 }) {
   const [items, setItems] = useState(leads);
   const [columns, setColumns] = useState(initialColumns);
@@ -290,6 +314,18 @@ export default function KanbanBoard({
       setColumns((prev) => prev.filter((c) => c.id !== col.id));
     } catch (e) {
       showError(e instanceof Error ? e.message : "Não foi possível excluir a coluna.");
+    }
+  }
+
+  async function onDeleteLead(lead: Lead) {
+    if (!window.confirm(`Excluir o agendamento de "${lead.name}"? Essa ação não pode ser desfeita.`)) return;
+    const prevItems = items;
+    setItems((prev) => prev.filter((l) => l.id !== lead.id));
+    try {
+      await deleteLead(lead.id);
+    } catch (e) {
+      setItems(prevItems);
+      showError(e instanceof Error ? e.message : "Não foi possível excluir o agendamento.");
     }
   }
 
@@ -342,7 +378,7 @@ export default function KanbanBoard({
 
   function onColorChange(id: string, color: string) {
     setColumns((prev) => prev.map((c) => (c.id === id ? { ...c, color } : c)));
-    enqueue(`color:${id}`, () => updateColumnStyle(id, { color }), () =>
+    enqueue(`color:${id}`, () => updateColumnColor(id, color), () =>
       showError("Não foi possível salvar a cor da coluna."),
     );
   }
@@ -361,7 +397,7 @@ export default function KanbanBoard({
       setColumns((prev) => {
         const updated = prev.find((c) => c.id === col.id);
         if (updated) {
-          enqueue(`width:${col.id}`, () => updateColumnStyle(col.id, { width_px: updated.width_px }), () =>
+          enqueue(`width:${col.id}`, () => setColumnWidth(col.id, updated.width_px), () =>
             showError("Não foi possível salvar a largura da coluna."),
           );
         }
@@ -401,22 +437,16 @@ export default function KanbanBoard({
                 </span>
               </p>
               <div className="flex items-center gap-2">
-                <input
-                  type="color"
-                  value={col.color}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onChange={(e) => onColorChange(col.id, e.target.value)}
-                  title="Cor da coluna"
-                  className="h-5 w-5 cursor-pointer rounded border-0 bg-transparent p-0"
-                />
+                <ColorSwatchPicker value={col.color} onChange={(color) => onColorChange(col.id, color)} />
                 {!col.is_default && (
                   <button
                     type="button"
+                    title="Excluir coluna"
                     onPointerDown={(e) => e.stopPropagation()}
                     onClick={() => onDeleteColumn(col)}
-                    className="text-xs text-red-500 hover:underline"
+                    className="text-red-500 hover:text-red-700"
                   >
-                    ×
+                    <TrashIcon className="h-4 w-4" />
                   </button>
                 )}
               </div>
@@ -430,9 +460,18 @@ export default function KanbanBoard({
                     draggable
                     onDragStart={() => setDragCardId(l.id)}
                     onDragEnd={() => setDragCardId(null)}
-                    className="cursor-grab rounded-xl bg-white p-3 shadow-sm active:cursor-grabbing"
+                    className="group relative cursor-grab rounded-xl bg-white p-3 shadow-sm active:cursor-grabbing"
                   >
-                    <p className="text-sm font-bold">{l.name}</p>
+                    <button
+                      type="button"
+                      title="Excluir agendamento"
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={() => onDeleteLead(l)}
+                      className="absolute right-2 top-2 text-foreground/20 opacity-0 transition-opacity hover:text-red-600 group-hover:opacity-100"
+                    >
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
+                    <p className="pr-5 text-sm font-bold">{l.name}</p>
                     <VisitDate lead={l} onSave={(iso) => onDateSave(l.id, iso)} />
                     {(l.phone || l.email) && (
                       <p className="mt-1 text-xs text-foreground/60">{l.phone || l.email}</p>
@@ -455,8 +494,10 @@ export default function KanbanBoard({
             <div
               onPointerDown={(e) => startResize(col, e)}
               title="Arraste para redimensionar"
-              className="absolute right-0 top-0 h-full w-2 cursor-col-resize rounded-r-2xl hover:bg-black/10"
-            />
+              className="absolute right-0 top-0 flex h-full w-3 cursor-col-resize items-center justify-center rounded-r-2xl hover:bg-black/10"
+            >
+              <span className="h-8 w-1 rounded-full bg-black/15" />
+            </div>
           </div>
         ))}
         <AddColumnForm onCreate={onCreateColumn} />

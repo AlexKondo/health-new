@@ -37,6 +37,12 @@ export async function updateStatus(id: string, status: string) {
   return entry;
 }
 
+export async function deleteLead(id: string) {
+  const { sb } = await requireUser();
+  await sb.from("leads").delete().eq("id", id);
+  revalidatePath("/admin/leads");
+}
+
 export async function setScheduledAt(id: string, iso: string | null) {
   const { sb } = await requireUser();
   if (iso !== null && isNaN(new Date(iso).getTime())) throw new Error("Data inválida.");
@@ -68,18 +74,22 @@ export async function reorderColumns(orderedIds: string[]) {
   revalidatePath("/admin/leads");
 }
 
-export async function updateColumnStyle(id: string, patch: { color?: string; width_px?: number }) {
+export async function updateColumnColor(id: string, color: string) {
   const { sb } = await requireUser();
-  const update: Record<string, unknown> = {};
-  if (patch.color) {
-    if (!/^#[0-9a-fA-F]{6}$/.test(patch.color)) throw new Error("Cor inválida.");
-    update.color = patch.color;
-  }
-  if (patch.width_px) {
-    update.width_px = Math.min(480, Math.max(160, Math.round(patch.width_px)));
-  }
-  if (Object.keys(update).length === 0) return;
-  await sb.from("lead_statuses").update(update).eq("id", id);
+  if (!/^#[0-9a-fA-F]{6}$/.test(color)) throw new Error("Cor inválida.");
+  await sb.from("lead_statuses").update({ color }).eq("id", id);
+  revalidatePath("/admin/leads");
+}
+
+/** Largura de coluna é preferência pessoal — cada admin ajusta a sua sem
+ * afetar a tela dos outros. */
+export async function setColumnWidth(columnId: string, widthPx: number) {
+  const { sb, user } = await requireUser();
+  if (!user.email) return;
+  const width_px = Math.min(480, Math.max(160, Math.round(widthPx)));
+  await sb
+    .from("user_column_prefs")
+    .upsert({ user_email: user.email, column_id: columnId, width_px, updated_at: new Date().toISOString() });
   revalidatePath("/admin/leads");
 }
 

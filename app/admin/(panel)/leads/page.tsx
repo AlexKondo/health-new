@@ -1,15 +1,28 @@
 import Link from "next/link";
 import KanbanBoard from "@/components/admin/KanbanBoard";
 import { requireUser } from "@/lib/admin";
-import { addColumn, deleteColumn, reorderColumns, setScheduledAt, updateColumnStyle, updateStatus } from "./actions";
+import {
+  addColumn,
+  deleteColumn,
+  deleteLead,
+  reorderColumns,
+  setColumnWidth,
+  setScheduledAt,
+  updateColumnColor,
+  updateStatus,
+} from "./actions";
 
 export default async function LeadsPage() {
   const { sb, user } = await requireUser();
-  const [{ data: leads }, { data: statuses }, { data: history }] = await Promise.all([
+  const [{ data: leads }, { data: statuses }, { data: history }, { data: widthPrefs }] = await Promise.all([
     sb.from("leads").select("*").order("created_at", { ascending: false }),
     sb.from("lead_statuses").select("*").order("sort_order"),
     sb.from("lead_status_history").select("*").order("changed_at"),
+    sb.from("user_column_prefs").select("column_id,width_px").eq("user_email", user.email ?? ""),
   ]);
+
+  const widthByColumn = Object.fromEntries((widthPrefs ?? []).map((p) => [p.column_id, p.width_px]));
+  const columns = (statuses ?? []).map((c) => ({ ...c, width_px: widthByColumn[c.id] ?? c.width_px }));
 
   return (
     <div>
@@ -25,15 +38,17 @@ export default async function LeadsPage() {
         <div className="min-w-[900px]">
           <KanbanBoard
             leads={leads ?? []}
-            columns={statuses ?? []}
+            columns={columns}
             history={history ?? []}
             me={user.email ?? ""}
             updateStatus={updateStatus}
             setScheduledAt={setScheduledAt}
             addColumn={addColumn}
             deleteColumn={deleteColumn}
+            deleteLead={deleteLead}
             reorderColumns={reorderColumns}
-            updateColumnStyle={updateColumnStyle}
+            updateColumnColor={updateColumnColor}
+            setColumnWidth={setColumnWidth}
           />
         </div>
       </div>
