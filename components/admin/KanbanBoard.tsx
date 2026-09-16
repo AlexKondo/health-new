@@ -194,6 +194,57 @@ function ColorSwatchPicker({ value, onChange }: { value: string; onChange: (colo
   );
 }
 
+function ColumnTitle({
+  label,
+  count,
+  onRename,
+}: {
+  label: string;
+  count: number;
+  onRename: (label: string) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(label);
+
+  function save() {
+    const trimmed = value.trim();
+    setEditing(false);
+    if (trimmed && trimmed !== label) onRename(trimmed);
+    else setValue(label);
+  }
+
+  if (editing) {
+    return (
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onPointerDown={(e) => e.stopPropagation()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") save();
+          if (e.key === "Escape") {
+            setValue(label);
+            setEditing(false);
+          }
+        }}
+        onBlur={save}
+        autoFocus
+        className="min-w-0 flex-1 rounded border border-brand px-1 py-0.5 text-sm font-extrabold text-brand-dark"
+      />
+    );
+  }
+
+  return (
+    <p
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={() => setEditing(true)}
+      title="Clique para renomear"
+      className="cursor-text truncate text-sm font-extrabold text-brand-dark"
+    >
+      {label} <span className="font-normal text-foreground/40">({count})</span>
+    </p>
+  );
+}
+
 function AddColumnForm({ onCreate }: { onCreate: (label: string) => Promise<boolean> }) {
   const [open, setOpen] = useState(false);
   const [label, setLabel] = useState("");
@@ -267,6 +318,7 @@ export default function KanbanBoard({
   deleteColumn,
   deleteLead,
   reorderColumns,
+  renameColumn,
   updateColumnColor,
   setColumnWidth,
 }: {
@@ -280,6 +332,7 @@ export default function KanbanBoard({
   deleteColumn: (id: string) => Promise<void>;
   deleteLead: (id: string) => Promise<void>;
   reorderColumns: (orderedIds: string[]) => Promise<void>;
+  renameColumn: (id: string, label: string) => Promise<void>;
   updateColumnColor: (id: string, color: string) => Promise<void>;
   setColumnWidth: (id: string, widthPx: number) => Promise<void>;
 }) {
@@ -391,6 +444,13 @@ export default function KanbanBoard({
     );
   }
 
+  function onRenameColumn(id: string, label: string) {
+    setColumns((prev) => prev.map((c) => (c.id === id ? { ...c, label } : c)));
+    enqueue(`rename:${id}`, () => renameColumn(id, label), () =>
+      showError("Não foi possível salvar o novo nome da coluna."),
+    );
+  }
+
   function startResize(col: Column, e: React.PointerEvent) {
     e.preventDefault();
     const startX = e.clientX;
@@ -438,12 +498,11 @@ export default function KanbanBoard({
               onDragEnd={() => setDragColId(null)}
               className="mb-3 flex cursor-grab items-center justify-between active:cursor-grabbing"
             >
-              <p className="text-sm font-extrabold text-brand-dark">
-                {col.label}{" "}
-                <span className="font-normal text-foreground/40">
-                  ({items.filter((l) => l.status === col.key).length})
-                </span>
-              </p>
+              <ColumnTitle
+                label={col.label}
+                count={items.filter((l) => l.status === col.key).length}
+                onRename={(label) => onRenameColumn(col.id, label)}
+              />
               <div className="flex items-center gap-2">
                 <ColorSwatchPicker value={col.color} onChange={(color) => onColorChange(col.id, color)} />
                 {col.key !== "novo" && (

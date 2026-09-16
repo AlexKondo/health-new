@@ -5,6 +5,7 @@ import {
   addColumn,
   deleteColumn,
   deleteLead,
+  renameColumn,
   reorderColumns,
   setColumnWidth,
   setScheduledAt,
@@ -47,6 +48,7 @@ export default async function LeadsPage() {
             deleteColumn={deleteColumn}
             deleteLead={deleteLead}
             reorderColumns={reorderColumns}
+            renameColumn={renameColumn}
             updateColumnColor={updateColumnColor}
             setColumnWidth={setColumnWidth}
           />

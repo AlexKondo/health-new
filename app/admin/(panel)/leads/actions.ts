@@ -74,6 +74,14 @@ export async function reorderColumns(orderedIds: string[]) {
   revalidatePath("/admin/leads");
 }
 
+export async function renameColumn(id: string, rawLabel: string) {
+  const { sb } = await requireUser();
+  const label = rawLabel.trim();
+  if (!label) throw new Error("Nome da coluna é obrigatório.");
+  await sb.from("lead_statuses").update({ label }).eq("id", id);
+  revalidatePath("/admin/leads");
+}
+
 export async function updateColumnColor(id: string, color: string) {
   const { sb } = await requireUser();
   if (!/^#[0-9a-fA-F]{6}$/.test(color)) throw new Error("Cor inválida.");
