@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const GRADES = [
   "Berçário", "Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Grupo 5",
@@ -25,23 +25,34 @@ export default function LeadForm() {
   const [slots, setSlots] = useState<{ at: string; label: string }[]>([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [scheduledAt, setScheduledAt] = useState("");
+  const submittingRef = useRef(false);
 
-  useEffect(() => {
-    if (!date) { setSlots([]); return; }
+  function loadSlots(d: string) {
+    if (!d) { setSlots([]); return; }
     setSlotsLoading(true);
-    setScheduledAt("");
-    fetch(`/api/visit-slots?date=${date}`)
+    fetch(`/api/visit-slots?date=${d}`)
       .then((r) => r.json())
-      .then((d) => setSlots(d.slots ?? []))
+      .then((data) => setSlots(data.slots ?? []))
       .catch(() => setSlots([]))
       .finally(() => setSlotsLoading(false));
+  }
+
+  useEffect(() => {
+    setScheduledAt("");
+    loadSlots(date);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setStatus("sending");
     setErrorMsg("");
-    const fd = new FormData(e.currentTarget);
+    // currentTarget vira null depois de um await (fim da fase de propagação
+    // do evento) — captura a referência do form antes do fetch.
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const payload = Object.fromEntries(fd.entries());
     try {
       const res = await fetch("/api/leads", {
@@ -51,16 +62,25 @@ export default function LeadForm() {
       });
       if (!res.ok) {
         const d = await res.json().catch(() => ({}));
-        setErrorMsg(d.error || "");
+        if (res.status === 409) {
+          setErrorMsg(d.error || "Esse horário acabou de ser reservado por outra pessoa. Escolha outro horário.");
+          setScheduledAt("");
+          loadSlots(date);
+        } else {
+          setErrorMsg(d.error || "");
+        }
         throw new Error();
       }
       setStatus("ok");
-      e.currentTarget.reset();
+      form.reset();
       setDate("");
       setSlots([]);
       setScheduledAt("");
-    } catch {
+    } catch (err) {
+      console.error(err);
       setStatus("error");
+    } finally {
+      submittingRef.current = false;
     }
   }
 
