@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { requireUser } from "@/lib/admin";
 import DeleteForm from "@/components/admin/DeleteForm";
+import { ACTIVITY_STYLE, fallbackStyle } from "@/lib/activity-style";
 import { deleteActivity } from "./actions";
 
 export default async function AtividadesPage() {
@@ -21,7 +22,21 @@ export default async function AtividadesPage() {
         {(activities ?? []).map((a) => (
           <div key={a.id} className="flex items-center gap-4 rounded-2xl bg-white p-3 shadow-sm">
             <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-brand-soft">
-              {a.tile_image && <Image src={a.tile_image} alt={a.title} fill className="object-cover" />}
+              {a.tile_image ? (
+                <Image src={a.tile_image} alt={a.title} fill className="object-cover" />
+              ) : (
+                (() => {
+                  const st = ACTIVITY_STYLE[a.slug] ?? fallbackStyle;
+                  return (
+                    <div
+                      className="grid h-full w-full place-items-center text-xl"
+                      style={{ backgroundImage: `linear-gradient(135deg, ${st.from}, ${st.to})` }}
+                    >
+                      {st.icon}
+                    </div>
+                  );
+                })()
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-bold truncate">{a.title}</p>
