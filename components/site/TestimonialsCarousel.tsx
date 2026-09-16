@@ -17,6 +17,8 @@ const ROLE_LABEL: Record<string, string> = {
   colaborador: "Colaborador(a)",
 };
 
+const CARD_GAP_PX = 24; // deve bater com o gap-6 usado na trilha
+
 function initials(name: string) {
   return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 }
@@ -37,6 +39,28 @@ function Avatar({ t }: { t: T }) {
   );
 }
 
+function Card({ t, onExpand }: { t: T; onExpand: () => void }) {
+  return (
+    <article className="flex h-[400px] w-full flex-col rounded-3xl bg-white p-6 shadow-xl shadow-brand-dark/5 ring-1 ring-black/5">
+      <div className="text-accent text-lg mb-3">{"★".repeat(t.rating)}</div>
+      <p className="flex-1 overflow-hidden text-sm text-foreground/80 line-clamp-[10]">{t.text}</p>
+      <button
+        onClick={onExpand}
+        className="mt-2 self-start text-sm font-bold text-brand hover:underline"
+      >
+        Ler tudo
+      </button>
+      <div className="mt-5 flex items-center gap-3">
+        <Avatar t={t} />
+        <div>
+          <p className="font-bold text-sm">{t.author_name}</p>
+          <p className="text-xs text-foreground/60">{ROLE_LABEL[t.role] ?? t.role}</p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function TestimonialsCarousel({
   items,
   intervalSeconds = 0,
@@ -44,23 +68,54 @@ export default function TestimonialsCarousel({
   items: T[];
   intervalSeconds?: number;
 }) {
-  const [page, setPage] = useState(0);
+  const n = items.length;
+  // Trilha triplicada: sempre há espaço pra andar pra frente e pra trás sem
+  // esbarrar na ponta, e a gente "teleporta" sem transição de volta pra cópia
+  // do meio quando o índice sai da faixa segura — dá a ilusão de loop infinito.
+  const loopedItems = n > 1 ? [...items, ...items, ...items] : items;
+  const [index, setIndex] = useState(n);
+  const [animated, setAnimated] = useState(true);
   const [paused, setPaused] = useState(false);
   const [expanded, setExpanded] = useState<T | null>(null);
-  const perPage = 3;
-  const pages = Math.ceil(items.length / perPage);
-  const slice = items.slice(page * perPage, page * perPage + perPage);
+  const [stepPx, setStepPx] = useState(0);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const firstCardRef = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (!intervalSeconds || intervalSeconds <= 0 || pages <= 1 || paused) return;
-    timerRef.current = setInterval(() => {
-      setPage((p) => (p + 1) % pages);
-    }, intervalSeconds * 1000);
+    function measure() {
+      if (firstCardRef.current) setStepPx(firstCardRef.current.offsetWidth + CARD_GAP_PX);
+    }
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [n]);
+
+  // Corrige o índice de volta pra faixa [n, 2n) sem transição, depois de a
+  // animação da troca anterior já ter terminado.
+  useEffect(() => {
+    if (n <= 1) return;
+    if (index >= n && index < n * 2) return;
+    const t = setTimeout(() => {
+      setAnimated(false);
+      setIndex((i) => (i >= n * 2 ? i - n : i + n));
+    }, 650);
+    return () => clearTimeout(t);
+  }, [index, n]);
+
+  useEffect(() => {
+    if (animated) return;
+    const t = requestAnimationFrame(() => setAnimated(true));
+    return () => cancelAnimationFrame(t);
+  }, [animated]);
+
+  useEffect(() => {
+    if (!intervalSeconds || intervalSeconds <= 0 || n <= 1 || paused) return;
+    timerRef.current = setInterval(() => setIndex((i) => i + 1), intervalSeconds * 1000);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [intervalSeconds, pages, paused]);
+  }, [intervalSeconds, n, paused]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -73,47 +128,36 @@ export default function TestimonialsCarousel({
 
   return (
     <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <div className="grid gap-6 md:grid-cols-3">
-        {slice.map((t, idx) => (
-          <article
-            key={idx}
-            className="flex flex-col rounded-3xl bg-white p-6 shadow-xl shadow-brand-dark/5 ring-1 ring-black/5 transition-transform duration-300 hover:-translate-y-1.5"
-          >
-            <div className="text-accent text-lg mb-3">{"★".repeat(t.rating)}</div>
-            <p className="flex-1 text-sm text-foreground/80 line-clamp-[10]">{t.text}</p>
-            <button
-              onClick={() => setExpanded(t)}
-              className="mt-2 self-start text-sm font-bold text-brand hover:underline"
-            >
-              Ler tudo
-            </button>
-            <div className="mt-5 flex items-center gap-3">
-              <Avatar t={t} />
-              <div>
-                <p className="font-bold text-sm">{t.author_name}</p>
-                <p className="text-xs text-foreground/60">{ROLE_LABEL[t.role] ?? t.role}</p>
-              </div>
+      <div className="overflow-hidden">
+        <div
+          ref={trackRef}
+          className="flex gap-6"
+          style={{
+            transform: stepPx ? `translateX(-${index * stepPx}px)` : undefined,
+            transition: animated ? "transform 600ms ease" : "none",
+          }}
+        >
+          {loopedItems.map((t, idx) => (
+            <div key={idx} ref={idx === 0 ? firstCardRef : undefined} className="w-full shrink-0 md:w-[calc((100%-3rem)/3)]">
+              <Card t={t} onExpand={() => setExpanded(t)} />
             </div>
-          </article>
-        ))}
+          ))}
+        </div>
       </div>
 
-      {pages > 1 && (
+      {n > 1 && (
         <div className="mt-8 flex items-center justify-center gap-3">
           <button
-            onClick={() => setPage((p) => (p - 1 + pages) % pages)}
+            onClick={() => setIndex((i) => i - 1)}
             className="h-10 w-10 rounded-full border border-brand-soft hover:bg-brand-soft"
-            aria-label="Anteriores"
+            aria-label="Anterior"
           >
             ‹
           </button>
-          <span className="text-sm text-foreground/60">
-            {page + 1} / {pages}
-          </span>
           <button
-            onClick={() => setPage((p) => (p + 1) % pages)}
+            onClick={() => setIndex((i) => i + 1)}
             className="h-10 w-10 rounded-full border border-brand-soft hover:bg-brand-soft"
-            aria-label="Próximos"
+            aria-label="Próximo"
           >
             ›
           </button>

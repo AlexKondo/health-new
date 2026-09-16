@@ -17,7 +17,21 @@ const LINKS = [
 ];
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
-  const { user } = await requireUser();
+  const { user, sb } = await requireUser();
+
+  const now = new Date();
+  const in24h = new Date(now.getTime() + 24 * 3600 * 1000);
+  const [{ count: novoCount }, { count: upcomingCount }] = await Promise.all([
+    sb.from("leads").select("*", { count: "exact", head: true }).eq("status", "novo"),
+    sb
+      .from("leads")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "agendado")
+      .gte("scheduled_at", now.toISOString())
+      .lte("scheduled_at", in24h.toISOString()),
+  ]);
+  const pendingCount = (novoCount ?? 0) + (upcomingCount ?? 0);
+
   return (
     <div className="min-h-screen grid md:grid-cols-[240px_1fr] bg-brand-soft/40">
       <aside className="bg-brand-dark text-white p-5 md:min-h-screen">
@@ -28,9 +42,15 @@ export default async function PanelLayout({ children }: { children: React.ReactN
             <Link
               key={l.href}
               href={l.href}
-              className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-white/10"
+              className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold hover:bg-white/10"
             >
               {l.label}
+              {l.href === "/admin/leads" && pendingCount > 0 && (
+                <span className="relative inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-xs font-bold text-white">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                  <span className="relative">{pendingCount}</span>
+                </span>
+              )}
             </Link>
           ))}
         </nav>
