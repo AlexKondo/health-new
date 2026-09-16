@@ -70,9 +70,8 @@ export async function updateColumnStyle(id: string, patch: { color?: string; wid
   revalidatePath("/admin/leads");
 }
 
-export async function deleteColumn(formData: FormData) {
+export async function deleteColumn(id: string) {
   const { sb } = await requireUser();
-  const id = String(formData.get("id"));
 
   const { data: col } = await sb.from("lead_statuses").select("key,is_default").eq("id", id).single();
   if (!col) return;

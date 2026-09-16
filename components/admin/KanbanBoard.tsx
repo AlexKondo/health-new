@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import DeleteForm from "@/components/admin/DeleteForm";
 
 type Column = {
   id: string;
@@ -201,7 +200,7 @@ export default function KanbanBoard({
   updateStatus: (id: string, status: string) => Promise<void>;
   setScheduledAt: (id: string, iso: string | null) => Promise<void>;
   addColumn: (label: string) => Promise<Column>;
-  deleteColumn: (formData: FormData) => void | Promise<void>;
+  deleteColumn: (id: string) => Promise<void>;
   reorderColumns: (orderedIds: string[]) => Promise<void>;
   updateColumnStyle: (id: string, patch: { color?: string; width_px?: number }) => Promise<void>;
 }) {
@@ -225,6 +224,16 @@ export default function KanbanBoard({
     } catch (e) {
       showError(e instanceof Error ? e.message : "Não foi possível criar a coluna.");
       return false;
+    }
+  }
+
+  async function onDeleteColumn(col: Column) {
+    if (!window.confirm(`Excluir a coluna "${col.label}"?`)) return;
+    try {
+      await deleteColumn(col.id);
+      setColumns((prev) => prev.filter((c) => c.id !== col.id));
+    } catch (e) {
+      showError(e instanceof Error ? e.message : "Não foi possível excluir a coluna.");
     }
   }
 
@@ -333,9 +342,14 @@ export default function KanbanBoard({
                   className="h-5 w-5 cursor-pointer rounded border-0 bg-transparent p-0"
                 />
                 {!col.is_default && (
-                  <DeleteForm action={deleteColumn} id={col.id} confirmText={`Excluir a coluna "${col.label}"?`}>
-                    <button className="text-xs text-red-500 hover:underline">×</button>
-                  </DeleteForm>
+                  <button
+                    type="button"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={() => onDeleteColumn(col)}
+                    className="text-xs text-red-500 hover:underline"
+                  >
+                    ×
+                  </button>
                 )}
               </div>
             </div>
