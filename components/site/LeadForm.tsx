@@ -8,14 +8,17 @@ const GRADES = [
 ];
 const PERIODS = ["Manhã", "Tarde", "Integral"];
 
+// Formata no fuso da escola, não no fuso implícito do ambiente — servidor
+// roda em UTC e o navegador no fuso do visitante, que divergem perto da
+// meia-noite e causariam erro de hidratação (HTML do servidor != cliente).
+function dateKeyInTz(d: Date) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(d);
+}
 function todayISO() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return dateKeyInTz(new Date());
 }
 function maxISO() {
-  const d = new Date();
-  d.setDate(d.getDate() + 60);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return dateKeyInTz(new Date(Date.now() + 60 * 86400000));
 }
 
 export default function LeadForm() {

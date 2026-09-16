@@ -42,14 +42,21 @@ function toLocalInputValue(iso: string) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+const TZ = "America/Sao_Paulo";
+
+// Formata a data em ISO no fuso da escola, não no fuso implícito do
+// ambiente — o servidor roda em UTC e o navegador no fuso do visitante,
+// que divergem perto da meia-noite e causam erro de hidratação se o
+// texto renderizado no servidor não bater com o do cliente.
+function dateKeyInTz(d: Date) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(d);
+}
+
 function dayLabel(iso: string) {
-  const target = new Date(iso);
-  const today = new Date();
-  const diffDays = Math.round(
-    (new Date(target.toDateString()).getTime() - new Date(today.toDateString()).getTime()) / 86400000,
-  );
-  if (diffDays === 0) return "HOJE";
-  if (diffDays === 1) return "AMANHÃ";
+  const target = dateKeyInTz(new Date(iso));
+  const now = Date.now();
+  if (target === dateKeyInTz(new Date(now))) return "HOJE";
+  if (target === dateKeyInTz(new Date(now + 86400000))) return "AMANHÃ";
   return null;
 }
 
@@ -120,6 +127,7 @@ function VisitDate({ lead, onSave }: { lead: Lead; onSave: (iso: string | null) 
             <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">{label}</span>
           )}
           {new Date(lead.scheduled_at).toLocaleString("pt-BR", {
+            timeZone: TZ,
             day: "2-digit",
             month: "2-digit",
             hour: "2-digit",
@@ -144,7 +152,7 @@ function HistoryList({ entries, labelFor }: { entries: HistoryEntry[]; labelFor:
           <li key={h.id} className="text-[10px] text-foreground/40">
             {h.from_status ? `${labelFor(h.from_status)} → ${labelFor(h.to_status)}` : `Criado em ${labelFor(h.to_status)}`}
             {" · "}
-            {h.changed_by ?? "?"} · {new Date(h.changed_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
+            {h.changed_by ?? "?"} · {new Date(h.changed_at).toLocaleString("pt-BR", { timeZone: TZ, day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
           </li>
         ))}
       </ul>
