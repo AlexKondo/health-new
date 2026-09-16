@@ -12,6 +12,7 @@ const LINKS = [
   { href: "/admin/leads", label: "Agendamentos" },
   { href: "/admin/whatsapp", label: "WhatsApp" },
   { href: "/admin/trafego", label: "Tráfego pago" },
+  { href: "/admin/usuarios", label: "Usuários" },
   { href: "/admin/conta", label: "Minha conta" },
 ];
 
