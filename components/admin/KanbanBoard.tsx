@@ -446,7 +446,7 @@ export default function KanbanBoard({
               </p>
               <div className="flex items-center gap-2">
                 <ColorSwatchPicker value={col.color} onChange={(color) => onColorChange(col.id, color)} />
-                {!col.is_default && (
+                {col.key !== "novo" && (
                   <button
                     type="button"
                     title="Excluir coluna"

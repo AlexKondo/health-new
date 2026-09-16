@@ -96,9 +96,11 @@ export async function setColumnWidth(columnId: string, widthPx: number) {
 export async function deleteColumn(id: string) {
   const { sb } = await requireUser();
 
-  const { data: col } = await sb.from("lead_statuses").select("key,is_default").eq("id", id).single();
+  const { data: col } = await sb.from("lead_statuses").select("key").eq("id", id).single();
   if (!col) return;
-  if (col.is_default) throw new Error("Essa coluna é padrão do sistema e não pode ser excluída.");
+  if (col.key === "novo") {
+    throw new Error('A coluna "Novo" não pode ser excluída — é para onde os agendamentos feitos pelo site caem automaticamente.');
+  }
 
   const { count } = await sb.from("leads").select("*", { count: "exact", head: true }).eq("status", col.key);
   if ((count ?? 0) > 0) throw new Error("Mova os cards dessa coluna antes de excluí-la.");
