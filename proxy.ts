@@ -76,6 +76,14 @@ export async function proxy(request: NextRequest) {
     url.pathname = "/admin";
     return NextResponse.redirect(url);
   }
+  // Sessão própria (mesmo navegador) ainda sem senha definida — resolve
+  // sem precisar de um link novo, mandando pra tela certa a partir da
+  // própria sessão já ativa (não de um token de e-mail).
+  if (isLogin && user && !passwordSet) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/redefinir-senha";
+    return NextResponse.redirect(url);
+  }
   if (isRedefinirSenha && user && passwordSet) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin";

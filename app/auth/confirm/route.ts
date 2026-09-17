@@ -26,19 +26,15 @@ export async function GET(request: NextRequest) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
-
-    // O token só serve uma vez. Se essa mesma pessoa já tinha clicado no
-    // link antes (sessão ainda válida no navegador) e só não chegou a
-    // definir a senha, não manda pra tela de login — manda de volta pro
-    // destino, que o proxy.ts redireciona pra redefinir-senha se a senha
-    // ainda não tiver sido definida.
-    const {
-      data: { user },
-    } = await sb.auth.getUser();
-    if (user) {
-      return NextResponse.redirect(`${origin}${next}`);
-    }
+    // Um token inválido nunca deve dar a impressão de ter "funcionado".
+    // Se o navegador já tinha uma sessão de OUTRA conta (ex.: um admin
+    // testando vários convites em sequência), deixar essa sessão intacta
+    // faria o link quebrado de uma pessoa parecer ter logado como a outra
+    // — confuso mesmo sem vazar dado nenhum entre contas. Desloga antes
+    // de mandar pro login, pra um link inválido nunca "aproveitar" uma
+    // sessão alheia.
+    await sb.auth.signOut();
   }
 
-  return NextResponse.redirect(`${origin}/admin/login`);
+  return NextResponse.redirect(`${origin}/admin/login?notice=link_invalid`);
 }

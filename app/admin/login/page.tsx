@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 
@@ -12,7 +12,17 @@ function formatWait(seconds: number) {
 }
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const linkInvalid = searchParams.get("notice") === "link_invalid";
   const [mode, setMode] = useState<"login" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -123,6 +133,11 @@ export default function LoginPage() {
       <form onSubmit={onSubmit} className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-lg">
         <Image src="/images/logo.png" alt="Escola Saúde" width={160} height={60} className="mx-auto h-12 w-auto" />
         <h1 className="mt-6 text-center text-xl font-extrabold text-brand-dark">Painel administrativo</h1>
+        {linkInvalid && (
+          <p className="mt-4 rounded-xl bg-amber-50 p-3 text-center text-sm text-amber-800">
+            O link que você usou já foi usado ou expirou. Peça um novo convite/redefinição, ou entre com seu e-mail e senha abaixo.
+          </p>
+        )}
         <label className="mt-6 block text-sm font-semibold">
           E-mail
           <input
