@@ -26,6 +26,18 @@ export async function GET(request: NextRequest) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
+
+    // O token só serve uma vez. Se essa mesma pessoa já tinha clicado no
+    // link antes (sessão ainda válida no navegador) e só não chegou a
+    // definir a senha, não manda pra tela de login — manda de volta pro
+    // destino, que o proxy.ts redireciona pra redefinir-senha se a senha
+    // ainda não tiver sido definida.
+    const {
+      data: { user },
+    } = await sb.auth.getUser();
+    if (user) {
+      return NextResponse.redirect(`${origin}${next}`);
+    }
   }
 
   return NextResponse.redirect(`${origin}/admin/login`);
