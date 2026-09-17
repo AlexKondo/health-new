@@ -94,5 +94,9 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|images|.*\\.(?:png|jpg|jpeg|svg|webp|gif)$).*)"],
+  // /api fica de fora: cada rota já valida o próprio usuário (getUser() nela
+  // mesma), e um redirect HTML de middleware não faz sentido pra uma chamada
+  // fetch() — só adicionava uma segunda checagem de rede redundante em cada
+  // request de API, sem nenhum ganho de segurança.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|images|api|.*\\.(?:png|jpg|jpeg|svg|webp|gif)$).*)"],
 };

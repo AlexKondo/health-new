@@ -30,16 +30,3 @@ export async function resendInvite(formData: FormData) {
   await requireUser();
   await sendInvite(formData.get("email"));
 }
-
-export async function removeUser(formData: FormData) {
-  const { user } = await requireUser();
-  const id = String(formData.get("id") || "");
-  if (!id) throw new Error("Usuário inválido.");
-  if (id === user.id) throw new Error("Você não pode remover o próprio acesso.");
-
-  const service = createServiceClient();
-  const { error } = await service.auth.admin.deleteUser(id);
-  if (error) throw new Error(error.message);
-
-  revalidatePath("/admin/usuarios");
-}
