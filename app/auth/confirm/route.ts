@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
   const next = safeNext(searchParams.get("next"));
+  const linkEmail = searchParams.get("email")?.toLowerCase() ?? null;
 
   if (token_hash && type) {
     const sb = await createClient();
@@ -26,13 +27,23 @@ export async function GET(request: NextRequest) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
-    // Um token inválido nunca deve dar a impressão de ter "funcionado".
-    // Se o navegador já tinha uma sessão de OUTRA conta (ex.: um admin
-    // testando vários convites em sequência), deixar essa sessão intacta
-    // faria o link quebrado de uma pessoa parecer ter logado como a outra
-    // — confuso mesmo sem vazar dado nenhum entre contas. Desloga antes
-    // de mandar pro login, pra um link inválido nunca "aproveitar" uma
-    // sessão alheia.
+
+    // O token já foi usado (ex.: a pessoa clicou no mesmo link de novo
+    // depois de fechar o navegador sem terminar de cadastrar a senha) —
+    // não quer dizer que o link seja de OUTRA pessoa. Se o navegador já
+    // tem uma sessão logada com o mesmo e-mail do link, é seguro só
+    // continuar com ela em vez de derrubar o usuário. Só reaproveitamos
+    // quando os e-mails batem exatamente; do contrário (sessão de outra
+    // conta, ou nenhuma sessão) desloga, pra um link inválido/alheio
+    // nunca dar a impressão de ter "logado como outra pessoa".
+    if (linkEmail) {
+      const {
+        data: { user },
+      } = await sb.auth.getUser();
+      if (user?.email?.toLowerCase() === linkEmail) {
+        return NextResponse.redirect(`${origin}${next}`);
+      }
+    }
     await sb.auth.signOut();
   }
 

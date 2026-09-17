@@ -2,7 +2,6 @@ import Link from "next/link";
 import { requireUser } from "@/lib/admin";
 import { createServiceClient } from "@/lib/supabase/service";
 import UsersList from "@/components/admin/UsersList";
-import { resendInvite } from "./actions";
 
 function formatDate(v: string | null | undefined) {
   if (!v) return "—";
@@ -23,10 +22,26 @@ async function listAllUsers(service: ReturnType<typeof createServiceClient>) {
   return { users: all, error: null };
 }
 
+async function listInviteSends(service: ReturnType<typeof createServiceClient>) {
+  const { data } = await service
+    .from("invite_sends")
+    .select("email, sent_at")
+    .order("sent_at", { ascending: false });
+
+  const byEmail: Record<string, string[]> = {};
+  for (const row of data ?? []) {
+    (byEmail[row.email] ??= []).push(row.sent_at);
+  }
+  return byEmail;
+}
+
 export default async function UsuariosPage() {
   const { user: me } = await requireUser();
   const service = createServiceClient();
-  const { users: fetched, error } = await listAllUsers(service);
+  const [{ users: fetched, error }, inviteSends] = await Promise.all([
+    listAllUsers(service),
+    listInviteSends(service),
+  ]);
   const users = [...fetched].sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
   );
@@ -47,7 +62,7 @@ export default async function UsuariosPage() {
 
       <UsersList
         meId={me.id}
-        resendInvite={resendInvite}
+        initialInviteSends={inviteSends}
         initialUsers={users.map((u) => ({
           id: u.id,
           email: u.email ?? "",
