@@ -9,6 +9,8 @@ import SuccessPopup from "@/components/admin/SuccessPopup";
 export default function ResetPasswordPage() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
+  const [linkError, setLinkError] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,6 +18,18 @@ export default function ResetPasswordPage() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
+    // O Supabase manda erro (link expirado/já usado) tanto na query string
+    // quanto no hash da URL — detecta os dois pra avisar na hora, sem
+    // esperar o timeout de "não ficou pronto".
+    const fromQuery = new URLSearchParams(window.location.search);
+    const fromHash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const code = fromQuery.get("error_code") || fromHash.get("error_code");
+    if (code === "otp_expired") {
+      setLinkError("Esse link já foi usado ou expirou — cada link só funciona uma vez.");
+    } else if (fromQuery.get("error") || fromHash.get("error")) {
+      setLinkError("Esse link não é válido.");
+    }
+
     const sb = createClient();
     // O link do e-mail estabelece uma sessão de recuperação client-side.
     const { data: sub } = sb.auth.onAuthStateChange((event) => {
@@ -24,7 +38,11 @@ export default function ResetPasswordPage() {
     sb.auth.getSession().then(({ data }) => {
       if (data.session) setReady(true);
     });
-    return () => sub.subscription.unsubscribe();
+    const timer = setTimeout(() => setTimedOut(true), 4000);
+    return () => {
+      sub.subscription.unsubscribe();
+      clearTimeout(timer);
+    };
   }, []);
 
   async function onSubmit(e: React.FormEvent) {
@@ -41,11 +59,17 @@ export default function ResetPasswordPage() {
     setLoading(true);
     const sb = createClient();
     const { error: updateError } = await sb.auth.updateUser({ password });
-    setLoading(false);
     if (updateError) {
+      setLoading(false);
       setError(updateError.message);
       return;
     }
+    // Marca a senha como definida (fora do JWT atual — precisa de service
+    // role) e atualiza a sessão local pra já refletir isso, senão o
+    // middleware manda de volta pra cá mesmo depois de salvar a senha.
+    await fetch("/api/auth/mark-password-set", { method: "POST" });
+    await sb.auth.refreshSession();
+    setLoading(false);
     setSuccess(true);
   }
 
@@ -56,9 +80,28 @@ export default function ResetPasswordPage() {
         <h1 className="mt-6 text-center text-xl font-extrabold text-brand-dark">Definir nova senha</h1>
 
         {!ready ? (
-          <p className="mt-6 text-center text-sm text-foreground/60">
-            Abra esta página pelo link enviado ao seu e-mail.
-          </p>
+          <div className="mt-6 text-center text-sm text-foreground/60">
+            {linkError ? (
+              <p className="font-semibold text-red-600">{linkError}</p>
+            ) : (
+              <p>Abra esta página pelo link enviado ao seu e-mail.</p>
+            )}
+            {(timedOut || linkError) && (
+              <div className="mt-4 rounded-xl bg-amber-50 p-4 text-left text-amber-800">
+                <p className="font-semibold">Esse link não funcionou.</p>
+                <p className="mt-1">Motivos comuns:</p>
+                <ul className="mt-1 list-disc pl-4">
+                  <li>O link já foi usado antes (cada link só funciona uma vez)</li>
+                  <li>
+                    Ele foi colado num app de mensagens (WhatsApp, Telegram) antes de você clicar — o app
+                    gera uma prévia da página e isso pode invalidar o link
+                  </li>
+                  <li>O link expirou (validade limitada)</li>
+                </ul>
+                <p className="mt-2">Peça para reenviarem o convite/redefinição e clique direto no link do e-mail, sem colar em nenhum chat antes.</p>
+              </div>
+            )}
+          </div>
         ) : (
           <form onSubmit={onSubmit} className="mt-6 grid gap-4">
             <label className="block text-sm font-semibold">

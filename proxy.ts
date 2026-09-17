@@ -27,6 +27,7 @@ export async function proxy(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      cookieOptions: { secure: process.env.NODE_ENV === "production", sameSite: "lax" },
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -46,17 +47,36 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // Sessão obtida só de clicar num link de convite/recuperação já autentica
+  // no Supabase, mas a pessoa ainda não escolheu senha nenhuma — essa
+  // sessão só pode ser usada pra definir a senha, não pra navegar o resto
+  // do painel. password_set só vira true depois de updateUser({password})
+  // (ver /api/auth/mark-password-set), via app_metadata (não editável pelo
+  // próprio usuário).
+  const passwordSet = user?.app_metadata?.password_set === true;
+
   const { pathname } = request.nextUrl;
   const isAdmin = pathname.startsWith("/admin");
   const isPublicAdminPath = PUBLIC_ADMIN_PATHS.includes(pathname);
   const isLogin = pathname === "/admin/login";
+  const isRedefinirSenha = pathname === "/admin/redefinir-senha";
 
   if (isAdmin && !isPublicAdminPath && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
     return NextResponse.redirect(url);
   }
-  if (isLogin && user) {
+  if (isAdmin && !isPublicAdminPath && user && !passwordSet) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/redefinir-senha";
+    return NextResponse.redirect(url);
+  }
+  if (isLogin && user && passwordSet) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin";
+    return NextResponse.redirect(url);
+  }
+  if (isRedefinirSenha && user && passwordSet) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin";
     return NextResponse.redirect(url);
