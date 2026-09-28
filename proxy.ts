@@ -59,7 +59,6 @@ export async function proxy(request: NextRequest) {
   const isAdmin = pathname.startsWith("/admin");
   const isPublicAdminPath = PUBLIC_ADMIN_PATHS.includes(pathname);
   const isLogin = pathname === "/admin/login";
-  const isRedefinirSenha = pathname === "/admin/redefinir-senha";
 
   if (isAdmin && !isPublicAdminPath && !user) {
     const url = request.nextUrl.clone();
@@ -84,11 +83,12 @@ export async function proxy(request: NextRequest) {
     url.pathname = "/admin/redefinir-senha";
     return NextResponse.redirect(url);
   }
-  if (isRedefinirSenha && user && passwordSet) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/admin";
-    return NextResponse.redirect(url);
-  }
+  // Não redireciona /admin/redefinir-senha pra fora só por já ter senha
+  // definida: um link de "esqueci minha senha" clicado por quem JÁ tem
+  // senha também autentica com password_set=true, e essa página é
+  // exatamente onde essa pessoa precisa estar pra trocar a senha — mandar
+  // pra /admin nesse momento pulava a troca sem nunca perguntar a nova
+  // senha.
 
   return response;
 }
