@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Hero from "@/components/site/Hero";
+import HashScrollSmooth from "@/components/site/HashScrollSmooth";
 import StatsStrip from "@/components/site/StatsStrip";
 import TestimonialsCarousel from "@/components/site/TestimonialsCarousel";
 import FaqAccordion from "@/components/site/FaqAccordion";
@@ -40,6 +41,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <HashScrollSmooth />
       <Hero banners={banners} />
       <StatsStrip stats={stats} />
 
