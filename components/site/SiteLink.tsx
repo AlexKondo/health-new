@@ -52,7 +52,22 @@ export default function SiteLink({
     );
   }
   return (
-    <Link href={href} className={className} onClick={onClick}>
+    <Link
+      href={href}
+      className={className}
+      onClick={(e) => {
+        // Link do Next não limpa uma hash já presente na URL quando o
+        // destino é a MESMA rota sem hash (ex.: clicar em "Início" com
+        // "/#sobre-nos" na barra) — como a rota não muda, ele nem sempre
+        // dispara uma navegação de verdade, e a hash antiga fica presa.
+        if (typeof window !== "undefined" && window.location.hash && window.location.pathname === href) {
+          e.preventDefault();
+          history.pushState(null, "", href);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        onClick?.();
+      }}
+    >
       {children}
     </Link>
   );
