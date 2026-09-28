@@ -41,7 +41,7 @@ export default function PartnerForm({ partner }: { partner?: Partner }) {
         <ImageInput
           name="logo"
           label="Logo (imagem quadrada)"
-          hint="Tamanho recomendado: 400×400px, fundo transparente ou branco. Deixe em branco para manter o logo atual."
+          hint="Todo logo é ajustado automaticamente para 400×400px, sem cortar nem distorcer — pode enviar em qualquer tamanho/proporção que o sistema encaixa. Deixe em branco para manter o logo atual."
           onFileChange={(f) => setPreview(URL.createObjectURL(f))}
         />
       </div>

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/admin";
-import { uploadPublic } from "@/lib/storage";
+import { uploadSquareLogo } from "@/lib/storage";
 
 function nullable(v: FormDataEntryValue | null) {
   const s = String(v ?? "").trim();
@@ -16,7 +16,7 @@ export async function savePartner(formData: FormData) {
   const id = nullable(formData.get("id"));
   const file = formData.get("logo") as File | null;
   let logo_url = nullable(formData.get("logo_url"));
-  if (file && file.size > 0) logo_url = await uploadPublic("partners", file);
+  if (file && file.size > 0) logo_url = await uploadSquareLogo("partners", file, 400);
 
   const name = String(formData.get("name") || "").trim();
   if (!name) throw new Error("Nome é obrigatório.");
