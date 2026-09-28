@@ -9,8 +9,17 @@ import ActivityTile from "@/components/site/ActivityTile";
 import Reveal from "@/components/site/Reveal";
 import { Section, SectionTitle } from "@/components/site/Section";
 import {
-  getActiveBanners, getTestimonials, getFaq, getSegments, getActivities, getStats, getSetting,
+  getActiveBanners, getTestimonials, getFaq, getSegments, getActivities, getStats, getSetting, getSettings,
 } from "@/lib/content";
+
+const ABOUT_DEFAULTS = {
+  about_title: "Um pouco sobre nós",
+  about_text:
+    "Escola é recepcionar com um sorriso, acolher com um abraço, ouvir histórias cheias de imaginação com interesse genuíno, é comemorar cada passo dado, é instigar a curiosidade e ser curioso. Para nós, da Escola Saúde, educar é muito mais que ensinar.",
+  about_cta_text: "Venha nos conhecer, será um prazer recebê-lo aqui!",
+  about_cta_href: "#agendar",
+  about_image_url: "",
+};
 
 const SEGMENT_BLURB: Record<string, string> = {
   bercario: "Acolhimento e estímulo nos primeiros passos, com muito afeto.",
@@ -19,9 +28,10 @@ const SEGMENT_BLURB: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [banners, testimonials, faq, segments, activities, stats, testimonialsIntervalRaw] = await Promise.all([
+  const [banners, testimonials, faq, segments, activities, stats, testimonialsIntervalRaw, about] = await Promise.all([
     getActiveBanners(), getTestimonials(), getFaq(), getSegments(), getActivities(), getStats(),
     getSetting("testimonials_interval_seconds", "3"),
+    getSettings(ABOUT_DEFAULTS),
   ]);
   const testimonialsInterval = Number(testimonialsIntervalRaw) || 0;
 
@@ -32,6 +42,31 @@ export default async function HomePage() {
     <>
       <Hero banners={banners} />
       <StatsStrip stats={stats} />
+
+      {/* Um pouco sobre nós */}
+      <Section className="grid items-center gap-10 md:grid-cols-2">
+        <Reveal>
+          {about.about_image_url ? (
+            <div className="relative aspect-square overflow-hidden rounded-3xl shadow-xl">
+              <Image src={about.about_image_url} alt={about.about_title} fill className="object-cover" />
+            </div>
+          ) : (
+            <div className="aspect-square rounded-3xl bg-brand-soft" />
+          )}
+        </Reveal>
+        <Reveal delay={120}>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark">{about.about_title}</h2>
+          <p className="mt-4 text-foreground/75 leading-relaxed whitespace-pre-line">{about.about_text}</p>
+          {about.about_cta_text && (
+            <Link
+              href={about.about_cta_href}
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-bold text-white shadow-lg shadow-brand/20 transition-transform hover:scale-105"
+            >
+              {about.about_cta_text}
+            </Link>
+          )}
+        </Reveal>
+      </Section>
 
       {/* Sobre nós */}
       <Section className="relative grid items-center gap-12 md:grid-cols-2 overflow-hidden">

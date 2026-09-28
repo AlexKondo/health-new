@@ -74,6 +74,23 @@ export async function getSetting(key: string, fallback: string): Promise<string>
   }
 }
 
+export async function getSettings(
+  defaults: Record<string, string>,
+): Promise<Record<string, string>> {
+  if (!supabaseEnabled) return defaults;
+  try {
+    const sb = await createClient();
+    const { data } = await sb.from("site_settings").select("key, value").in("key", Object.keys(defaults));
+    const out = { ...defaults };
+    (data ?? []).forEach((row) => {
+      if (row.value) out[row.key] = row.value;
+    });
+    return out;
+  } catch {
+    return defaults;
+  }
+}
+
 export const getPartners = () =>
   fromSupabase((sb) => sb.from("partners").select("*").order("sort_order"), partnersSeed as never[]);
 
