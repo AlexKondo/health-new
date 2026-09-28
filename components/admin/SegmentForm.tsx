@@ -19,6 +19,7 @@ type Segment = {
   body?: string | null;
   schedule?: ScheduleBlock[];
   sort_order?: number;
+  published?: boolean;
 };
 
 export default function SegmentForm({ segment }: { segment?: Segment }) {
@@ -92,6 +93,11 @@ export default function SegmentForm({ segment }: { segment?: Segment }) {
       </div>
 
       <Input name="sort_order" label="Ordem" type="number" defaultValue={String(segment?.sort_order ?? 0)} />
+
+      <label className="flex items-center gap-2 text-sm font-semibold">
+        <input type="checkbox" name="published" defaultChecked={segment?.published ?? true} className="h-4 w-4" />
+        Publicar página (aparece no menu do site e fica acessível)
+      </label>
 
       <button className="rounded-full bg-brand px-6 py-3 font-bold text-white hover:bg-brand-dark w-fit">
         Salvar segmento

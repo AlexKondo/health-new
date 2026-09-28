@@ -50,6 +50,7 @@ export async function saveSegment(formData: FormData) {
     body: nullable(formData.get("body")),
     schedule: schedule(formData),
     sort_order: Number(formData.get("sort_order") || 0),
+    published: formData.get("published") === "on",
   };
 
   const res = id

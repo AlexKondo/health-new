@@ -52,7 +52,10 @@ export const getFaq = () =>
   );
 
 export const getSegments = () =>
-  fromSupabase<Segment>((sb) => sb.from("segments").select("*").order("sort_order"), segmentsSeed);
+  fromSupabase<Segment>(
+    (sb) => sb.from("segments").select("*").eq("published", true).order("sort_order"),
+    segmentsSeed,
+  );
 
 export const getActivities = () =>
   fromSupabase<Activity>((sb) => sb.from("activities").select("*").order("sort_order"), activitiesSeed);

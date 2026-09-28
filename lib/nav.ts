@@ -16,12 +16,9 @@ export const NAV: NavGroup[] = [
   },
   {
     label: "Formação",
-    children: [
-      { label: "Berçário", href: "/bercario" },
-      { label: "Educação Infantil", href: "/ensino-infantil" },
-      { label: "Ensino Fundamental I", href: "/ensino-fundamental" },
-      { label: "Curricular", href: "/curricular" },
-    ],
+    // Berçário/Educação Infantil/Ensino Fundamental I entram dinamicamente
+    // (ver buildNav), a partir dos segmentos publicados no admin.
+    children: [{ label: "Curricular", href: "/curricular" }],
   },
   {
     label: "Complementar",
@@ -41,13 +38,33 @@ export const NAV: NavGroup[] = [
   { label: "Parceiros", href: "/parceiros" },
 ];
 
-/** NAV + "Diferenciais", só quando a página estiver publicada no admin. */
-export function navWithDiferenciais(showDiferenciais: boolean): NavGroup[] {
-  if (!showDiferenciais) return NAV;
-  const idx = NAV.findIndex((n) => n.label === "Mídias");
-  const withItem = [...NAV];
-  withItem.splice(idx, 0, { label: "Diferenciais", href: "/diferenciais" });
-  return withItem;
+/**
+ * NAV final, montado a partir do que está publicado no admin: os segmentos
+ * (Berçário, Educação Infantil, ...) entram no início de "Formação", e
+ * "Diferenciais" só aparece quando publicada.
+ */
+export function buildNav({
+  showDiferenciais,
+  segments,
+}: {
+  showDiferenciais: boolean;
+  segments: { slug: string; title: string }[];
+}): NavGroup[] {
+  const nav = NAV.map((group) => {
+    if (group.label !== "Formação") return group;
+    return {
+      ...group,
+      children: [
+        ...segments.map((s) => ({ label: s.title, href: `/${s.slug}` })),
+        ...(group.children ?? []),
+      ],
+    };
+  });
+
+  if (!showDiferenciais) return nav;
+  const idx = nav.findIndex((n) => n.label === "Mídias");
+  nav.splice(idx, 0, { label: "Diferenciais", href: "/diferenciais" });
+  return nav;
 }
 
 export const CONTACT = {

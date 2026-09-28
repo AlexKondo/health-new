@@ -26,7 +26,12 @@ export default async function SegmentosPage() {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-bold truncate">{s.title}</p>
+              <p className="flex items-center gap-2 font-bold truncate">
+                {s.title}
+                {!s.published && (
+                  <span className="rounded bg-gray-100 px-1.5 text-xs font-normal text-gray-500">fora do ar</span>
+                )}
+              </p>
               <p className="text-xs text-foreground/60">/{s.slug} · ordem {s.sort_order}</p>
             </div>
             <div className="flex items-center gap-2">
