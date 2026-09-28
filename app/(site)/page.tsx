@@ -15,7 +15,7 @@ import {
 const ABOUT_DEFAULTS = {
   about_title: "Um pouco sobre nós!",
   about_text:
-    "O que é uma escola para você? Um lugar bonito e cheio de pessoas? Lugar de conhecimento e materiais de ponta e tecnológicos? Laboratórios, quadras, provas e atividades diversificadas? Educadores mestres e doutores? O que define uma escola? Boa pergunta, não é mesmo?\nPara nós, da Escola Saúde, a escola também é muito mais que tudo isso!\nEscola é recepcionar com um sorriso, acolher com um abraço, ouvir histórias mirabolantes e cheias de imaginação com interesse genuíno, é colocar no colo na hora da dor, é gargalhar junto, é correr até não poder mais, é comer comida gostosa, é comemorar cada passo dado, é instigar a curiosidade e ser curioso, é fazer perguntas, é sair fumacinha da cabeça buscando diferentes caminhos e soluções, é dialogar, é se desafiar e ainda no final do dia, é receber um até amanhã gostoso com vontade de ficar mais!",
+    "O que é uma escola para você? Um lugar bonito e cheio de pessoas? Lugar de conhecimento e materiais de ponta e tecnológicos? Laboratórios, quadras, provas e atividades diversificadas? Educadores mestres e doutores? O que define uma escola? Boa pergunta, não é mesmo?\nPara nós, da Escola Saúde, a escola também é muito mais que tudo isso!\n\nEscola é recepcionar com um sorriso, acolher com um abraço, ouvir histórias mirabolantes e cheias de imaginação com interesse genuíno, é colocar no colo na hora da dor, é gargalhar junto, é correr até não poder mais, é comer comida gostosa, é comemorar cada passo dado, é instigar a curiosidade e ser curioso, é fazer perguntas, é sair fumacinha da cabeça buscando diferentes caminhos e soluções, é dialogar, é se desafiar e ainda no final do dia, é receber um até amanhã gostoso com vontade de ficar mais!",
   about_cta_text: "Venha nos conhecer, será um prazer recebê-lo aqui!",
   about_cta_href: "#agendar",
   about_image_url: "",
@@ -46,19 +46,15 @@ export default async function HomePage() {
       {/* Um pouco sobre nós */}
       <Section>
         {(() => {
-          const paragraphs = about.about_text.split("\n").filter(Boolean);
-          const firstParagraph = paragraphs[0] ?? "";
-          const secondParagraph = paragraphs.slice(1).join(" ");
+          const [firstParagraph = "", secondParagraph = ""] = about.about_text.split("\n\n");
           const [leadSentence, ...restSentences] = firstParagraph.split(/(?<=\?)\s+/);
           const restOfFirstParagraph = restSentences.join(" ");
           return (
             <>
-              <Reveal>
-                <h2 className="text-center text-3xl md:text-4xl font-extrabold text-brand-dark">{about.about_title}</h2>
-              </Reveal>
-              <div className="mt-8 grid items-center gap-10 md:grid-cols-2">
+              <Reveal><SectionTitle title={about.about_title} center /></Reveal>
+              <div className="-mt-4 grid items-center gap-10 md:grid-cols-2">
                 <Reveal delay={80}>
-                  <p className="text-foreground/75 leading-relaxed">
+                  <p className="text-foreground/75 leading-relaxed whitespace-pre-line">
                     {leadSentence && (
                       <span className="font-bold text-accent-ink">{leadSentence} </span>
                     )}

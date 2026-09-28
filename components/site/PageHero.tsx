@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CONTACT } from "@/lib/nav";
 
 export default function PageHero({
   title,
@@ -52,7 +53,13 @@ export function RichBody({ content }: { content?: string | null }) {
   return <Prose paragraphs={paragraphs} />;
 }
 
-export function VisitCTA() {
+export function VisitCTA({ title }: { title?: string }) {
+  const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || CONTACT.whatsappNumber;
+  const message = title
+    ? `Olá! Gostaria de agendar uma visita e saber mais sobre ${title}.`
+    : "Olá! Gostaria de agendar uma visita à Escola Saúde.";
+  const href = `https://wa.me/${WA}?text=${encodeURIComponent(message)}`;
+
   return (
     <div className="mt-12 rounded-3xl bg-brand-soft p-8 text-center">
       <h3 className="text-2xl font-extrabold text-brand-dark">Venha nos conhecer</h3>
@@ -60,7 +67,9 @@ export function VisitCTA() {
         Agende uma visita e veja de perto o cuidado da Escola Saúde com cada criança.
       </p>
       <a
-        href="/#agendar"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
         className="mt-5 inline-block rounded-full bg-accent px-6 py-3 font-bold text-white hover:brightness-95"
       >
         Agendar visita

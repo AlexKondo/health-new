@@ -61,7 +61,7 @@ export default async function DynamicPage({
           )}
 
           <RichBody content={segment.body} />
-          <VisitCTA />
+          <VisitCTA title={segment.title} />
         </Section>
       </>
     );
@@ -80,7 +80,7 @@ export default async function DynamicPage({
               ← Ver todas as atividades {activity.category === "curricular" ? "curriculares" : "extracurriculares"}
             </Link>
           </p>
-          <VisitCTA />
+          <VisitCTA title={activity.title} />
         </Section>
       </>
     );
