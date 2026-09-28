@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CONTACT, NAV } from "@/lib/nav";
+import SiteLink from "./SiteLink";
 
 export default function Footer() {
   return (
@@ -39,9 +40,9 @@ export default function Footer() {
               .slice(0, 10)
               .map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="hover:underline">
+                  <SiteLink href={l.href} className="hover:underline">
                     {l.label}
-                  </Link>
+                  </SiteLink>
                 </li>
               ))}
           </ul>

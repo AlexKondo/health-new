@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { NAV } from "@/lib/nav";
+import SiteLink from "./SiteLink";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -28,33 +29,33 @@ export default function Header() {
                   <ul className="min-w-56 rounded-xl border border-brand-soft bg-white shadow-lg p-2">
                     {item.children.map((c) => (
                       <li key={c.href}>
-                        <Link
+                        <SiteLink
                           href={c.href}
                           className="block rounded-lg px-3 py-2 text-sm hover:bg-brand-soft hover:text-brand-dark"
                         >
                           {c.label}
-                        </Link>
+                        </SiteLink>
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
             ) : (
-              <Link
+              <SiteLink
                 key={item.label}
                 href={item.href!}
                 className="px-3 py-2 text-base font-semibold text-foreground hover:text-brand transition-colors"
               >
                 {item.label}
-              </Link>
+              </SiteLink>
             ),
           )}
-          <Link
+          <SiteLink
             href="/#agendar"
             className="ml-2 rounded-full bg-brand-dark px-4 py-2 text-base font-bold text-white hover:brightness-95"
           >
             Agende uma visita
-          </Link>
+          </SiteLink>
         </nav>
 
         {/* Mobile toggle */}
@@ -73,18 +74,18 @@ export default function Header() {
           {NAV.map((item) => (
             <div key={item.label} className="py-1">
               {item.href ? (
-                <Link href={item.href} className="block py-2 font-semibold" onClick={() => setOpen(false)}>
+                <SiteLink href={item.href} className="block py-2 font-semibold" onClick={() => setOpen(false)}>
                   {item.label}
-                </Link>
+                </SiteLink>
               ) : (
                 <details>
                   <summary className="py-2 font-semibold cursor-pointer">{item.label}</summary>
                   <ul className="pl-4 pb-2">
                     {item.children!.map((c) => (
                       <li key={c.href}>
-                        <Link href={c.href} className="block py-1.5 text-sm" onClick={() => setOpen(false)}>
+                        <SiteLink href={c.href} className="block py-1.5 text-sm" onClick={() => setOpen(false)}>
                           {c.label}
-                        </Link>
+                        </SiteLink>
                       </li>
                     ))}
                   </ul>
@@ -92,13 +93,13 @@ export default function Header() {
               )}
             </div>
           ))}
-          <Link
+          <SiteLink
             href="/#agendar"
             className="mt-2 block rounded-full bg-brand-dark px-4 py-2 text-center font-bold text-white"
             onClick={() => setOpen(false)}
           >
             Agende uma visita
-          </Link>
+          </SiteLink>
         </nav>
       )}
     </header>
