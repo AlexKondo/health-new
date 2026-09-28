@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { saveBanner } from "@/app/admin/(panel)/banners/actions";
+import ImageInput from "@/components/admin/ImageInput";
 
 type Banner = {
   id?: string;
@@ -32,25 +33,17 @@ export default function BannerForm({
       <input type="hidden" name="image_url" value={banner?.image_url ?? ""} />
 
       <div>
-        <label className="block text-sm font-semibold mb-1">Imagem do banner (1920×650)</label>
         {preview && (
           <div className="relative mb-3 aspect-[1920/650] w-full overflow-hidden rounded-xl border border-brand-soft">
             <Image src={preview} alt="Prévia" fill className="object-cover" />
           </div>
         )}
-        <input
-          type="file"
+        <ImageInput
           name="image"
-          accept="image/*"
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) setPreview(URL.createObjectURL(f));
-          }}
-          className="text-sm"
+          label="Imagem do banner (1920×650)"
+          hint="Deixe em branco para manter a imagem atual."
+          onFileChange={(f) => setPreview(URL.createObjectURL(f))}
         />
-        <p className="text-xs text-foreground/50 mt-1">
-          Deixe em branco para manter a imagem atual.
-        </p>
       </div>
 
       <Input name="title" label="Título" defaultValue={banner?.title} required />
