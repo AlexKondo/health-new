@@ -44,7 +44,7 @@ export default async function HomePage() {
       <StatsStrip stats={stats} />
 
       {/* Um pouco sobre nós */}
-      <Section>
+      <Section id="sobre-nos" className="scroll-mt-24">
         {(() => {
           const [firstParagraph = "", secondParagraph = ""] = about.about_text.split("\n\n");
           const [leadSentence, ...restSentences] = firstParagraph.split(/(?<=\?)\s+/);

@@ -5,7 +5,7 @@ import UserMenu from "@/components/admin/UserMenu";
 const LINKS = [
   { href: "/admin", label: "Visão geral" },
   { href: "/admin/banners", label: "Banners" },
-  { href: "/admin/sobre-nos", label: "Sobre nós (home)" },
+  { href: "/admin/sobre-nos", label: "Sobre nós" },
   { href: "/admin/estatisticas", label: "Números da home" },
   { href: "/admin/segmentos", label: "Segmentos" },
   { href: "/admin/atividades", label: "Atividades" },

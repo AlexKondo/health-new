@@ -7,6 +7,7 @@ export const NAV: NavGroup[] = [
   {
     label: "Institucional",
     children: [
+      { label: "Sobre nós", href: "/#sobre-nos" },
       { label: "Missão, Visão e Valores", href: "/missao-visao-e-valores" },
       { label: "Nossa História", href: "/nossa-historia" },
       { label: "Responsabilidade Social", href: "/responsabilidade-social" },

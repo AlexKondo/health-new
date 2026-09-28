@@ -23,7 +23,7 @@ export default async function SobreNosAdmin() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-extrabold text-brand-dark">Sobre nós (home)</h1>
+      <h1 className="text-2xl font-extrabold text-brand-dark">Sobre nós</h1>
       <p className="mt-2 text-sm text-foreground/60">
         Bloco exibido na página inicial, logo abaixo dos números da escola. Alterações aparecem no site assim que
         você salvar.
