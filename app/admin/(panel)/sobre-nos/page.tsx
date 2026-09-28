@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { requireUser } from "@/lib/admin";
+import ImageInput from "@/components/admin/ImageInput";
 import { saveAbout } from "./actions";
 
 const DEFAULTS = {
@@ -66,25 +67,18 @@ export default async function SobreNosAdmin() {
           />
         </label>
 
-        <label className="block text-sm font-semibold">
-          Imagem
+        <div>
           {values.about_image_url && (
-            <div className="relative mt-2 h-40 w-full overflow-hidden rounded-xl bg-brand-soft">
+            <div className="relative mb-3 h-40 w-full overflow-hidden rounded-xl bg-brand-soft">
               <Image src={values.about_image_url} alt="Sobre nós" fill className="object-cover" />
             </div>
           )}
-          <input
+          <ImageInput
             name="image"
-            type="file"
-            accept="image/png,image/jpeg,image/webp,image/gif"
-            className="mt-2 block w-full text-sm"
+            label="Imagem"
+            hint="Tamanho recomendado: 1200 x 400px (retangular, bem mais larga que alta). Outras proporções também funcionam — a imagem é sempre cortada pra preencher o espaço, sem distorcer. Deixe em branco pra manter a imagem atual."
           />
-          <span className="mt-1 block text-xs font-normal text-foreground/60">
-            Tamanho recomendado: 1200 x 400px (retangular, bem mais larga que alta). Outras proporções também
-            funcionam — a imagem é sempre cortada pra preencher o espaço, sem distorcer. Deixe em branco pra manter a
-            imagem atual.
-          </span>
-        </label>
+        </div>
 
         <button type="submit" className="mt-2 rounded-full bg-brand px-5 py-2.5 font-bold text-white hover:bg-brand-dark">
           Salvar
