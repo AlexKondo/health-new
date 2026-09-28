@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/admin";
 import UserMenu from "@/components/admin/UserMenu";
+import SavedToast from "@/components/admin/SavedToast";
 
 const LINKS = [
   { href: "/admin", label: "Visão geral" },
@@ -70,6 +71,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
         </header>
         <main className="min-w-0 flex-1 p-6 md:p-10">{children}</main>
       </div>
+      <SavedToast />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/admin";
 import { uploadPublic } from "@/lib/storage";
 
@@ -29,4 +30,5 @@ export async function saveDiferenciais(formData: FormData) {
 
   revalidatePath("/admin/diferenciais");
   revalidatePath("/diferenciais");
+  redirect("/admin/diferenciais?saved=1");
 }

@@ -36,7 +36,7 @@ export async function saveTestimonial(formData: FormData) {
   revalidatePath("/admin/depoimentos");
   revalidatePath("/");
   revalidatePath("/depoimentos");
-  redirect("/admin/depoimentos");
+  redirect("/admin/depoimentos?saved=1");
 }
 
 export async function deleteTestimonial(formData: FormData) {
@@ -55,4 +55,5 @@ export async function saveTestimonialsInterval(formData: FormData) {
   if (res.error) throw new Error(res.error.message);
   revalidatePath("/admin/depoimentos");
   revalidatePath("/");
+  redirect("/admin/depoimentos?saved=1");
 }

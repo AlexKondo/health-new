@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/admin";
 
 const META_PIXEL_RE = /^\d{6,20}$/;
@@ -26,4 +27,5 @@ export async function saveTrafficSettings(formData: FormData) {
 
   revalidatePath("/admin/trafego");
   revalidatePath("/");
+  redirect("/admin/trafego?saved=1");
 }

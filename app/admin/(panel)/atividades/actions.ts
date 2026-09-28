@@ -48,7 +48,7 @@ export async function saveActivity(formData: FormData) {
   revalidatePath("/admin/atividades");
   revalidatePath("/");
   revalidatePath(`/${row.slug}`);
-  redirect("/admin/atividades");
+  redirect("/admin/atividades?saved=1");
 }
 
 export async function deleteActivity(formData: FormData) {

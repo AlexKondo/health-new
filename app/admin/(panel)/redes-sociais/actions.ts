@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/admin";
 
 function nullableUrl(v: FormDataEntryValue | null) {
@@ -37,4 +38,5 @@ export async function saveSocialLinks(formData: FormData) {
 
   revalidatePath("/admin/redes-sociais");
   revalidatePath("/", "layout");
+  redirect("/admin/redes-sociais?saved=1");
 }

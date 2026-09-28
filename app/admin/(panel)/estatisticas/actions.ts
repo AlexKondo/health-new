@@ -28,7 +28,7 @@ export async function saveStat(formData: FormData) {
 
   revalidatePath("/admin/estatisticas");
   revalidatePath("/");
-  redirect("/admin/estatisticas");
+  redirect("/admin/estatisticas?saved=1");
 }
 
 export async function deleteStat(formData: FormData) {

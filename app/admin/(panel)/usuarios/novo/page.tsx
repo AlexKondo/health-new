@@ -23,7 +23,7 @@ export default function NovoUsuarioPage() {
     const data = await res?.json().catch(() => null);
 
     if (res?.ok && data?.ok) {
-      router.push("/admin/usuarios");
+      router.push("/admin/usuarios?saved=1");
       return;
     }
     setError(data?.error || "Não foi possível enviar o convite. Tente novamente.");

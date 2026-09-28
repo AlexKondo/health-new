@@ -36,7 +36,7 @@ export async function savePartner(formData: FormData) {
 
   revalidatePath("/admin/parceiros");
   revalidatePath("/parceiros");
-  redirect("/admin/parceiros");
+  redirect("/admin/parceiros?saved=1");
 }
 
 export async function deletePartner(formData: FormData) {

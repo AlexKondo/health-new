@@ -40,7 +40,7 @@ export async function saveBanner(formData: FormData) {
 
   revalidatePath("/admin/banners");
   revalidatePath("/");
-  redirect("/admin/banners");
+  redirect("/admin/banners?saved=1");
 }
 
 export async function deleteBanner(formData: FormData) {

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/admin";
 
 export async function saveWindow(formData: FormData) {
@@ -25,6 +26,7 @@ export async function saveWindow(formData: FormData) {
   if (error) throw new Error(error.message);
 
   revalidatePath("/admin/leads/janelas");
+  redirect("/admin/leads/janelas?saved=1");
 }
 
 export async function toggleWindow(formData: FormData) {

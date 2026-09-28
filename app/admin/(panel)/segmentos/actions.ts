@@ -61,7 +61,7 @@ export async function saveSegment(formData: FormData) {
   revalidatePath("/admin/segmentos");
   revalidatePath("/");
   revalidatePath(`/${row.slug}`);
-  redirect("/admin/segmentos");
+  redirect("/admin/segmentos?saved=1");
 }
 
 export async function deleteSegment(formData: FormData) {

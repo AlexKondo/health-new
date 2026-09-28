@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/admin";
 
 function parsedOverride(v: FormDataEntryValue | null) {
@@ -17,6 +18,7 @@ export async function saveVisitsOverride(formData: FormData) {
   const res = await sb.from("site_settings").upsert({ key: "visits_override", value });
   if (res.error) throw new Error(res.error.message);
   revalidatePath("/admin");
+  redirect("/admin?saved=1");
 }
 
 export async function saveDurationOverride(formData: FormData) {
@@ -35,4 +37,5 @@ export async function saveDurationOverride(formData: FormData) {
   const res = await sb.from("site_settings").upsert({ key: "avg_duration_override_seconds", value });
   if (res.error) throw new Error(res.error.message);
   revalidatePath("/admin");
+  redirect("/admin?saved=1");
 }
