@@ -5,15 +5,10 @@ import type { Metadata } from "next";
 import PageHero, { Prose, RichBody, VisitCTA } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import {
-  getSegment, getActivity, getPage, getActivities, getSegments, getPages,
+  getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais,
 } from "@/lib/content";
 
 export const dynamicParams = true;
-
-// Páginas temporariamente fora do ar a pedido do dono da escola (texto em
-// revisão). Conteúdo continua intacto no seed — é só tirar essa linha pra
-// publicar de novo quando o texto estiver pronto.
-const OFFLINE_SLUGS = new Set(["diferenciais"]);
 
 export async function generateStaticParams() {
   const [segs, acts] = [getSegments(), getActivities()];
@@ -21,7 +16,9 @@ export async function generateStaticParams() {
   return [
     ...s.map((x) => ({ slug: x.slug })),
     ...a.map((x) => ({ slug: x.slug })),
-    ...getPages().filter((x) => !OFFLINE_SLUGS.has(x.slug)).map((x) => ({ slug: x.slug })),
+    // "diferenciais" fica de fora: o conteúdo dela agora vem do
+    // site_settings (editável no admin), não mais do seed estático.
+    ...getPages().filter((x) => x.slug !== "diferenciais").map((x) => ({ slug: x.slug })),
   ];
 }
 
@@ -44,7 +41,20 @@ export default async function DynamicPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (OFFLINE_SLUGS.has(slug)) notFound();
+
+  // 0) Diferenciais (conteúdo editável no admin, fora do ar até ser publicado)
+  if (slug === "diferenciais") {
+    const d = await getDiferenciais();
+    if (!d.published) notFound();
+    return (
+      <>
+        <PageHero title={d.title} image={d.heroImage} />
+        <Section className="max-w-4xl">
+          <RichBody content={d.body} />
+        </Section>
+      </>
+    );
+  }
 
   // 1) Segmento
   const segment = await getSegment(slug);

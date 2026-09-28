@@ -3,11 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { NAV } from "@/lib/nav";
+import { navWithDiferenciais } from "@/lib/nav";
 import SiteLink from "./SiteLink";
 
-export default function Header() {
+export default function Header({ showDiferenciais = false }: { showDiferenciais?: boolean }) {
   const [open, setOpen] = useState(false);
+  const NAV = navWithDiferenciais(showDiferenciais);
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-brand-soft">

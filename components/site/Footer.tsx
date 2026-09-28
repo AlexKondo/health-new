@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CONTACT, NAV } from "@/lib/nav";
+import { CONTACT, navWithDiferenciais } from "@/lib/nav";
 import SiteLink from "./SiteLink";
 
-export default function Footer() {
+export default function Footer({ showDiferenciais = false }: { showDiferenciais?: boolean }) {
+  const NAV = navWithDiferenciais(showDiferenciais);
   return (
     <footer className="mt-20 bg-brand-dark text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 grid gap-10 md:grid-cols-4">

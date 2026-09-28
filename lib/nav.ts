@@ -41,6 +41,15 @@ export const NAV: NavGroup[] = [
   { label: "Parceiros", href: "/parceiros" },
 ];
 
+/** NAV + "Diferenciais", só quando a página estiver publicada no admin. */
+export function navWithDiferenciais(showDiferenciais: boolean): NavGroup[] {
+  if (!showDiferenciais) return NAV;
+  const idx = NAV.findIndex((n) => n.label === "Mídias");
+  const withItem = [...NAV];
+  withItem.splice(idx, 0, { label: "Diferenciais", href: "/diferenciais" });
+  return withItem;
+}
+
 export const CONTACT = {
   phone: "(11) 5072-4470",
   whatsapp: "(11) 91943-6104",
