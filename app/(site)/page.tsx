@@ -63,11 +63,11 @@ export default async function HomePage() {
                 </Reveal>
                 <Reveal delay={150}>
                   {about.about_image_url ? (
-                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl shadow-xl">
+                    <div className="relative h-40 w-full max-w-xs overflow-hidden rounded-3xl shadow-xl md:h-48">
                       <Image src={about.about_image_url} alt={about.about_title} fill className="object-cover" />
                     </div>
                   ) : (
-                    <div className="aspect-[4/3] w-full rounded-3xl bg-brand-soft" />
+                    <div className="h-40 w-full max-w-xs rounded-3xl bg-brand-soft md:h-48" />
                   )}
                 </Reveal>
               </div>
