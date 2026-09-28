@@ -87,6 +87,31 @@ body {
   transform: none;
 }
 
+/* ---------------- Logo animado: bonequinho acenando + balão pulando ---------------- */
+@keyframes logo-wave {
+  0%, 92%, 100% { transform: rotate(0deg); }
+  4%   { transform: rotate(-6deg); }
+  8%   { transform: rotate(4deg); }
+  12%  { transform: rotate(-3deg); }
+  16%  { transform: rotate(0deg); }
+}
+@keyframes logo-bounce {
+  0%, 90%, 100% { transform: translateY(0); }
+  95%           { transform: translateY(-5%); }
+}
+.logo-wave {
+  transform-origin: 50% 100%;
+  animation: logo-wave 4.5s ease-in-out infinite;
+}
+.logo-bounce {
+  animation: logo-bounce 2.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-wave, .logo-bounce {
+    animation: none !important;
+  }
+}
+
 /* ---------------- Logo de parceiro: anel giratório + cor no hover ---------------- */
 @keyframes spin-ring {
   to { transform: rotate(360deg); }

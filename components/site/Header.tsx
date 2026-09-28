@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { NavGroup } from "@/lib/nav";
 import SiteLink from "./SiteLink";
+import AnimatedLogo from "./AnimatedLogo";
 
 export default function Header({ nav }: { nav: NavGroup[] }) {
   const [open, setOpen] = useState(false);
@@ -14,7 +14,7 @@ export default function Header({ nav }: { nav: NavGroup[] }) {
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-brand-soft">
       <div className="mx-auto max-w-7xl px-4 flex items-center justify-between h-20">
         <Link href="/" className="flex items-center" aria-label="Escola Saúde — início">
-          <Image src="/images/logo.png" alt="Escola Saúde" width={170} height={64} priority className="h-12 w-auto" />
+          <AnimatedLogo className="h-12 w-auto" />
         </Link>
 
         {/* Desktop nav */}
