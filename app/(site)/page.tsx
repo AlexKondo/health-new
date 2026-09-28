@@ -52,7 +52,7 @@ export default async function HomePage() {
           return (
             <>
               <Reveal><SectionTitle title={about.about_title} center /></Reveal>
-              <div className="-mt-4 grid items-center gap-10 md:grid-cols-2">
+              <div className="-mt-4 grid items-start gap-10 md:grid-cols-2">
                 <Reveal delay={80}>
                   <p className="text-foreground/75 leading-relaxed whitespace-pre-line">
                     {leadSentence && (
@@ -63,11 +63,11 @@ export default async function HomePage() {
                 </Reveal>
                 <Reveal delay={150}>
                   {about.about_image_url ? (
-                    <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-3xl shadow-xl">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl shadow-xl">
                       <Image src={about.about_image_url} alt={about.about_title} fill className="object-cover" />
                     </div>
                   ) : (
-                    <div className="mx-auto aspect-square w-full max-w-sm rounded-3xl bg-brand-soft" />
+                    <div className="aspect-[4/3] w-full rounded-3xl bg-brand-soft" />
                   )}
                 </Reveal>
               </div>
