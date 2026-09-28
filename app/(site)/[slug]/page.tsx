@@ -10,13 +10,18 @@ import {
 
 export const dynamicParams = true;
 
+// Páginas temporariamente fora do ar a pedido do dono da escola (texto em
+// revisão). Conteúdo continua intacto no seed — é só tirar essa linha pra
+// publicar de novo quando o texto estiver pronto.
+const OFFLINE_SLUGS = new Set(["diferenciais"]);
+
 export async function generateStaticParams() {
   const [segs, acts] = [getSegments(), getActivities()];
   const [s, a] = await Promise.all([segs, acts]);
   return [
     ...s.map((x) => ({ slug: x.slug })),
     ...a.map((x) => ({ slug: x.slug })),
-    ...getPages().map((x) => ({ slug: x.slug })),
+    ...getPages().filter((x) => !OFFLINE_SLUGS.has(x.slug)).map((x) => ({ slug: x.slug })),
   ];
 }
 
@@ -39,6 +44,7 @@ export default async function DynamicPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  if (OFFLINE_SLUGS.has(slug)) notFound();
 
   // 1) Segmento
   const segment = await getSegment(slug);

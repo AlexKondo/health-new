@@ -31,7 +31,6 @@ export const NAV: NavGroup[] = [
     ],
   },
   { label: "Depoimentos", href: "/#depoimentos" },
-  { label: "Diferenciais", href: "/diferenciais" },
   {
     label: "Mídias",
     children: [
