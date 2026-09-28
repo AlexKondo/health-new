@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import PageHero, { Prose, RichBody, VisitCTA } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import Reveal from "@/components/site/Reveal";
+import PartnerLogo from "@/components/site/PartnerLogo";
 import {
   getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais, getPartners,
 } from "@/lib/content";
@@ -69,10 +70,8 @@ export default async function DynamicPage({
             {partners.map((p, i) => {
               const content = (
                 <div className="flex items-start gap-6">
-                  <div className="partner-logo w-24 shrink-0 sm:w-28">
-                    <div className="relative aspect-square overflow-hidden rounded-xl border border-brand-soft bg-white">
-                      {p.logo_url && <Image src={p.logo_url} alt={p.name} fill className="object-contain p-2" />}
-                    </div>
+                  <div className="w-24 shrink-0 sm:w-28">
+                    <PartnerLogo src={p.logo_url} alt={p.name} />
                   </div>
                   <div className="min-w-0 flex-1 pl-2 pt-1 sm:pl-4">
                     <h3 className="font-extrabold text-brand-dark">{p.name}</h3>

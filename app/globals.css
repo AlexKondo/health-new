@@ -135,14 +135,16 @@ body {
   }
 }
 
-/* ---------------- Logo de parceiro: anel giratório + cor no hover ---------------- */
+/* ---------------- Logo de parceiro: cartão 3D + brilho holográfico ---------------- */
 @keyframes spin-ring {
   to { transform: rotate(360deg); }
 }
 .partner-logo {
   position: relative;
   isolation: isolate;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
 }
 .partner-logo::before {
   content: "";
@@ -160,8 +162,19 @@ body {
   filter: grayscale(1) opacity(0.55);
   transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* Brilho tipo holográfico que segue o cursor (posição via --mx/--my, setadas por JS) */
+.partner-logo-shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.95), transparent 48%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
 .partner-logo:hover {
-  transform: translateY(-4px) scale(1.06) rotate(-1.5deg);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.1);
+  box-shadow: 0 18px 34px -14px rgba(31, 111, 178, 0.45);
 }
 .partner-logo:hover::before {
   opacity: 1;
@@ -171,9 +184,12 @@ body {
   filter: grayscale(0) opacity(1);
   transform: scale(1.08);
 }
+.partner-logo:hover .partner-logo-shine {
+  opacity: 1;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .partner-logo, .partner-logo::before, .partner-logo img, .partner-logo:hover {
+  .partner-logo, .partner-logo::before, .partner-logo img, .partner-logo:hover, .partner-logo-shine {
     animation: none !important;
     transition: none !important;
     transform: none !important;
