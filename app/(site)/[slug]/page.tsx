@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import PageHero, { Prose, RichBody, VisitCTA } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
 import {
-  getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais,
+  getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais, getPartners,
 } from "@/lib/content";
 
 export const dynamicParams = true;
@@ -51,6 +51,44 @@ export default async function DynamicPage({
         <PageHero title={d.title} image={d.heroImage} />
         <Section className="max-w-4xl">
           <RichBody content={d.body} />
+        </Section>
+      </>
+    );
+  }
+
+  // 0.5) Parceiros (lista editável no admin, com logo de cada um)
+  if (slug === "parceiros") {
+    const partners = await getPartners();
+    const page = getPage(slug);
+    return (
+      <>
+        <PageHero title={page?.title ?? "Parceiros"} image={page?.hero_image} />
+        <Section className="max-w-4xl">
+          <div className="space-y-8">
+            {partners.map((p) => {
+              const content = (
+                <div className="flex items-start gap-6">
+                  <div className="relative aspect-square w-24 shrink-0 overflow-hidden rounded-xl border border-brand-soft bg-white sm:w-28">
+                    {p.logo_url && <Image src={p.logo_url} alt={p.name} fill className="object-contain p-2" />}
+                  </div>
+                  <div className="min-w-0 flex-1 pl-2 sm:pl-4">
+                    <h3 className="font-extrabold text-brand-dark">{p.name}</h3>
+                    {p.description && (
+                      <p className="mt-1 text-foreground/80 leading-relaxed">{p.description}</p>
+                    )}
+                  </div>
+                </div>
+              );
+              return p.link_url ? (
+                <a key={p.id} href={p.link_url} target="_blank" rel="noopener noreferrer" className="block hover:opacity-90">
+                  {content}
+                </a>
+              ) : (
+                <div key={p.id}>{content}</div>
+              );
+            })}
+            {partners.length === 0 && <p className="text-foreground/60">Nenhum parceiro cadastrado ainda.</p>}
+          </div>
         </Section>
       </>
     );

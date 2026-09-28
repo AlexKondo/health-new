@@ -12,6 +12,7 @@ const LINKS = [
   { href: "/admin/segmentos", label: "Segmentos" },
   { href: "/admin/atividades", label: "Atividades" },
   { href: "/admin/depoimentos", label: "Depoimentos" },
+  { href: "/admin/parceiros", label: "Parceiros" },
   { href: "/admin/leads", label: "Agendamentos" },
   { href: "/admin/whatsapp", label: "WhatsApp" },
   { href: "/admin/trafego", label: "Tráfego pago" },
