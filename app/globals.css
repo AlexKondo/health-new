@@ -80,6 +80,57 @@ body {
   opacity: 1;
   transform: none;
 }
+.reveal.reveal-left {
+  transform: translateX(-40px);
+}
+.reveal.reveal-left.is-visible {
+  transform: none;
+}
+
+/* ---------------- Logo de parceiro: anel giratório + cor no hover ---------------- */
+@keyframes spin-ring {
+  to { transform: rotate(360deg); }
+}
+.partner-logo {
+  position: relative;
+  isolation: isolate;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.partner-logo::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, var(--brand), var(--accent), #38bdf8, #a78bfa, var(--brand));
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: spin-ring 3.5s linear infinite;
+}
+.partner-logo img {
+  filter: grayscale(1) opacity(0.55);
+  transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.partner-logo:hover {
+  transform: translateY(-4px) scale(1.06) rotate(-1.5deg);
+}
+.partner-logo:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+.partner-logo:hover img {
+  filter: grayscale(0) opacity(1);
+  transform: scale(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-logo, .partner-logo::before, .partner-logo img, .partner-logo:hover {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
 
 .animate-kenburns { animation: ken-burns 14s ease-out alternate infinite; }
 .animate-float    { animation: float 6s ease-in-out infinite; }

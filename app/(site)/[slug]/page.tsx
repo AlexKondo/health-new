@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageHero, { Prose, RichBody, VisitCTA } from "@/components/site/PageHero";
 import { Section } from "@/components/site/Section";
+import Reveal from "@/components/site/Reveal";
 import {
   getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais, getPartners,
 } from "@/lib/content";
@@ -65,13 +66,15 @@ export default async function DynamicPage({
         <PageHero title={page?.title ?? "Parceiros"} image={page?.hero_image} />
         <Section className="max-w-4xl">
           <div className="space-y-8">
-            {partners.map((p) => {
+            {partners.map((p, i) => {
               const content = (
                 <div className="flex items-start gap-6">
-                  <div className="relative aspect-square w-24 shrink-0 overflow-hidden rounded-xl border border-brand-soft bg-white sm:w-28">
-                    {p.logo_url && <Image src={p.logo_url} alt={p.name} fill className="object-contain p-2" />}
+                  <div className="partner-logo w-24 shrink-0 sm:w-28">
+                    <div className="relative aspect-square overflow-hidden rounded-xl border border-brand-soft bg-white">
+                      {p.logo_url && <Image src={p.logo_url} alt={p.name} fill className="object-contain p-2" />}
+                    </div>
                   </div>
-                  <div className="min-w-0 flex-1 pl-2 sm:pl-4">
+                  <div className="min-w-0 flex-1 pl-2 pt-1 sm:pl-4">
                     <h3 className="font-extrabold text-brand-dark">{p.name}</h3>
                     {p.description && (
                       <p className="mt-1 text-foreground/80 leading-relaxed">{p.description}</p>
@@ -79,12 +82,16 @@ export default async function DynamicPage({
                   </div>
                 </div>
               );
-              return p.link_url ? (
-                <a key={p.id} href={p.link_url} target="_blank" rel="noopener noreferrer" className="block hover:opacity-90">
-                  {content}
-                </a>
-              ) : (
-                <div key={p.id}>{content}</div>
+              return (
+                <Reveal key={p.id} direction="left" delay={i * 100}>
+                  {p.link_url ? (
+                    <a href={p.link_url} target="_blank" rel="noopener noreferrer" className="block hover:opacity-90">
+                      {content}
+                    </a>
+                  ) : (
+                    content
+                  )}
+                </Reveal>
               );
             })}
             {partners.length === 0 && <p className="text-foreground/60">Nenhum parceiro cadastrado ainda.</p>}

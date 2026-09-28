@@ -11,11 +11,13 @@ export default function Reveal({
   delay = 0,
   className = "",
   as: Tag = "div",
+  direction = "up",
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
   as?: keyof React.JSX.IntrinsicElements;
+  direction?: "up" | "left";
 }) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -40,7 +42,7 @@ export default function Reveal({
   return (
     <Comp
       ref={ref}
-      className={`reveal ${visible ? "is-visible" : ""} ${className}`}
+      className={`reveal ${direction === "left" ? "reveal-left" : ""} ${visible ? "is-visible" : ""} ${className}`}
       style={{ "--reveal-delay": `${delay}ms` } as React.CSSProperties}
     >
       {children}
