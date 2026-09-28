@@ -117,7 +117,7 @@ export async function getSiteLinkOptions(): Promise<{ href: string; label: strin
     { href: "/", label: "Início" },
     { href: "/curricular", label: "Atividades Curriculares" },
     { href: "/extracurricular", label: "Atividades Extracurriculares" },
-    { href: "/depoimentos", label: "Depoimentos" },
+    { href: "/#depoimentos", label: "Depoimentos" },
     { href: "/faq", label: "Perguntas Frequentes" },
   ];
   const contentPages = getPages()
