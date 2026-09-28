@@ -8,13 +8,57 @@ export default async function RedesSociaisPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-extrabold text-brand-dark">Redes sociais</h1>
+      <h1 className="text-2xl font-extrabold text-brand-dark">Contato e redes sociais</h1>
       <p className="mt-2 text-sm text-foreground/60">
-        Esses links aparecem como ícones no rodapé do site. O link do Podcast, no menu, também usa o do YouTube
-        abaixo. Deixe em branco pra não mostrar o ícone daquela rede.
+        Essas informações aparecem na barra de contato do topo, no rodapé e no botão de WhatsApp do site.
       </p>
 
       <form action={saveSocialLinks} className="mt-6 grid max-w-xl gap-5 rounded-2xl bg-white p-6 shadow-sm">
+        <label className="block text-sm font-semibold">
+          Telefone
+          <input
+            name="phone"
+            defaultValue={social.phone}
+            placeholder="(11) 5072-4470"
+            className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+          />
+        </label>
+
+        <label className="block text-sm font-semibold">
+          WhatsApp (como aparece escrito no site)
+          <input
+            name="whatsapp_display"
+            defaultValue={social.whatsappDisplay}
+            placeholder="(11) 91943-6104"
+            className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+          />
+        </label>
+
+        <label className="block text-sm font-semibold">
+          WhatsApp (número usado no link, só dígitos com DDI+DDD)
+          <input
+            name="whatsapp_number"
+            defaultValue={social.whatsappNumber}
+            placeholder="5511919436104"
+            className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+          />
+          <span className="mt-1 block text-xs font-normal text-foreground/60">
+            Sem espaços, parênteses ou traços. Ex.: 55 (Brasil) + 11 (DDD) + número.
+          </span>
+        </label>
+
+        <label className="block text-sm font-semibold">
+          Endereço
+          <input
+            name="address"
+            defaultValue={social.address}
+            placeholder="Rua Guapiaçu, 151 - Vila Clementino, São Paulo - SP"
+            className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+          />
+        </label>
+
+        <hr className="border-brand-soft" />
+
         <label className="block text-sm font-semibold">
           Instagram
           <input

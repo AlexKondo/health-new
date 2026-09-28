@@ -116,6 +116,10 @@ const SOCIAL_DEFAULTS = {
   social_instagram: "",
   social_facebook: "",
   social_youtube: "https://www.youtube.com/@escolasaude",
+  contact_phone: "(11) 5072-4470",
+  contact_whatsapp_display: "(11) 91943-6104",
+  contact_whatsapp_number: "5511919436104",
+  contact_address: "Rua Guapiaçu, 151 - Vila Clementino, São Paulo - SP",
 };
 
 export async function getSocialLinks() {
@@ -124,6 +128,10 @@ export async function getSocialLinks() {
     instagram: s.social_instagram,
     facebook: s.social_facebook,
     youtube: s.social_youtube,
+    phone: s.contact_phone,
+    whatsappDisplay: s.contact_whatsapp_display,
+    whatsappNumber: s.contact_whatsapp_number,
+    address: s.contact_address,
   };
 }
 

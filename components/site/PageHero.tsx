@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { CONTACT } from "@/lib/nav";
+import { getSocialLinks } from "@/lib/content";
 
 export default function PageHero({
   title,
@@ -53,8 +54,9 @@ export function RichBody({ content }: { content?: string | null }) {
   return <Prose paragraphs={paragraphs} />;
 }
 
-export function VisitCTA({ title }: { title?: string }) {
-  const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || CONTACT.whatsappNumber;
+export async function VisitCTA({ title }: { title?: string }) {
+  const social = await getSocialLinks();
+  const WA = social.whatsappNumber || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || CONTACT.whatsappNumber;
   const message = title
     ? `Olá! Gostaria de agendar uma visita e saber mais sobre ${title}.`
     : "Olá! Gostaria de agendar uma visita à Escola Saúde.";

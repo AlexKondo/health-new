@@ -7,7 +7,7 @@ const LINKS = [
   { href: "/admin/banners", label: "Banners" },
   { href: "/admin/sobre-nos", label: "Sobre nós" },
   { href: "/admin/diferenciais", label: "Diferenciais" },
-  { href: "/admin/redes-sociais", label: "Redes sociais" },
+  { href: "/admin/redes-sociais", label: "Contato e redes sociais" },
   { href: "/admin/estatisticas", label: "Números da home" },
   { href: "/admin/segmentos", label: "Segmentos" },
   { href: "/admin/atividades", label: "Atividades" },

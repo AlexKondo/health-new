@@ -4,13 +4,16 @@ import { CONTACT, type NavGroup } from "@/lib/nav";
 import SiteLink from "./SiteLink";
 import SocialIcons from "./SocialIcons";
 
-export default function Footer({
-  nav,
-  social,
-}: {
-  nav: NavGroup[];
-  social: { instagram: string; facebook: string; youtube: string };
-}) {
+type Social = {
+  instagram: string;
+  facebook: string;
+  youtube: string;
+  phone: string;
+  whatsappDisplay: string;
+  address: string;
+};
+
+export default function Footer({ nav, social }: { nav: NavGroup[]; social: Social }) {
   const NAV = nav;
   return (
     <footer className="mt-20 bg-brand-dark text-white">
@@ -23,7 +26,7 @@ export default function Footer({
             height={70}
             className="h-14 w-auto brightness-0 invert"
           />
-          <p className="mt-4 text-sm text-white/80">{CONTACT.address}</p>
+          <p className="mt-4 text-sm text-white/80">{social.address}</p>
           <SocialIcons social={social} className="mt-4" />
         </div>
 
@@ -32,8 +35,8 @@ export default function Footer({
           <p className="text-sm text-white/80">{CONTACT.hours}</p>
           <h3 className="font-bold mt-5 mb-3">Contate-nos</h3>
           <ul className="text-sm text-white/80 space-y-1">
-            <li>Tel: {CONTACT.phone}</li>
-            <li>WhatsApp: {CONTACT.whatsapp}</li>
+            <li>Tel: {social.phone}</li>
+            <li>WhatsApp: {social.whatsappDisplay}</li>
             <li>
               <a href={`mailto:${CONTACT.email}`} className="hover:underline break-all">
                 {CONTACT.email}

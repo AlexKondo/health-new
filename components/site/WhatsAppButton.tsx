@@ -1,8 +1,7 @@
 import { CONTACT } from "@/lib/nav";
 
-const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || CONTACT.whatsappNumber;
-
-export default function WhatsAppButton() {
+export default function WhatsAppButton({ whatsappNumber }: { whatsappNumber?: string }) {
+  const WA = whatsappNumber || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || CONTACT.whatsappNumber;
   const href = `https://wa.me/${WA}?text=${encodeURIComponent(
     "Olá! Gostaria de saber mais sobre a Escola Saúde.",
   )}`;
