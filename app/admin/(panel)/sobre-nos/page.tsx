@@ -3,9 +3,9 @@ import { requireUser } from "@/lib/admin";
 import { saveAbout } from "./actions";
 
 const DEFAULTS = {
-  about_title: "Um pouco sobre nós",
+  about_title: "Um pouco sobre nós!",
   about_text:
-    "Escola é recepcionar com um sorriso, acolher com um abraço, ouvir histórias cheias de imaginação com interesse genuíno, é comemorar cada passo dado, é instigar a curiosidade e ser curioso. Para nós, da Escola Saúde, educar é muito mais que ensinar.",
+    "O que é uma escola para você? Um lugar bonito e cheio de pessoas? Lugar de conhecimento e materiais de ponta e tecnológicos? Laboratórios, quadras, provas e atividades diversificadas? Educadores mestres e doutores? O que define uma escola? Boa pergunta, não é mesmo?\nPara nós, da Escola Saúde, a escola também é muito mais que tudo isso!\nEscola é recepcionar com um sorriso, acolher com um abraço, ouvir histórias mirabolantes e cheias de imaginação com interesse genuíno, é colocar no colo na hora da dor, é gargalhar junto, é correr até não poder mais, é comer comida gostosa, é comemorar cada passo dado, é instigar a curiosidade e ser curioso, é fazer perguntas, é sair fumacinha da cabeça buscando diferentes caminhos e soluções, é dialogar, é se desafiar e ainda no final do dia, é receber um até amanhã gostoso com vontade de ficar mais!",
   about_cta_text: "Venha nos conhecer, será um prazer recebê-lo aqui!",
   about_cta_href: "#agendar",
   about_image_url: "",
@@ -44,7 +44,7 @@ export default async function SobreNosAdmin() {
             name="text"
             defaultValue={values.about_text}
             required
-            rows={5}
+            rows={10}
             className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
           />
         </label>

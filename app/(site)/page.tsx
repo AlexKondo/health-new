@@ -13,9 +13,9 @@ import {
 } from "@/lib/content";
 
 const ABOUT_DEFAULTS = {
-  about_title: "Um pouco sobre nós",
+  about_title: "Um pouco sobre nós!",
   about_text:
-    "Escola é recepcionar com um sorriso, acolher com um abraço, ouvir histórias cheias de imaginação com interesse genuíno, é comemorar cada passo dado, é instigar a curiosidade e ser curioso. Para nós, da Escola Saúde, educar é muito mais que ensinar.",
+    "O que é uma escola para você? Um lugar bonito e cheio de pessoas? Lugar de conhecimento e materiais de ponta e tecnológicos? Laboratórios, quadras, provas e atividades diversificadas? Educadores mestres e doutores? O que define uma escola? Boa pergunta, não é mesmo?\nPara nós, da Escola Saúde, a escola também é muito mais que tudo isso!\nEscola é recepcionar com um sorriso, acolher com um abraço, ouvir histórias mirabolantes e cheias de imaginação com interesse genuíno, é colocar no colo na hora da dor, é gargalhar junto, é correr até não poder mais, é comer comida gostosa, é comemorar cada passo dado, é instigar a curiosidade e ser curioso, é fazer perguntas, é sair fumacinha da cabeça buscando diferentes caminhos e soluções, é dialogar, é se desafiar e ainda no final do dia, é receber um até amanhã gostoso com vontade de ficar mais!",
   about_cta_text: "Venha nos conhecer, será um prazer recebê-lo aqui!",
   about_cta_href: "#agendar",
   about_image_url: "",
@@ -44,28 +44,57 @@ export default async function HomePage() {
       <StatsStrip stats={stats} />
 
       {/* Um pouco sobre nós */}
-      <Section className="grid items-center gap-10 md:grid-cols-2">
-        <Reveal>
-          {about.about_image_url ? (
-            <div className="relative aspect-square overflow-hidden rounded-3xl shadow-xl">
-              <Image src={about.about_image_url} alt={about.about_title} fill className="object-cover" />
-            </div>
-          ) : (
-            <div className="aspect-square rounded-3xl bg-brand-soft" />
-          )}
-        </Reveal>
-        <Reveal delay={120}>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark">{about.about_title}</h2>
-          <p className="mt-4 text-foreground/75 leading-relaxed whitespace-pre-line">{about.about_text}</p>
-          {about.about_cta_text && (
-            <Link
-              href={about.about_cta_href}
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-bold text-white shadow-lg shadow-brand/20 transition-transform hover:scale-105"
-            >
-              {about.about_cta_text}
-            </Link>
-          )}
-        </Reveal>
+      <Section>
+        {(() => {
+          const paragraphs = about.about_text.split("\n").filter(Boolean);
+          const firstParagraph = paragraphs[0] ?? "";
+          const secondParagraph = paragraphs.slice(1).join(" ");
+          const [leadSentence, ...restSentences] = firstParagraph.split(/(?<=\?)\s+/);
+          const restOfFirstParagraph = restSentences.join(" ");
+          return (
+            <>
+              <Reveal>
+                <h2 className="text-center text-3xl md:text-4xl font-extrabold text-brand-dark">{about.about_title}</h2>
+              </Reveal>
+              <div className="mt-8 grid items-center gap-10 md:grid-cols-2">
+                <Reveal delay={80}>
+                  <p className="text-foreground/75 leading-relaxed">
+                    {leadSentence && (
+                      <span className="font-bold text-accent-ink">{leadSentence} </span>
+                    )}
+                    {restOfFirstParagraph}
+                  </p>
+                </Reveal>
+                <Reveal delay={150}>
+                  {about.about_image_url ? (
+                    <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-3xl shadow-xl">
+                      <Image src={about.about_image_url} alt={about.about_title} fill className="object-cover" />
+                    </div>
+                  ) : (
+                    <div className="mx-auto aspect-square w-full max-w-sm rounded-3xl bg-brand-soft" />
+                  )}
+                </Reveal>
+              </div>
+              {secondParagraph && (
+                <Reveal delay={200}>
+                  <p className="mt-8 text-foreground/75 leading-relaxed">{secondParagraph}</p>
+                </Reveal>
+              )}
+              {about.about_cta_text && (
+                <Reveal delay={260}>
+                  <div className="mt-8 text-center">
+                    <Link
+                      href={about.about_cta_href}
+                      className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-bold text-white shadow-lg shadow-brand/20 transition-transform hover:scale-105"
+                    >
+                      {about.about_cta_text}
+                    </Link>
+                  </div>
+                </Reveal>
+              )}
+            </>
+          );
+        })()}
       </Section>
 
       {/* Sobre nós */}
