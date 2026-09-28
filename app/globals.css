@@ -55,7 +55,7 @@ body {
 }
 @keyframes marquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-25%); }
 }
 @keyframes shimmer {
   100% { transform: translateX(100%); }

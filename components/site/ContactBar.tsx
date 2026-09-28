@@ -44,9 +44,9 @@ const SOCIAL_ICONS: { key: "facebook" | "instagram" | "youtube"; label: string; 
   },
 ];
 
-function Info({ contact }: { contact: Contact }) {
+function Info({ contact, className = "" }: { contact: Contact; className?: string }) {
   return (
-    <div className="flex items-center gap-6 whitespace-nowrap px-3 text-sm font-semibold">
+    <div className={`flex items-center gap-6 whitespace-nowrap px-3 text-sm font-semibold ${className}`}>
       {contact.phone && (
         <a href={`tel:${contact.phone.replace(/\D/g, "")}`} className="flex items-center gap-2 hover:opacity-80">
           <PhoneIcon />
@@ -85,11 +85,18 @@ export default function ContactBar({ contact }: { contact: Contact }) {
           <Info contact={contact} />
         </div>
 
-        {/* Desktop: conteúdo repetido rolando pro lado continuamente */}
+        {/* Desktop: conteúdo repetido rolando pro lado continuamente. Usa 4
+            cópias (não 2) pra garantir que sempre tem conteúdo cobrindo a
+            largura toda mesmo em telas grandes — com só 2, sobrava um vão
+            vazio antes de repetir e parecia "pular" em vez de rolar direto.
+            Cada cópia tem uma margem bem maior à direita, pra ficar óbvio
+            que é uma repetição e não um texto cortado/duplicado colado. */}
         <div className="hidden min-w-0 flex-1 overflow-hidden md:block [mask-image:linear-gradient(to_right,transparent,black_24px,black_calc(100%-24px),transparent)]">
           <div className="flex w-max animate-marquee">
-            <Info contact={contact} />
-            <Info contact={contact} />
+            <Info contact={contact} className="mr-16" />
+            <Info contact={contact} className="mr-16" />
+            <Info contact={contact} className="mr-16" />
+            <Info contact={contact} className="mr-16" />
           </div>
         </div>
 
