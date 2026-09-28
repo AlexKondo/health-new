@@ -112,6 +112,21 @@ export async function getDiferenciais() {
   };
 }
 
+const SOCIAL_DEFAULTS = {
+  social_instagram: "",
+  social_facebook: "",
+  social_youtube: "https://www.youtube.com/@escolasaude",
+};
+
+export async function getSocialLinks() {
+  const s = await getSettings(SOCIAL_DEFAULTS);
+  return {
+    instagram: s.social_instagram,
+    facebook: s.social_facebook,
+    youtube: s.social_youtube,
+  };
+}
+
 export const getPartners = () =>
   fromSupabase((sb) => sb.from("partners").select("*").order("sort_order"), partnersSeed as never[]);
 

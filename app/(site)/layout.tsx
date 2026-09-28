@@ -3,19 +3,21 @@ import Footer from "@/components/site/Footer";
 import WhatsAppButton from "@/components/site/WhatsAppButton";
 import Analytics from "@/components/site/Analytics";
 import TrackingScripts from "@/components/site/TrackingScripts";
-import { getSetting, getDiferenciais, getSegments } from "@/lib/content";
+import { getSetting, getDiferenciais, getSegments, getSocialLinks } from "@/lib/content";
 import { buildNav } from "@/lib/nav";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const [metaPixelId, googleTagId, diferenciais, segments] = await Promise.all([
+  const [metaPixelId, googleTagId, diferenciais, segments, social] = await Promise.all([
     getSetting("meta_pixel_id", ""),
     getSetting("google_tag_id", ""),
     getDiferenciais(),
     getSegments(),
+    getSocialLinks(),
   ]);
   const nav = buildNav({
     showDiferenciais: diferenciais.published,
     segments: segments.filter((s) => s.slug !== "curricular"),
+    youtubeUrl: social.youtube,
   });
 
   return (
@@ -24,7 +26,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <Analytics />
       <Header nav={nav} />
       <main className="flex-1">{children}</main>
-      <Footer nav={nav} />
+      <Footer nav={nav} social={social} />
       <WhatsAppButton />
     </>
   );

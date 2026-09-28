@@ -2,8 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { CONTACT, type NavGroup } from "@/lib/nav";
 import SiteLink from "./SiteLink";
+import SocialIcons from "./SocialIcons";
 
-export default function Footer({ nav }: { nav: NavGroup[] }) {
+export default function Footer({
+  nav,
+  social,
+}: {
+  nav: NavGroup[];
+  social: { instagram: string; facebook: string; youtube: string };
+}) {
   const NAV = nav;
   return (
     <footer className="mt-20 bg-brand-dark text-white">
@@ -17,6 +24,7 @@ export default function Footer({ nav }: { nav: NavGroup[] }) {
             className="h-14 w-auto brightness-0 invert"
           />
           <p className="mt-4 text-sm text-white/80">{CONTACT.address}</p>
+          <SocialIcons social={social} className="mt-4" />
         </div>
 
         <div>

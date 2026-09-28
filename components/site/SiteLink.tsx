@@ -26,6 +26,14 @@ export default function SiteLink({
   onClick?: () => void;
   children: React.ReactNode;
 }) {
+  if (href.startsWith("http")) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className} onClick={onClick}>
+        {children}
+      </a>
+    );
+  }
+
   if (href.includes("#")) {
     const [path, hash] = href.split("#");
     const targetPath = path || "/";

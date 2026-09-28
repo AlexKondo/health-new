@@ -28,13 +28,8 @@ export const NAV: NavGroup[] = [
     ],
   },
   { label: "Depoimentos", href: "/#depoimentos" },
-  {
-    label: "Mídias",
-    children: [
-      { label: "Galeria de Fotos", href: "/galeria-de-fotos" },
-      { label: "Podcast", href: "/podcast" },
-    ],
-  },
+  // "Podcast" entra dinamicamente (ver buildNav), com o link do YouTube
+  // configurado em /admin/redes-sociais.
   { label: "Parceiros", href: "/parceiros" },
 ];
 
@@ -46,9 +41,11 @@ export const NAV: NavGroup[] = [
 export function buildNav({
   showDiferenciais,
   segments,
+  youtubeUrl,
 }: {
   showDiferenciais: boolean;
   segments: { slug: string; title: string }[];
+  youtubeUrl?: string;
 }): NavGroup[] {
   const nav = NAV.map((group) => {
     if (group.label !== "Formação") return group;
@@ -61,9 +58,13 @@ export function buildNav({
     };
   });
 
-  if (!showDiferenciais) return nav;
-  const idx = nav.findIndex((n) => n.label === "Mídias");
-  nav.splice(idx, 0, { label: "Diferenciais", href: "/diferenciais" });
+  // Ordem final antes de "Parceiros": [Diferenciais?] [Podcast?]
+  const extras: NavGroup[] = [];
+  if (showDiferenciais) extras.push({ label: "Diferenciais", href: "/diferenciais" });
+  if (youtubeUrl) extras.push({ label: "Podcast", href: youtubeUrl });
+
+  const parceirosIdx = nav.findIndex((n) => n.label === "Parceiros");
+  nav.splice(parceirosIdx, 0, ...extras);
   return nav;
 }
 
