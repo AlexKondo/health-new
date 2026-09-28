@@ -201,7 +201,7 @@ export default async function HomePage() {
       )}
 
       {/* Depoimentos */}
-      <div className="bg-brand-soft/50">
+      <div id="depoimentos" className="scroll-mt-24 bg-brand-soft/50">
         <Section>
           <Reveal><SectionTitle eyebrow="Depoimentos" title="O que as famílias dizem" center /></Reveal>
           <Reveal delay={120}><TestimonialsCarousel items={testimonials} intervalSeconds={testimonialsInterval} /></Reveal>

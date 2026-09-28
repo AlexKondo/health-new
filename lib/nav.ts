@@ -30,7 +30,7 @@ export const NAV: NavGroup[] = [
       { label: "Extracurricular", href: "/extracurricular" },
     ],
   },
-  { label: "Depoimentos", href: "/depoimentos" },
+  { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Diferenciais", href: "/diferenciais" },
   {
     label: "Mídias",
