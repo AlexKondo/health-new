@@ -38,7 +38,6 @@ export default function Footer({ showDiferenciais = false }: { showDiferenciais?
           <h3 className="font-bold mb-3">Navegação</h3>
           <ul className="text-sm text-white/80 space-y-1">
             {NAV.flatMap((n) => (n.children ? n.children : n.href ? [{ label: n.label, href: n.href }] : []))
-              .slice(0, 10)
               .map((l) => (
                 <li key={l.href}>
                   <SiteLink href={l.href} className="hover:underline">
