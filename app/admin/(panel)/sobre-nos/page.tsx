@@ -80,7 +80,9 @@ export default async function SobreNosAdmin() {
             className="mt-2 block w-full text-sm"
           />
           <span className="mt-1 block text-xs font-normal text-foreground/60">
-            Deixe em branco pra manter a imagem atual.
+            Tamanho recomendado: 1200 x 400px (retangular, bem mais larga que alta). Outras proporções também
+            funcionam — a imagem é sempre cortada pra preencher o espaço, sem distorcer. Deixe em branco pra manter a
+            imagem atual.
           </span>
         </label>
 
