@@ -10,6 +10,8 @@ const DEFAULTS = {
   about_cta_text: "Venha nos conhecer, será um prazer recebê-lo aqui!",
   about_cta_href: "#agendar",
   about_image_url: "",
+  about_youtube_url: "https://www.youtube.com/@escolasaude",
+  about_youtube_thumb: "/images/Thumbnail-Youtube_Institucional.png",
 };
 
 export default async function SobreNosAdmin() {
@@ -78,6 +80,33 @@ export default async function SobreNosAdmin() {
             label="Imagem"
             hint="Tamanho recomendado: 1200 x 400px (retangular, bem mais larga que alta). Outras proporções também funcionam — a imagem é sempre cortada pra preencher o espaço, sem distorcer. Deixe em branco pra manter a imagem atual."
           />
+        </div>
+
+        <div className="border-t border-brand-soft pt-4">
+          <p className="text-sm font-bold text-brand-dark">Vídeo (seção &quot;Um pouco sobre nós&quot;)</p>
+
+          <label className="mt-3 block text-sm font-semibold">
+            Link do vídeo (YouTube)
+            <input
+              name="youtube_url"
+              defaultValue={values.about_youtube_url}
+              placeholder="https://www.youtube.com/@escolasaude"
+              className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+            />
+          </label>
+
+          <div className="mt-3">
+            {values.about_youtube_thumb && (
+              <div className="relative mb-3 h-40 w-full overflow-hidden rounded-xl bg-brand-soft">
+                <Image src={values.about_youtube_thumb} alt="Capa do vídeo" fill className="object-cover" />
+              </div>
+            )}
+            <ImageInput
+              name="youtube_thumb"
+              label="Capa do vídeo (thumbnail)"
+              hint="Tamanho recomendado: 1280 x 720px (16:9). Deixe em branco pra manter a imagem atual."
+            />
+          </div>
         </div>
 
         <button type="submit" className="mt-2 rounded-full bg-brand px-5 py-2.5 font-bold text-white hover:bg-brand-dark">

@@ -20,6 +20,8 @@ const ABOUT_DEFAULTS = {
   about_cta_text: "Venha nos conhecer, será um prazer recebê-lo aqui!",
   about_cta_href: "#agendar",
   about_image_url: "",
+  about_youtube_url: "https://www.youtube.com/@escolasaude",
+  about_youtube_thumb: "/images/Thumbnail-Youtube_Institucional.png",
 };
 
 const SEGMENT_BLURB: Record<string, string> = {
@@ -65,12 +67,12 @@ export default async function HomePage() {
                 </Reveal>
                 <Reveal delay={150}>
                   <Link
-                    href="https://www.youtube.com/@escolasaude"
+                    href={about.about_youtube_url}
                     target="_blank"
                     className="relative block aspect-video w-full overflow-hidden rounded-3xl shadow-xl group"
                   >
                     <Image
-                      src="/images/Thumbnail-Youtube_Institucional.png"
+                      src={about.about_youtube_thumb}
                       alt="Vídeo institucional da Escola Saúde"
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
