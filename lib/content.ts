@@ -112,6 +112,22 @@ export async function getDiferenciais() {
   };
 }
 
+const NOSSA_HISTORIA_DEFAULTS = {
+  nossa_historia_title: "Nossa História",
+  nossa_historia_hero_image: "/images/Nossa-historia-Banner.png",
+  nossa_historia_body:
+    "Verão de 1993. Duas amigas pedagogas. Conhecidos que trabalhavam e procuravam um lugar confiável onde deixar seus filhos. Igreja Metodista Livre da Saúde. Este foi o contexto do início da nossa trajetória. Começamos atendendo 4 crianças, depois mais 3, logo mais 5 e assim, a Escola cresceu em tamanho, compromisso e responsabilidade.\n\nHoje, contamos com mais de cento e cinquenta alunos mantendo valores e princípios que nos norteiam desde o começo: ambiente cristão, afeto, cooperação, respeito e responsabilidade para com as famílias que se tornam nossas parceiras.\n\nO trabalho pedagógico é diferenciado na qualidade, oferecendo conteúdos e atividades significativas, a fim de garantir um excelente nível de aprendizado e de desenvolvimento integral.\n\nEm abril de 2023 completamos 30 anos de fundação com muitas histórias para contar!",
+};
+
+export async function getNossaHistoria() {
+  const s = await getSettings(NOSSA_HISTORIA_DEFAULTS);
+  return {
+    title: s.nossa_historia_title,
+    heroImage: s.nossa_historia_hero_image,
+    body: s.nossa_historia_body,
+  };
+}
+
 const SOCIAL_DEFAULTS = {
   social_instagram: "",
   social_facebook: "",

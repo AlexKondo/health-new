@@ -7,6 +7,7 @@ const LINKS = [
   { href: "/admin", label: "Visão geral" },
   { href: "/admin/banners", label: "Banners" },
   { href: "/admin/sobre-nos", label: "Sobre nós" },
+  { href: "/admin/nossa-historia", label: "Nossa História" },
   { href: "/admin/diferenciais", label: "Diferenciais" },
   { href: "/admin/redes-sociais", label: "Contato e redes sociais" },
   { href: "/admin/estatisticas", label: "Números da home" },

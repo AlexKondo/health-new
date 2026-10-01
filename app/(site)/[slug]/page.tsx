@@ -7,7 +7,7 @@ import { Section } from "@/components/site/Section";
 import Reveal from "@/components/site/Reveal";
 import PartnerLogo from "@/components/site/PartnerLogo";
 import {
-  getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais, getPartners,
+  getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais, getPartners, getNossaHistoria,
 } from "@/lib/content";
 
 export const dynamicParams = true;
@@ -18,9 +18,9 @@ export async function generateStaticParams() {
   return [
     ...s.map((x) => ({ slug: x.slug })),
     ...a.map((x) => ({ slug: x.slug })),
-    // "diferenciais" fica de fora: o conteúdo dela agora vem do
-    // site_settings (editável no admin), não mais do seed estático.
-    ...getPages().filter((x) => x.slug !== "diferenciais").map((x) => ({ slug: x.slug })),
+    // "diferenciais" e "nossa-historia" ficam de fora: o conteúdo delas
+    // agora vem do site_settings (editável no admin), não mais do seed.
+    ...getPages().filter((x) => x.slug !== "diferenciais" && x.slug !== "nossa-historia").map((x) => ({ slug: x.slug })),
   ];
 }
 
@@ -53,6 +53,19 @@ export default async function DynamicPage({
         <PageHero title={d.title} image={d.heroImage} />
         <Section className="max-w-4xl">
           <RichBody content={d.body} />
+        </Section>
+      </>
+    );
+  }
+
+  // 0.25) Nossa História (conteúdo editável no admin)
+  if (slug === "nossa-historia") {
+    const h = await getNossaHistoria();
+    return (
+      <>
+        <PageHero title={h.title} image={h.heroImage} />
+        <Section className="max-w-4xl">
+          <RichBody content={h.body} />
         </Section>
       </>
     );
