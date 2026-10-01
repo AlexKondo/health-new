@@ -64,13 +64,24 @@ export default async function HomePage() {
                   </p>
                 </Reveal>
                 <Reveal delay={150}>
-                  {about.about_image_url ? (
-                    <div className="relative h-32 w-full overflow-hidden rounded-3xl shadow-xl md:h-40">
-                      <Image src={about.about_image_url} alt={about.about_title} fill className="object-cover" />
-                    </div>
-                  ) : (
-                    <div className="h-32 w-full rounded-3xl bg-brand-soft md:h-40" />
-                  )}
+                  <Link
+                    href="https://www.youtube.com/@escolasaude"
+                    target="_blank"
+                    className="relative block aspect-video w-full overflow-hidden rounded-3xl shadow-xl group"
+                  >
+                    <Image
+                      src="/images/Thumbnail-Youtube_Institucional.png"
+                      alt="Vídeo institucional da Escola Saúde"
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <span className="absolute inset-0 grid place-items-center bg-black/10">
+                      <span className="grid h-16 w-16 place-items-center rounded-full bg-white/90 text-2xl text-brand shadow-lg transition-transform group-hover:scale-110">
+                        ▶
+                      </span>
+                      <span className="absolute h-16 w-16 rounded-full ring-4 ring-white/50 animate-ping" />
+                    </span>
+                  </Link>
                 </Reveal>
               </div>
               {secondParagraph && (
@@ -118,24 +129,13 @@ export default async function HomePage() {
           </Link>
         </Reveal>
         <Reveal delay={150}>
-          <Link
-            href="https://www.youtube.com/@escolasaude"
-            target="_blank"
-            className="relative block aspect-video overflow-hidden rounded-3xl shadow-xl group"
-          >
-            <Image
-              src="/images/Thumbnail-Youtube_Institucional.png"
-              alt="Vídeo institucional da Escola Saúde"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <span className="absolute inset-0 grid place-items-center bg-black/10">
-              <span className="grid h-20 w-20 place-items-center rounded-full bg-white/90 text-3xl text-brand shadow-lg transition-transform group-hover:scale-110">
-                ▶
-              </span>
-              <span className="absolute h-20 w-20 rounded-full ring-4 ring-white/50 animate-ping" />
-            </span>
-          </Link>
+          {about.about_image_url ? (
+            <div className="relative aspect-video overflow-hidden rounded-3xl shadow-xl">
+              <Image src={about.about_image_url} alt={about.about_title} fill className="object-cover" />
+            </div>
+          ) : (
+            <div className="aspect-video rounded-3xl bg-brand-soft" />
+          )}
         </Reveal>
       </Section>
 
