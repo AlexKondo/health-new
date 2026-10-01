@@ -3,7 +3,9 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 function safeNext(raw: string | null) {
-  if (!raw || !raw.startsWith("/") || raw.startsWith("//")) return "/admin";
+  // "//" e "/\" são os dois jeitos de um path "relativo" ainda assim virar
+  // um redirect pra outro domínio (alguns navegadores tratam "\" como "/").
+  if (!raw || !raw.startsWith("/") || raw.startsWith("//") || raw.startsWith("/\\")) return "/admin";
   return raw;
 }
 
