@@ -2,13 +2,17 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import type { NavGroup } from "@/lib/nav";
+import { CONTACT, type NavGroup } from "@/lib/nav";
 import SiteLink from "./SiteLink";
 import AnimatedLogo from "./AnimatedLogo";
 
-export default function Header({ nav }: { nav: NavGroup[] }) {
+export default function Header({ nav, whatsappNumber }: { nav: NavGroup[]; whatsappNumber?: string }) {
   const [open, setOpen] = useState(false);
   const NAV = nav;
+  const WA = whatsappNumber || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || CONTACT.whatsappNumber;
+  const waHref = `https://wa.me/${WA}?text=${encodeURIComponent(
+    "Olá! Gostaria de agendar uma visita à Escola Saúde.",
+  )}`;
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-brand-soft">
@@ -51,12 +55,14 @@ export default function Header({ nav }: { nav: NavGroup[] }) {
               </SiteLink>
             ),
           )}
-          <SiteLink
-            href="/#agendar"
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className="ml-2 rounded-full bg-brand-dark px-4 py-2 text-base font-bold text-white hover:brightness-95"
           >
             Agende uma visita
-          </SiteLink>
+          </a>
         </nav>
 
         {/* Mobile toggle */}
@@ -94,13 +100,15 @@ export default function Header({ nav }: { nav: NavGroup[] }) {
               )}
             </div>
           ))}
-          <SiteLink
-            href="/#agendar"
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-2 block rounded-full bg-brand-dark px-4 py-2 text-center font-bold text-white"
             onClick={() => setOpen(false)}
           >
             Agende uma visita
-          </SiteLink>
+          </a>
         </nav>
       )}
     </header>

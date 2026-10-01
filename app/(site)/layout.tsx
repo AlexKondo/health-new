@@ -26,7 +26,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <TrackingScripts metaPixelId={metaPixelId} googleTagId={googleTagId} />
       <Analytics />
       <ContactBar contact={social} />
-      <Header nav={nav} />
+      <Header nav={nav} whatsappNumber={social.whatsappNumber} />
       <main className="flex-1">{children}</main>
       <Footer nav={nav} social={social} />
       <WhatsAppButton whatsappNumber={social.whatsappNumber} />
