@@ -128,6 +128,30 @@ export async function getNossaHistoria() {
   };
 }
 
+const INFRA_DEFAULTS = {
+  infra_title: "Infraestrutura",
+  infra_hero_image: "/images/Escola-Saude-Banners-.png",
+  infra_body:
+    "Oferecemos espaço e recursos materiais adequados para desenvolver todas as potencialidades de nossos alunos por meio de um ambiente acolhedor, saudável, lúdico, seguro, que respeita e valoriza a infância.\n\nTodos os espaços, os brinquedos, os jogos, os recursos tecnológicos e acadêmicos são instrumentos para os educadores criarem oportunidades de sociabilização, aprendizagens significativas, construção de conhecimento, desenvolvimento socioemocional e de uma identidade saudável como pessoa e cidadão do mundo.",
+};
+
+export async function getInfraestrutura() {
+  const s = await getSettings(INFRA_DEFAULTS);
+  return {
+    title: s.infra_title,
+    heroImage: s.infra_hero_image,
+    body: s.infra_body,
+  };
+}
+
+export type InfraPhoto = { id: string; image_url: string; sort_order: number };
+
+export const getInfraPhotos = () =>
+  fromSupabase(
+    (sb) => sb.from("infra_photos").select("*").order("sort_order"),
+    [] as InfraPhoto[],
+  );
+
 const SOCIAL_DEFAULTS = {
   social_instagram: "",
   social_facebook: "",

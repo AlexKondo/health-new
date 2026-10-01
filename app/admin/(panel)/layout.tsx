@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/admin/sobre-nos", label: "Sobre nós" },
   { href: "/admin/nossa-historia", label: "Nossa História" },
   { href: "/admin/diferenciais", label: "Diferenciais" },
+  { href: "/admin/infraestrutura", label: "Infraestrutura" },
   { href: "/admin/redes-sociais", label: "Contato e redes sociais" },
   { href: "/admin/estatisticas", label: "Números da home" },
   { href: "/admin/segmentos", label: "Segmentos" },

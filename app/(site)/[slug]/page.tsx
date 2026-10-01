@@ -8,6 +8,7 @@ import Reveal from "@/components/site/Reveal";
 import PartnerLogo from "@/components/site/PartnerLogo";
 import {
   getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais, getPartners, getNossaHistoria,
+  getInfraestrutura, getInfraPhotos,
 } from "@/lib/content";
 
 export const dynamicParams = true;
@@ -20,7 +21,9 @@ export async function generateStaticParams() {
     ...a.map((x) => ({ slug: x.slug })),
     // "diferenciais" e "nossa-historia" ficam de fora: o conteúdo delas
     // agora vem do site_settings (editável no admin), não mais do seed.
-    ...getPages().filter((x) => x.slug !== "diferenciais" && x.slug !== "nossa-historia").map((x) => ({ slug: x.slug })),
+    ...getPages()
+      .filter((x) => x.slug !== "diferenciais" && x.slug !== "nossa-historia" && x.slug !== "infraestrutura")
+      .map((x) => ({ slug: x.slug })),
   ];
 }
 
@@ -67,6 +70,33 @@ export default async function DynamicPage({
         <Section className="max-w-4xl">
           <RichBody content={h.body} />
         </Section>
+      </>
+    );
+  }
+
+  // 0.3) Infraestrutura (texto + banner editáveis no admin, galeria de fotos
+  // vinda de uma tabela dedicada, igual Parceiros)
+  if (slug === "infraestrutura") {
+    const [info, photos] = await Promise.all([getInfraestrutura(), getInfraPhotos()]);
+    return (
+      <>
+        <PageHero title={info.title} image={info.heroImage} />
+        <Section className="max-w-4xl">
+          <RichBody content={info.body} />
+        </Section>
+        {photos.length > 0 && (
+          <Section className="max-w-5xl pt-0">
+            <div className="grid gap-6 sm:grid-cols-2">
+              {photos.map((p, i) => (
+                <Reveal key={p.id} direction="left" delay={(i % 2) * 100}>
+                  <div className="relative aspect-[3/2] overflow-hidden rounded-2xl shadow-lg">
+                    <Image src={p.image_url} alt="Infraestrutura da Escola Saúde" fill className="object-cover" />
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </Section>
+        )}
       </>
     );
   }
