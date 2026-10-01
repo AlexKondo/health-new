@@ -130,7 +130,7 @@ export async function getNossaHistoria() {
 
 const INFRA_DEFAULTS = {
   infra_title: "Infraestrutura",
-  infra_hero_image: "/images/Escola-Saude-Banners-.png",
+  infra_hero_image: "",
   infra_body:
     "Oferecemos espaço e recursos materiais adequados para desenvolver todas as potencialidades de nossos alunos por meio de um ambiente acolhedor, saudável, lúdico, seguro, que respeita e valoriza a infância.\n\nTodos os espaços, os brinquedos, os jogos, os recursos tecnológicos e acadêmicos são instrumentos para os educadores criarem oportunidades de sociabilização, aprendizagens significativas, construção de conhecimento, desenvolvimento socioemocional e de uma identidade saudável como pessoa e cidadão do mundo.",
 };
