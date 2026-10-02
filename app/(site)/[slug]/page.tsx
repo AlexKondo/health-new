@@ -6,9 +6,10 @@ import PageHero, { Prose, RichBody, VisitCTA } from "@/components/site/PageHero"
 import { Section } from "@/components/site/Section";
 import Reveal from "@/components/site/Reveal";
 import PartnerLogo from "@/components/site/PartnerLogo";
+import ImageCarousel from "@/components/site/ImageCarousel";
 import {
   getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais, getPartners, getNossaHistoria,
-  getInfraestrutura, getInfraPhotos,
+  getNossaHistoriaPhotos, getInfraestrutura, getInfraPhotos,
 } from "@/lib/content";
 
 export const dynamicParams = true;
@@ -63,12 +64,17 @@ export default async function DynamicPage({
 
   // 0.25) Nossa História (conteúdo editável no admin)
   if (slug === "nossa-historia") {
-    const h = await getNossaHistoria();
+    const [h, photos] = await Promise.all([getNossaHistoria(), getNossaHistoriaPhotos()]);
     return (
       <>
         <PageHero title={h.title} image={h.heroImage} />
         <Section className="max-w-4xl">
           <RichBody content={h.body} />
+          {photos.length > 0 && (
+            <div className="mt-10">
+              <ImageCarousel images={photos} intervalSeconds={h.carouselIntervalSeconds} />
+            </div>
+          )}
         </Section>
       </>
     );

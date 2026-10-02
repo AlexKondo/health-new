@@ -117,6 +117,7 @@ const NOSSA_HISTORIA_DEFAULTS = {
   nossa_historia_hero_image: "/images/Nossa-historia-Banner.png",
   nossa_historia_body:
     "Verão de 1993. Duas amigas pedagogas. Conhecidos que trabalhavam e procuravam um lugar confiável onde deixar seus filhos. Igreja Metodista Livre da Saúde. Este foi o contexto do início da nossa trajetória. Começamos atendendo 4 crianças, depois mais 3, logo mais 5 e assim, a Escola cresceu em tamanho, compromisso e responsabilidade.\n\nHoje, contamos com mais de cento e cinquenta alunos mantendo valores e princípios que nos norteiam desde o começo: ambiente cristão, afeto, cooperação, respeito e responsabilidade para com as famílias que se tornam nossas parceiras.\n\nO trabalho pedagógico é diferenciado na qualidade, oferecendo conteúdos e atividades significativas, a fim de garantir um excelente nível de aprendizado e de desenvolvimento integral.\n\nEm abril de 2023 completamos 30 anos de fundação com muitas histórias para contar!",
+  nossa_historia_carousel_interval_seconds: "3",
 };
 
 export async function getNossaHistoria() {
@@ -125,8 +126,17 @@ export async function getNossaHistoria() {
     title: s.nossa_historia_title,
     heroImage: s.nossa_historia_hero_image,
     body: s.nossa_historia_body,
+    carouselIntervalSeconds: Number(s.nossa_historia_carousel_interval_seconds) || 3,
   };
 }
+
+export type NossaHistoriaPhoto = { id: string; image_url: string; sort_order: number };
+
+export const getNossaHistoriaPhotos = () =>
+  fromSupabase(
+    (sb) => sb.from("nossa_historia_photos").select("*").order("sort_order"),
+    [] as NossaHistoriaPhoto[],
+  );
 
 const INFRA_DEFAULTS = {
   infra_title: "Infraestrutura",
