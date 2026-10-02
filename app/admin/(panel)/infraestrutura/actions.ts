@@ -17,6 +17,12 @@ export async function saveInfraestrutura(formData: FormData) {
     { key: "infra_body", value: body },
   ];
 
+  const intervalRaw = formData.get("carousel_interval_seconds");
+  if (intervalRaw !== null) {
+    const interval = Math.min(30, Math.max(1, Number(intervalRaw) || 3));
+    rows.push({ key: "infra_carousel_interval_seconds", value: String(interval) });
+  }
+
   const file = formData.get("hero_image") as File | null;
   if (file && file.size > 0) {
     const hero_image = await uploadPublic("infraestrutura", file);

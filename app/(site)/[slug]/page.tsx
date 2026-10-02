@@ -89,20 +89,12 @@ export default async function DynamicPage({
         <PageHero title={info.title} image={info.heroImage} />
         <Section className="max-w-4xl">
           <RichBody content={info.body} />
-        </Section>
-        {photos.length > 0 && (
-          <Section className="max-w-5xl pt-0">
-            <div className="grid gap-6 sm:grid-cols-2">
-              {photos.map((p, i) => (
-                <Reveal key={p.id} direction="left" delay={(i % 2) * 100}>
-                  <div className="relative aspect-[3/2] overflow-hidden rounded-2xl shadow-lg">
-                    <Image src={p.image_url} alt="Infraestrutura da Escola Saúde" fill className="object-cover" />
-                  </div>
-                </Reveal>
-              ))}
+          {photos.length > 0 && (
+            <div className="mt-10">
+              <ImageCarousel images={photos} intervalSeconds={info.carouselIntervalSeconds} />
             </div>
-          </Section>
-        )}
+          )}
+        </Section>
       </>
     );
   }

@@ -143,6 +143,7 @@ const INFRA_DEFAULTS = {
   infra_hero_image: "",
   infra_body:
     "Oferecemos espaço e recursos materiais adequados para desenvolver todas as potencialidades de nossos alunos por meio de um ambiente acolhedor, saudável, lúdico, seguro, que respeita e valoriza a infância.\n\nTodos os espaços, os brinquedos, os jogos, os recursos tecnológicos e acadêmicos são instrumentos para os educadores criarem oportunidades de sociabilização, aprendizagens significativas, construção de conhecimento, desenvolvimento socioemocional e de uma identidade saudável como pessoa e cidadão do mundo.",
+  infra_carousel_interval_seconds: "3",
 };
 
 export async function getInfraestrutura() {
@@ -151,6 +152,7 @@ export async function getInfraestrutura() {
     title: s.infra_title,
     heroImage: s.infra_hero_image,
     body: s.infra_body,
+    carouselIntervalSeconds: Number(s.infra_carousel_interval_seconds) || 3,
   };
 }
 

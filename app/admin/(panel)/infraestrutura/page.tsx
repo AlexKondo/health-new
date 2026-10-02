@@ -59,10 +59,29 @@ export default async function InfraestruturaAdmin() {
         </button>
       </form>
 
-      <h2 className="mt-10 text-xl font-extrabold text-brand-dark">Galeria de fotos</h2>
+      <h2 className="mt-10 text-xl font-extrabold text-brand-dark">Carrossel de fotos</h2>
       <p className="mt-1 text-sm text-foreground/60">
-        Fotos exibidas na página, na ordem em que aparecem aqui.
+        Aparece logo abaixo do texto, na página. Troca automaticamente de foto.
       </p>
+
+      <form action={saveInfraestrutura} className="mt-4 max-w-xs rounded-2xl bg-white p-6 shadow-sm">
+        <input type="hidden" name="title" value={info.title} />
+        <input type="hidden" name="body" value={info.body} />
+        <label className="block text-sm font-semibold">
+          Troca de foto a cada (segundos)
+          <input
+            type="number"
+            name="carousel_interval_seconds"
+            min={1}
+            max={30}
+            defaultValue={info.carouselIntervalSeconds}
+            className="mt-1 w-full rounded-xl border border-brand-soft px-3 py-2 font-normal outline-none focus:border-brand"
+          />
+        </label>
+        <button type="submit" className="mt-3 rounded-full bg-brand px-5 py-2.5 font-bold text-white hover:bg-brand-dark">
+          Salvar
+        </button>
+      </form>
 
       <form
         action={addInfraPhoto}

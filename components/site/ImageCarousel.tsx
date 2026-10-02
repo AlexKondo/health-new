@@ -1,53 +1,81 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const GAP_PX = 16; // deve bater com o gap-4 usado na trilha
 
 export default function ImageCarousel({
   images,
   intervalSeconds = 3,
+  visible = 5,
 }: {
   images: { id: string; image_url: string }[];
   intervalSeconds?: number;
+  visible?: number;
 }) {
-  const [i, setI] = useState(0);
   const n = images.length;
+  // Mesmo truque do carrossel de depoimentos: trilha triplicada pra poder
+  // andar infinitamente pra frente sem transição visível de volta.
+  const loopedItems = n > visible ? [...images, ...images, ...images] : images;
+  const [index, setIndex] = useState(n > visible ? n : 0);
+  const [animated, setAnimated] = useState(true);
+  const [paused, setPaused] = useState(false);
+  const [stepPx, setStepPx] = useState(0);
+  const firstItemRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (n <= 1) return;
-    const t = setInterval(() => setI((v) => (v + 1) % n), Math.max(1, intervalSeconds) * 1000);
+    function measure() {
+      if (firstItemRef.current) setStepPx(firstItemRef.current.offsetWidth + GAP_PX);
+    }
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [n]);
+
+  useEffect(() => {
+    if (n <= visible) return;
+    if (index >= n && index < n * 2) return;
+    const t = setTimeout(() => {
+      setAnimated(false);
+      setIndex((i) => (i >= n * 2 ? i - n : i + n));
+    }, 650);
+    return () => clearTimeout(t);
+  }, [index, n, visible]);
+
+  useEffect(() => {
+    if (animated) return;
+    const t = requestAnimationFrame(() => setAnimated(true));
+    return () => cancelAnimationFrame(t);
+  }, [animated]);
+
+  useEffect(() => {
+    if (!intervalSeconds || intervalSeconds <= 0 || n <= visible || paused) return;
+    const t = setInterval(() => setIndex((i) => i + 1), intervalSeconds * 1000);
     return () => clearInterval(t);
-  }, [n, intervalSeconds]);
+  }, [intervalSeconds, n, visible, paused]);
 
   if (n === 0) return null;
 
   return (
-    <div className="relative h-52 w-full overflow-hidden rounded-2xl shadow-lg md:h-64">
-      {images.map((img, idx) => (
-        <Image
-          key={img.id}
-          src={img.image_url}
-          alt="Nossa História"
-          fill
-          className={`object-cover transition-opacity duration-700 ${idx === i ? "opacity-100" : "opacity-0"}`}
-          priority={idx === 0}
-        />
-      ))}
-
-      {n > 1 && (
-        <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2">
-          {images.map((img, idx) => (
-            <button
-              key={img.id}
-              aria-label={`Foto ${idx + 1}`}
-              onClick={() => setI(idx)}
-              className={`h-2 rounded-full transition-all ${
-                idx === i ? "w-6 bg-white" : "w-2 bg-white/60"
-              }`}
-            />
-          ))}
-        </div>
-      )}
+    <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} className="overflow-hidden">
+      <div
+        className="flex gap-4"
+        style={{
+          transform: stepPx ? `translateX(-${index * stepPx}px)` : undefined,
+          transition: animated ? "transform 600ms ease" : "none",
+        }}
+      >
+        {loopedItems.map((img, idx) => (
+          <div
+            key={idx}
+            ref={idx === 0 ? firstItemRef : undefined}
+            className="relative h-80 w-full shrink-0 overflow-hidden rounded-2xl shadow-lg sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-4rem)/5)]"
+          >
+            <Image src={img.image_url} alt="Escola Saúde" fill className="object-cover" sizes="(max-width: 768px) 100vw, 20vw" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
