@@ -110,14 +110,14 @@ export default function ImageCarousel({
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
+            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-10 sm:-translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
             aria-label="Foto anterior"
           >
             ←
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
+            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-10 sm:translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
             aria-label="Próxima foto"
           >
             →
