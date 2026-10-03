@@ -76,23 +76,23 @@ export default function ImageCarousel({
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setDragStart(e.clientX);
+    setDragOffset(0);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return;
-    const diff = dragStart - e.clientX;
-    if (Math.abs(diff) > 5 && stepPx > 0) {
-      const steps = Math.round(diff / stepPx);
-      if (steps !== 0) {
-        setAnimated(false);
-        setIndex((i) => i + steps);
-        setDragStart(e.clientX);
-      }
-    }
+    setDragOffset(e.clientX - dragStart);
   };
 
   const handleMouseUp = () => {
+    if (!isDragging) return;
     setIsDragging(false);
+    const threshold = Math.min(50, stepPx * 0.2);
+    if (stepPx > 0 && Math.abs(dragOffset) > threshold) {
+      const steps = Math.max(1, Math.round(Math.abs(dragOffset) / stepPx));
+      setIndex((i) => i + (dragOffset < 0 ? steps : -steps));
+    }
+    setDragOffset(0);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
