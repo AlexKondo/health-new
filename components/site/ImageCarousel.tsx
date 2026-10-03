@@ -72,7 +72,7 @@ export default function ImageCarousel({
             ref={idx === 0 ? firstItemRef : undefined}
             className="relative h-80 w-full shrink-0 overflow-hidden rounded-2xl shadow-lg sm:w-1/2 md:w-1/3 lg:w-1/5"
           >
-            <Image src={img.image_url} alt="Escola Saúde" fill className="object-cover" sizes="(max-width: 768px) 100vw, 20vw" />
+            <Image src={img.image_url} alt="Escola Saúde" fill className="object-contain" sizes="(max-width: 768px) 100vw, 20vw" />
           </div>
         ))}
       </div>
