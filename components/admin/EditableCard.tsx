@@ -23,6 +23,11 @@ export default function EditableCard({
       await action(formData);
       return { ok: true };
     } catch (e) {
+      const digest = (e as { digest?: unknown })?.digest;
+      const isRedirect =
+        (typeof digest === "string" && digest.startsWith("NEXT_REDIRECT")) ||
+        (e instanceof Error && e.message === "NEXT_REDIRECT");
+      if (isRedirect) return { ok: true };
       return { ok: false, error: e instanceof Error ? e.message : "Erro ao salvar." };
     }
   }, { ok: false });
