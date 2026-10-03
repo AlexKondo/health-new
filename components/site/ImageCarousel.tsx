@@ -25,6 +25,7 @@ export default function ImageCarousel({
   const [dragStart, setDragStart] = useState(0);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const firstItemRef = useRef<HTMLDivElement | null>(null);
+  const touchStartRef = useRef(0);
 
   useEffect(() => {
     function measure() {
@@ -92,6 +93,29 @@ export default function ImageCarousel({
     setIsDragging(false);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setPaused(true);
+    touchStartRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartRef.current === 0) return;
+    const diff = touchStartRef.current - e.touches[0].clientX;
+    if (Math.abs(diff) > 5 && stepPx > 0) {
+      const steps = Math.round(diff / stepPx);
+      if (steps !== 0) {
+        setAnimated(false);
+        setIndex((i) => i + steps);
+        touchStartRef.current = e.touches[0].clientX;
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    touchStartRef.current = 0;
+    setPaused(false);
+  };
+
   const handlePrev = () => {
     setAnimated(true);
     setIndex((i) => i - 1);
@@ -110,14 +134,14 @@ export default function ImageCarousel({
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-10 sm:-translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
+            className="hidden sm:flex absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-10 sm:-translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
             aria-label="Foto anterior"
           >
             ←
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-10 sm:translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
+            className="hidden sm:flex absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-10 sm:translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
             aria-label="Próxima foto"
           >
             →
@@ -138,6 +162,9 @@ export default function ImageCarousel({
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           className="flex gap-4"
           style={{
             transform: stepPx ? `translateX(-${index * stepPx}px)` : undefined,
