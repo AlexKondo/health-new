@@ -51,6 +51,8 @@ export async function saveSegment(formData: FormData) {
     schedule: schedule(formData),
     sort_order: Number(formData.get("sort_order") || 0),
     published: formData.get("published") === "on",
+    show_carousel: formData.get("show_carousel") === "on",
+    carousel_interval_seconds: Math.min(30, Math.max(1, Number(formData.get("carousel_interval_seconds")) || 3)),
   };
 
   const res = id

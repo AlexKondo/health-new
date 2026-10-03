@@ -5,6 +5,7 @@ import { useState } from "react";
 import { saveSegment } from "@/app/admin/(panel)/segmentos/actions";
 import ImageInput from "@/components/admin/ImageInput";
 import RichTextEditor from "@/components/admin/RichTextEditor";
+import CarouselFields from "@/components/admin/CarouselFields";
 
 type ScheduleBlock = { label: string; from: string; to: string };
 
@@ -20,6 +21,8 @@ type Segment = {
   schedule?: ScheduleBlock[];
   sort_order?: number;
   published?: boolean;
+  show_carousel?: boolean;
+  carousel_interval_seconds?: number;
 };
 
 export default function SegmentForm({ segment }: { segment?: Segment }) {
@@ -93,6 +96,8 @@ export default function SegmentForm({ segment }: { segment?: Segment }) {
       </div>
 
       <Input name="sort_order" label="Ordem" type="number" defaultValue={String(segment?.sort_order ?? 0)} />
+
+      <CarouselFields showCarousel={segment?.show_carousel} intervalSeconds={segment?.carousel_interval_seconds} />
 
       <label className="flex items-center gap-2 text-sm font-semibold">
         <input type="checkbox" name="published" defaultChecked={segment?.published ?? true} className="h-4 w-4" />

@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import ActivityForm from "@/components/admin/ActivityForm";
 import BackLink from "@/components/admin/BackLink";
+import PagePhotosManager from "@/components/admin/PagePhotosManager";
 import { requireUser } from "@/lib/admin";
+import { getPagePhotos } from "@/lib/content";
 
 export default async function EditActivityPage({
   params,
@@ -18,6 +20,11 @@ export default async function EditActivityPage({
       <BackLink href="/admin/atividades" />
       <h1 className="text-2xl font-extrabold text-brand-dark mb-6">Editar atividade</h1>
       <ActivityForm activity={activity} />
+      <PagePhotosManager
+        slug={activity.slug}
+        returnTo={`/admin/atividades/${activity.id}`}
+        photos={await getPagePhotos(activity.slug)}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import SavedToast from "@/components/admin/SavedToast";
 const LINKS = [
   { href: "/admin", label: "Visão geral" },
   { href: "/admin/banners", label: "Banners" },
+  { href: "/admin/paginas", label: "Páginas do site" },
   { href: "/admin/sobre-nos", label: "Sobre nós" },
   { href: "/admin/nossa-historia", label: "Nossa História" },
   { href: "/admin/diferenciais", label: "Diferenciais" },

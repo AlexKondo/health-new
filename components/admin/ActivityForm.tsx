@@ -5,6 +5,7 @@ import { useState } from "react";
 import { saveActivity } from "@/app/admin/(panel)/atividades/actions";
 import ImageInput from "@/components/admin/ImageInput";
 import RichTextEditor from "@/components/admin/RichTextEditor";
+import CarouselFields from "@/components/admin/CarouselFields";
 
 type Activity = {
   id?: string;
@@ -15,6 +16,8 @@ type Activity = {
   hero_image?: string | null;
   body?: string | null;
   sort_order?: number;
+  show_carousel?: boolean;
+  carousel_interval_seconds?: number;
 };
 
 export default function ActivityForm({ activity }: { activity?: Activity }) {
@@ -71,6 +74,8 @@ export default function ActivityForm({ activity }: { activity?: Activity }) {
       </div>
 
       <RichTextEditor name="body" label="Texto da página" defaultValue={activity?.body} />
+
+      <CarouselFields showCarousel={activity?.show_carousel} intervalSeconds={activity?.carousel_interval_seconds} />
 
       <Input name="sort_order" label="Ordem" type="number" defaultValue={String(activity?.sort_order ?? 0)} />
 

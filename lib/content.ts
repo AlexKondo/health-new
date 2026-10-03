@@ -16,8 +16,14 @@ import statsSeed from "@/content/seed/stats.json";
 
 export type Testimonial = (typeof testimonialsSeed)[number];
 export type Faq = (typeof faqSeed)[number];
-export type Segment = (typeof segmentsSeed)[number];
-export type Activity = (typeof activitiesSeed)[number];
+export type Segment = (typeof segmentsSeed)[number] & {
+  show_carousel?: boolean;
+  carousel_interval_seconds?: number;
+};
+export type Activity = (typeof activitiesSeed)[number] & {
+  show_carousel?: boolean;
+  carousel_interval_seconds?: number;
+};
 export type Banner = (typeof bannersSeed)[number];
 export type Stat = (typeof statsSeed)[number];
 
@@ -203,6 +209,39 @@ export async function getActivity(slug: string): Promise<Activity | null> {
 // Páginas institucionais/legais são estáticas (vêm do build de conteúdo).
 export type ContentPage = (typeof pagesSeed)[number];
 export const getPages = (): ContentPage[] => pagesSeed;
+
+// Páginas com tela de edição própria (ou que são só listagens) ficam fora do
+// editor genérico de /admin/paginas.
+const OWN_EDITOR_SLUGS = new Set(["nossa-historia", "infraestrutura", "diferenciais", "parceiros", "curricular", "extracurricular"]);
+export const getEditablePages = (): ContentPage[] => pagesSeed.filter((p) => !OWN_EDITOR_SLUGS.has(p.slug));
+
+export type PagePhoto = { id: string; image_url: string; sort_order: number };
+
+export const getPagePhotos = (slug: string) =>
+  fromSupabase(
+    (sb) => sb.from("page_photos").select("*").eq("page_slug", slug).order("sort_order"),
+    [] as PagePhoto[],
+  );
+
+export type SitePage = {
+  slug: string;
+  title: string;
+  hero_image: string | null;
+  body: string | null;
+  show_carousel: boolean;
+  carousel_interval_seconds: number;
+};
+
+export async function getSitePage(slug: string): Promise<SitePage | null> {
+  if (!supabaseEnabled) return null;
+  try {
+    const sb = await createClient();
+    const { data } = await sb.from("site_pages").select("*").eq("slug", slug).maybeSingle();
+    return (data as SitePage | null) ?? null;
+  } catch {
+    return null;
+  }
+}
 export const getPage = (slug: string): ContentPage | null =>
   pagesSeed.find((p) => p.slug === slug) ?? null;
 

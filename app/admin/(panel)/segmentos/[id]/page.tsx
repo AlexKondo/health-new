@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import SegmentForm from "@/components/admin/SegmentForm";
 import BackLink from "@/components/admin/BackLink";
+import PagePhotosManager from "@/components/admin/PagePhotosManager";
 import { requireUser } from "@/lib/admin";
+import { getPagePhotos } from "@/lib/content";
 
 export default async function EditSegmentPage({
   params,
@@ -18,6 +20,11 @@ export default async function EditSegmentPage({
       <BackLink href="/admin/segmentos" />
       <h1 className="text-2xl font-extrabold text-brand-dark mb-6">Editar segmento</h1>
       <SegmentForm segment={segment} />
+      <PagePhotosManager
+        slug={segment.slug}
+        returnTo={`/admin/segmentos/${segment.id}`}
+        photos={await getPagePhotos(segment.slug)}
+      />
     </div>
   );
 }

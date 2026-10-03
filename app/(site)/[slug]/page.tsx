@@ -7,9 +7,10 @@ import { Section } from "@/components/site/Section";
 import Reveal from "@/components/site/Reveal";
 import PartnerLogo from "@/components/site/PartnerLogo";
 import ImageCarousel from "@/components/site/ImageCarousel";
+import PageCarousel from "@/components/site/PageCarousel";
 import {
   getSegment, getActivity, getPage, getActivities, getSegments, getPages, getDiferenciais, getPartners, getNossaHistoria,
-  getNossaHistoriaPhotos, getInfraestrutura, getInfraPhotos,
+  getNossaHistoriaPhotos, getInfraestrutura, getInfraPhotos, getSitePage,
 } from "@/lib/content";
 
 export const dynamicParams = true;
@@ -162,6 +163,11 @@ export default async function DynamicPage({
           )}
 
           <RichBody content={segment.body} />
+          <PageCarousel
+            slug={segment.slug}
+            enabled={segment.show_carousel ?? true}
+            intervalSeconds={segment.carousel_interval_seconds ?? 3}
+          />
           <VisitCTA title={segment.title} />
         </Section>
       </>
@@ -176,6 +182,11 @@ export default async function DynamicPage({
         <PageHero title={activity.title} image={activity.hero_image} />
         <Section className="max-w-4xl">
           <RichBody content={activity.body} />
+          <PageCarousel
+            slug={activity.slug}
+            enabled={activity.show_carousel ?? true}
+            intervalSeconds={activity.carousel_interval_seconds ?? 3}
+          />
           <p className="mt-8">
             <Link href={`/${activity.category}`} className="font-bold text-brand hover:underline">
               ← Ver todas as atividades {activity.category === "curricular" ? "curriculares" : "extracurriculares"}
@@ -190,11 +201,17 @@ export default async function DynamicPage({
   // 3) Página institucional / legal / listagem
   const page = getPage(slug);
   if (page) {
+    const custom = await getSitePage(slug);
     return (
       <>
-        <PageHero title={page.title} image={page.hero_image} />
+        <PageHero title={custom?.title ?? page.title} image={custom?.hero_image || page.hero_image} />
         <Section className="max-w-4xl">
-          <Prose paragraphs={page.paragraphs} />
+          {custom?.body ? <RichBody content={custom.body} /> : <Prose paragraphs={page.paragraphs} />}
+          <PageCarousel
+            slug={slug}
+            enabled={custom?.show_carousel ?? true}
+            intervalSeconds={custom?.carousel_interval_seconds ?? 3}
+          />
           {page.gallery.length > 0 && (
             <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
               {page.gallery.map((src, i) => (

@@ -38,6 +38,8 @@ export async function saveActivity(formData: FormData) {
     hero_image,
     body: nullable(formData.get("body")),
     sort_order: Number(formData.get("sort_order") || 0),
+    show_carousel: formData.get("show_carousel") === "on",
+    carousel_interval_seconds: Math.min(30, Math.max(1, Number(formData.get("carousel_interval_seconds")) || 3)),
   };
 
   const res = id
