@@ -14,9 +14,10 @@ export default function ImageCarousel({
   intervalSeconds?: number;
   visible?: number;
 }) {
+  const [visibleCount, setVisibleCount] = useState(visible);
   const n = images.length;
-  const loopedItems = n > visible ? [...images, ...images, ...images] : images;
-  const [index, setIndex] = useState(n > visible ? n : 0);
+  const loopedItems = n > visibleCount ? [...images, ...images, ...images] : images;
+  const [index, setIndex] = useState(n > visibleCount ? n : 0);
   const [animated, setAnimated] = useState(true);
   const [paused, setPaused] = useState(false);
   const [stepPx, setStepPx] = useState(0);
@@ -35,14 +36,27 @@ export default function ImageCarousel({
   }, [n]);
 
   useEffect(() => {
-    if (n <= visible) return;
+    function updateVisible() {
+      const w = window.innerWidth;
+      if (w < 640) setVisibleCount(1);
+      else if (w < 768) setVisibleCount(2);
+      else if (w < 1024) setVisibleCount(3);
+      else setVisibleCount(5);
+    }
+    updateVisible();
+    window.addEventListener("resize", updateVisible);
+    return () => window.removeEventListener("resize", updateVisible);
+  }, []);
+
+  useEffect(() => {
+    if (n <= visibleCount) return;
     if (index >= n && index < n * 2) return;
     const t = setTimeout(() => {
       setAnimated(false);
       setIndex((i) => (i >= n * 2 ? i - n : i + n));
     }, 650);
     return () => clearTimeout(t);
-  }, [index, n, visible]);
+  }, [index, n, visibleCount]);
 
   useEffect(() => {
     if (animated) return;
@@ -51,10 +65,10 @@ export default function ImageCarousel({
   }, [animated]);
 
   useEffect(() => {
-    if (!intervalSeconds || intervalSeconds <= 0 || n <= visible || paused || isDragging) return;
+    if (!intervalSeconds || intervalSeconds <= 0 || n <= visibleCount || paused || isDragging) return;
     const t = setInterval(() => setIndex((i) => i + 1), intervalSeconds * 1000);
     return () => clearInterval(t);
-  }, [intervalSeconds, n, visible, paused, isDragging]);
+  }, [intervalSeconds, n, visibleCount, paused, isDragging]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -92,18 +106,18 @@ export default function ImageCarousel({
 
   return (
     <div className="group relative">
-      {n > visible && (
+      {n > visibleCount && (
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-6 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
+            className="absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
             aria-label="Foto anterior"
           >
             ←
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-6 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
+            className="absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-14 rounded-full bg-brand/80 p-2 text-white transition hover:bg-brand disabled:opacity-50"
             aria-label="Próxima foto"
           >
             →
