@@ -74,26 +74,43 @@ export default function ImageCarousel({
   }, [intervalSeconds, n, visibleCount, paused, isDragging]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
+    if (e.button !== 0) return;
+    e.preventDefault();
     setDragStart(e.clientX);
     setDragOffset(0);
+    setIsDragging(true);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  useEffect(() => {
     if (!isDragging) return;
-    setDragOffset(e.clientX - dragStart);
-  };
-
-  const handleMouseUp = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    const threshold = Math.min(50, stepPx * 0.2);
-    if (stepPx > 0 && Math.abs(dragOffset) > threshold) {
-      const steps = Math.max(1, Math.round(Math.abs(dragOffset) / stepPx));
-      setIndex((i) => i + (dragOffset < 0 ? steps : -steps));
-    }
-    setDragOffset(0);
-  };
+    let offset = 0;
+    let frame = 0;
+    const onMove = (e: MouseEvent) => {
+      offset = e.clientX - dragStart;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        setDragOffset(offset);
+      });
+    };
+    const onUp = () => {
+      cancelAnimationFrame(frame);
+      const threshold = Math.min(50, stepPx * 0.2);
+      if (stepPx > 0 && Math.abs(offset) > threshold) {
+        const steps = Math.max(1, Math.round(Math.abs(offset) / stepPx));
+        setIndex((i) => i + (offset < 0 ? steps : -steps));
+      }
+      setDragOffset(0);
+      setIsDragging(false);
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, [isDragging, dragStart, stepPx]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setPaused(true);
@@ -154,18 +171,12 @@ export default function ImageCarousel({
       )}
       <div
         onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => {
-          setPaused(false);
-          handleMouseUp();
-        }}
-        className="overflow-hidden"
+        onMouseLeave={() => setPaused(false)}
+        className="overflow-hidden select-none"
       >
         <div
           ref={trackRef}
           onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -173,7 +184,8 @@ export default function ImageCarousel({
           className="flex gap-4"
           style={{
             transform: stepPx ? `translateX(${dragOffset - index * stepPx}px)` : undefined,
-            transition: animated && !touching ? "transform 600ms ease" : "none",
+            transition: animated && !touching && !isDragging ? "transform 600ms ease" : "none",
+            willChange: "transform",
             cursor: isDragging ? "grabbing" : "grab",
             touchAction: "pan-y",
           }}
