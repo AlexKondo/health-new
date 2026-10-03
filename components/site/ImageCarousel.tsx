@@ -26,6 +26,8 @@ export default function ImageCarousel({
   const trackRef = useRef<HTMLDivElement | null>(null);
   const firstItemRef = useRef<HTMLDivElement | null>(null);
   const touchStartRef = useRef(-1);
+  const [touching, setTouching] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
 
   useEffect(() => {
     function measure() {
@@ -95,24 +97,26 @@ export default function ImageCarousel({
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setPaused(true);
+    setTouching(true);
+    setDragOffset(0);
     touchStartRef.current = e.touches[0].clientX;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (touchStartRef.current === -1) return;
-    const diff = touchStartRef.current - e.touches[0].clientX;
-    if (Math.abs(diff) > 5 && stepPx > 0) {
-      const steps = Math.round(diff / stepPx);
-      if (steps !== 0) {
-        setAnimated(false);
-        setIndex((i) => i + steps);
-        touchStartRef.current = e.touches[0].clientX;
-      }
-    }
+    setDragOffset(e.touches[0].clientX - touchStartRef.current);
   };
 
   const handleTouchEnd = () => {
+    if (touchStartRef.current === -1) return;
     touchStartRef.current = -1;
+    const threshold = Math.min(50, stepPx * 0.2);
+    if (stepPx > 0 && Math.abs(dragOffset) > threshold) {
+      const steps = Math.max(1, Math.round(Math.abs(dragOffset) / stepPx));
+      setIndex((i) => i + (dragOffset < 0 ? steps : -steps));
+    }
+    setTouching(false);
+    setDragOffset(0);
     setPaused(false);
   };
 
@@ -165,12 +169,13 @@ export default function ImageCarousel({
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
           className="flex gap-4"
           style={{
-            transform: stepPx ? `translateX(-${index * stepPx}px)` : undefined,
-            transition: animated ? "transform 600ms ease" : "none",
+            transform: stepPx ? `translateX(${dragOffset - index * stepPx}px)` : undefined,
+            transition: animated && !touching ? "transform 600ms ease" : "none",
             cursor: isDragging ? "grabbing" : "grab",
-            touchAction: "none",
+            touchAction: "pan-y",
           }}
         >
           {loopedItems.map((img, idx) => (
